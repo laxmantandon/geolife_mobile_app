@@ -1,0 +1,7 @@
+{
+  "name": "geolife_mobile_app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}

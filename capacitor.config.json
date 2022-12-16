@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "geolife_mobile_app",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
