@@ -1,36 +1,36 @@
 <template>
     <ion-page>
         <ion-header>
-        <ion-toolbar color="primary">
-            <ion-title>My Day</ion-title>
-        </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-        <ion-grid>
-            <ion-row>
-                <ion-col router-link="/myday/activity/list">
-                    <b>Activity</b>
-                </ion-col>
-            </ion-row>
-            <ion-row >
-                <ion-col router-link="/myday/expense">
-                    <b>Expense</b>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    <b>Customer</b>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    <b>Day Plan</b>
-                </ion-col>
-            </ion-row>
+            <ion-toolbar color="primary">
+                <ion-title>My Day</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <ion-grid>
+                <ion-row>
+                    <ion-col router-link="/myday/activity/list">
+                        <b>Activity</b>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col router-link="/myday/expense">
+                        <b>Expense</b>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <b>Customer</b>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <b>Day Plan</b>
+                    </ion-col>
+                </ion-row>
 
-        </ion-grid>
-    </ion-content>
-</ion-page>
+            </ion-grid>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script lang="ts">
@@ -56,16 +56,19 @@ export default defineComponent({
 
 <style scoped>
 ion-content {
-    --ion-background-color: var(--ion-color-light);
+    --ion-background-color: #e4e4e4;
 }
+
 ion-col {
-    background-color: rgba(194, 191, 191, 0.823);
+    background-color: var(--ion-color-light);
     border-radius: 5px;
     height: 10vh;
     padding-top: 20px;
     padding-left: 10px;
+    box-shadow: 5px;
 
 }
+
 ion-row {
     padding-bottom: 10px;
 }

@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../myday/ExpensePage.vue')
   },
   {
-    path: '/myday/expense/id',
+    path: '/myday/expense/:id',
     component: () => import ('../myday/ExpenseDetail.vue')
   },
   {
@@ -28,6 +28,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/myday/activity/:id',
+    name: 'edit-activity',
     component: () => import ('../myday/ActivityDetail.vue')
   }
 ]
