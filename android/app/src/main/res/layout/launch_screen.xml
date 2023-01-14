@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:layout_gravity="center">
+
+    
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="center_horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:indeterminate="true"
+        android:progress="0"
+        android:layout_marginTop="1dp"
+        />
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="70dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
+
+     <!-- <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Powerd By YTMonetize"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginBottom="10sp"
+            android:textColor="#000"
+            android:textStyle="bold"/> -->
+</RelativeLayout>
