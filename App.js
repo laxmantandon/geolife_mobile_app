@@ -26,6 +26,7 @@ import RaiseCropAlertScreen from './src/screens/My Former/RaiseCropAlertScreen';
 import WhatsappFarmerScreen from './src/screens/My Former/WhatsappFarmerScreen';
 import SeminarEventDetailsScreen from './src/screens/My Former/Crop Seminar/SeminarEventDetailsScreen';
 import CropSeminarScreen from './src/screens/My Former/Crop Seminar/CropSeminarListScreen';
+import MyDealersScreen from './src/screens/My Dealers/MyDealersScreen';
 
 function HomeScreen({ navigation }) {
   return (
@@ -43,6 +44,11 @@ function HomeScreen({ navigation }) {
       <Button
         title="Go to Crop Seminar"
         onPress={() => navigation.navigate('CropSeminar')}
+      />
+
+      <Button
+        title="Go to My Dealers"
+        onPress={() => navigation.navigate('Mydealers')}
       />
     </View>
   );
@@ -98,6 +104,9 @@ function App() {
 {/* My Crop Seminar screen */}
 <Stack.Screen name='CropSeminar' component={CropSeminarScreen} />
 <Stack.Screen name='SeminarEventDetailsScreen' component={SeminarEventDetailsScreen} />
+
+{/* My My Dealers screen */}
+<Stack.Screen name='Mydealers' component={MyDealersScreen} />
 
 {/* My day Screen */}
           <Stack.Screen name="Myday" component={MydayScreen} />
