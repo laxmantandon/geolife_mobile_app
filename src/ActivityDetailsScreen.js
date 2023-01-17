@@ -132,15 +132,12 @@ const ActivityDetailsScreen = ({item}) => {
           <TextInput placeholder="jhyG45fthj" onChangeText={(val)=>{setname(val)}} style={styles.InputStyle} />
       </View>
 
-      <View style={{ paddingBottom: 20, paddingLeft: 10 }}>
+      <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
           <Text style={{ fontSize: 15 }}>Notes</Text>
           <TextInput placeholder="jhyG45fthj" multiline={true} numberOfLines={6} onChangeText={(val)=>{setnote(val)}} style={styles.InputStyle} />
       </View>
 
-
-      <View>
-      <Image source={{ uri: 'data:image/jpeg;base64,' + captureImages }} style={styles.images} />
-      </View>
+      {captureImages ?(<Image source={{ uri: 'data:image/jpeg;base64,' + captureImages }} style={styles.images} />):('')}
 
       <View>
         <Pressable onPress={()=> startCamera() }>
@@ -179,8 +176,8 @@ const styles = StyleSheet.create({
     paddingVertical:15
   },
   images: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3

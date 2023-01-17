@@ -165,7 +165,11 @@ const LoginScreen = ({ navigation, setToken }) => {
             <Text style={styles.signinButtonText}>Login </Text>
           )}
         </TouchableOpacity>
-      </View>) : (<View  >
+      </View>
+      
+      ) : (
+      
+      <View  >
         <Text style={styles.title}>Verify OTP</Text>
         <Text style={styles.content}>
           OTP successfullt sent to your mobile number

@@ -1,15 +1,15 @@
 import { View, Text, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
+import FabButton from '../../components/FabButton'
 
 const MyFarmerListScreen = ({navigation}) => {
 
   const [data, setdata] = useState([
-    {title:'Activity', route:'Activity'},{title:'Expense', route:'Expense'},{title:'Customer', route:'Customer'},{title:'Day Plan', route:'Dayplan'}
-  ])
+    {title:'Farmer Name', subtitle:'9685062116', avatar:'Activity'} ,{title:'Farmer Name1', subtitle:'9685062115', avatar:'Activity'}  ])
 
   return (
-    <View>
+    <View style={{flex:1}}>
        <FlatList
       data={data}
       renderItem={(item) =>{
@@ -24,6 +24,12 @@ const MyFarmerListScreen = ({navigation}) => {
           </Pressable>
           )
       }} />
+<Pressable onPress={()=>{navigation.navigate('AddFarmer')}}>
+<FabButton/>
+
+</Pressable>
+
+    
     </View>
   )
 }

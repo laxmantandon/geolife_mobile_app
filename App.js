@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MydayScreen from './src/MydayScreen';
@@ -27,10 +27,18 @@ import WhatsappFarmerScreen from './src/screens/My Former/WhatsappFarmerScreen';
 import SeminarEventDetailsScreen from './src/screens/My Former/Crop Seminar/SeminarEventDetailsScreen';
 import CropSeminarScreen from './src/screens/My Former/Crop Seminar/CropSeminarListScreen';
 import MyDealersScreen from './src/screens/My Dealers/MyDealersScreen';
+import AddFarmerScreen from './src/AddFarmerScreen';
+import SplashScreen from 'react-native-splash-screen';
+import CameraPermission from './src/services/permissionservices';
+SplashScreen.hide();
+CameraPermission()
+
 
 function HomeScreen({ navigation }) {
   return (
      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      
+
       <Button
         title="Go to Myday"
         onPress={() => navigation.navigate('Myday')}
@@ -71,7 +79,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" >
+      <Stack.Navigator initialRouteName="AddFarmer" >
       <Stack.Screen name="Home" component={HomeScreen} options={() => ({
         headerShown: true,
             headerLeft: () => (
@@ -88,7 +96,8 @@ function App() {
         <Stack.Screen name="Details" component={DetailsScreen} />
 
 {/* My farmer screen */}
-        <Stack.Screen name='Myfarmer' component={MyFarmerScreen} />
+<Stack.Screen name='Myfarmer' component={MyFarmerScreen} />
+<Stack.Screen name='AddFarmer' component={AddFarmerScreen} />
         <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} />
         <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} />
         <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} />

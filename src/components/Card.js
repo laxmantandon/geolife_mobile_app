@@ -11,6 +11,7 @@ const Card = ({item}) => {
         }}
         style={styles.ListContainer} >
           {data?.image?(<Image  style={{ margin: "auto", backgroundColor: 'silver', height:80, width:80 }} source={{ uri: data?.image }} />):('')}
+          {data?.avatar?(<Image  style={{ margin: "auto", backgroundColor: 'silver', height:60, width:60, borderRadius:50 }} source={{ uri: data?.avatar }} />):('')}
   
         <View style={styles.detailContainer}>
           <View style={styles.titleContainer}>

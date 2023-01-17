@@ -2,7 +2,7 @@ import { View, Text, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
 
-const SeminarEventDetailsScreen = () => {
+const SeminarEventDetailsScreen = ({navigation}) => {
     const [data, setdata] = useState([
         {title:'Pre Activities', route:'Customer'},
         {title:'Post Activities', route:'Expense'},
@@ -17,7 +17,7 @@ const SeminarEventDetailsScreen = () => {
 
     
       return (
-        <View>
+        <View style={{flex:1, backgroundColor:'white'}}>
           <FlatList
           data={event}
           renderItem={(item) =>{
