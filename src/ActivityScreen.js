@@ -1,6 +1,7 @@
 import { StyleSheet, StatusBar, Text, View, Alert, FlatList, Image, TouchableOpacity, Linking, Pressable, VirtualizedList } from 'react-native';
 import React, { useState } from 'react'
 import Card from '../src/components/Card'
+import FabButton from './components/FabButton';
 
 const ActivityScreen = ({navigation}) => {
   const [data, setdata] = useState( [
@@ -14,13 +15,18 @@ const ActivityScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          onPress={() => navigation.navigate('ActivityDetails')}
+          onPress={() => navigation.navigate('ActivityDetails',{item})}
           >
           <Card item={item} />
 
           </Pressable>
           )
       }} />
+      <Pressable onPress={()=>{navigation.navigate('ActivityDetails',{item:''})}}>
+          <FabButton />
+      </Pressable>
+
+     
     </View>
   )
 }

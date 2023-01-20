@@ -15,7 +15,8 @@ const CustomerDetailsScreen =({item})=>{
 
 const CustomerScreen = ({navigation}) => {
     const [Customer, setCustomer] = useState([
-            {title:'Customer name', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Other Details'},
+            {title:'Customer name', avatar:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG',
+             subtitle:'Other Details'},
 
     ])
     const [Loading, setLoading] = useState(false)

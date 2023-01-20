@@ -1,11 +1,12 @@
 import { View, Text, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
+import mstyle from '../../mstyle'
 
 const MyFarmerScreen = ({navigation}) => {
     const [data, setdata] = useState([
         {title:'My Farmer List', route:'Myfarmerlist'},
-        {title:'Door to Door Visit for App Download', route:'DoortoDoor'},
+        {title:'Door to Door Visit for App Download ', route:'DoortoDoor'},
         {title:'Sticker pasting', route:'StickerPastingScreen'},
         {title:'WhatsApp to Farmer', route:'WhatsappFarmerScreen'},
         {title:'Call to Farmer', route:'CallFarmerScreen'},
@@ -15,7 +16,7 @@ const MyFarmerScreen = ({navigation}) => {
       ])
     
       return (
-        <View>
+        <View style={mstyle.container}>
            <FlatList
           data={data}
           renderItem={(item) =>{

@@ -8,13 +8,15 @@ import { launchCamera } from 'react-native-image-picker'
 import ImageView from "react-native-image-viewing";
 import SelectDropdown from 'react-native-select-dropdown'
 import Feather from 'react-native-vector-icons/Feather';
+import { Display } from '../utils'
 
 
 
 const MYinputs = ({ item }) => {
-  console.log(item)
+  // console.log(item)
 
   const [visible, setIsVisible] = useState(false);
+  const [captureimage, setcaptureimage] = useState([])
 
   const startCamera = () => {
     // requestCameraPermission()
@@ -39,13 +41,16 @@ const MYinputs = ({ item }) => {
       } else {
         // const source = { uri: response.uri };
         // console.log('response', JSON.stringify(response.assets[0].base64));
-        const basse64image = JSON.stringify(response.assets[0].base64)
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response.assets[0].base64)
+        setcaptureimage([])
         // item?.value=basse64image
         // captureimage=basse64image
 
         // captureimage=basse64image
         item.value.push(basse64image)
         // console.log(item.value)
+       
+        setcaptureimage(item.value)
 
 
         // console.table(JSON.stringify(response))
@@ -64,34 +69,39 @@ const MYinputs = ({ item }) => {
       <Text style={mstyle.content}>{item.label}</Text>
 
       {item?.type == 'image' ? (
-        <View style={{ paddingHorizontal: 20, paddingVertical: 10, flex: 1, flexDirection: 'row' }} >
-          {item?.value ? (<View>
+        <View style={{ paddingHorizontal: 10, paddingVertical: 5 }} >
+          <View>
             <FlatList
-              data={item.value}
-              renderItem={(img) => {
+              data={captureimage}
+              // style={{flex:1, flexDirection:'row'}}
+              numColumns={4}
+
+              renderItem={({img,index}) => {
                 return (
-                  <Pressable
-                  // onPress={() => navigation.navigate('ActivityDetails')}
+                  <Pressable style={{margin:2}}
+                  onPress={() => {setIsVisible(true)}}
                   >
-                    <Image style={{ width: 100, height: 100, }} source={{ uri: 'data:image/jpeg;base64,' + img }} />
+                    <Image style={{ width: 80, height: 80, backgroundColor:'silver' }} source={{ uri: item.value[index] }} />
 
                   </Pressable>
                 )
-              }} />
+              }} 
+              
+              />
             <ImageView
               images={item.value}
               imageIndex={0}
               visible={visible}
               onRequestClose={() => setIsVisible(false)}
             />
-          </View>) : (<Text>No Images</Text>)}
+          </View>
 
 
 
           <Separator width={10} />
 
-          <Pressable onPress={() => startCamera()} style={{ width: 60, height: 100 }} >
-            <Image style={{ width: 50, height: 50, top: 25, bottom: 25 }}
+          <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50 }} >
+            <Image style={{ width: 50, height: 50 }}
               source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
             />
           </Pressable>
@@ -110,15 +120,15 @@ const MYinputs = ({ item }) => {
                     defaultButtonText={item?.label}
                     buttonStyle={{
                       backgroundColor: Colors.LIGHT_GREY,
-                      width:'100%',
+                      width:'100%', height: Display.setHeight(6)
                     }}
-                    buttonTextStyle={{fontSize:15}}
+                    buttonTextStyle={{fontSize:14}}
                     dropdownStyle={[mstyle.inputContainer]}
                     selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY}}
-                    rowTextStyle={{fontSize:15}}
+                    rowTextStyle={{fontSize:14}}
 
                     onSelect={(selectedItem, index) => {
-                      console.log(selectedItem, index)
+                      // console.log(selectedItem, index)
                       item.value = selectedItem
 
                     }}
@@ -154,7 +164,7 @@ const MYinputs = ({ item }) => {
                   multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type == 'textarea' ? 6 : 1}
                   onChangeText={text => {
                     item.value = text
-                    console.log(item)
+                    // console.log(item)
                   }}
                   // value={item?.value}
                   defaultValue={item?.value}
@@ -168,7 +178,7 @@ const MYinputs = ({ item }) => {
       )}
 
 
-      <Separator height={15} />
+      <Separator height={12} />
 
     </View>
   )
