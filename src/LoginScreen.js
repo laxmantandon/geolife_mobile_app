@@ -121,6 +121,7 @@ const LoginScreen = ({ navigation, setToken }) => {
         translucent
       />
       <Separator height={StatusBar.currentHeight} />
+
       {/* <View style={styles.headerContainer}>
         <Ionicons
           name="chevron-back-outline"
@@ -131,6 +132,16 @@ const LoginScreen = ({ navigation, setToken }) => {
         <Text style={styles.headerTitle}>Sign In</Text>
       </View> */}
       {!otp ? (<View>
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center', marginTop:120
+        }}>
+
+          <Image source={require('../src/assets/images/logo.png')}
+            style={{ width: 170, }}
+            resizeMode="contain" />
+        </View>
+
         <Text style={styles.title}>Login</Text>
         <Text style={styles.content}>
           Enter your mobile number for login
@@ -166,52 +177,52 @@ const LoginScreen = ({ navigation, setToken }) => {
           )}
         </TouchableOpacity>
       </View>
-      
+
       ) : (
-      
-      <View  >
-        <Text style={styles.title}>Verify OTP</Text>
-        <Text style={styles.content}>
-          OTP successfullt sent to your mobile number
-        </Text>
-        <OTPInput
-          code={otpCode}
-          setCode={setOTPCode}
-          maximumLength={maximumCodeLength}
-          setIsPinReady={setIsPinReady}
-        />
 
-        <TouchableOpacity
-          style={styles.signinButton}
-          onPress={() => signIn()}
-          activeOpacity={0.8}>
-          {isLoading ? (
-            <LottieView source={Images.LOADING} autoPlay />
-          ) : (
-            <Text style={styles.signinButtonText}>Verify OTP </Text>
-          )}
-        </TouchableOpacity>
+        <View  >
+          <Text style={[styles.title,{marginTop:50}]}>Verify OTP</Text>
+          <Text style={styles.content}>
+            OTP successfullt sent to your mobile number
+          </Text>
+          <OTPInput
+            code={otpCode}
+            setCode={setOTPCode}
+            maximumLength={maximumCodeLength}
+            setIsPinReady={setIsPinReady}
+          />
 
-          
+          <TouchableOpacity
+            style={styles.signinButton}
+            onPress={() => signIn()}
+            activeOpacity={0.8}>
+            {isLoading ? (
+              <LottieView source={Images.LOADING} autoPlay />
+            ) : (
+              <Text style={styles.signinButtonText}>Verify OTP </Text>
+            )}
+          </TouchableOpacity>
+
+
           <CountDown
-          until={180}
-          size={17}
-          onFinish={() => {
-            //Alert.alert('Resend otp')
-          }}
-          digitStyle={{ backgroundColor: '#FFF' }}
-          digitTxtStyle={{ color: '#1CC625' }}
-          timeToShow={['M', 'S']}
-          // timeToShow={['S']}
-          // timeLabels={{m: 'MM', s: 'SS'}}
-          timeLabels={{ s: '' }}
-         
-        />
-        <Text style={styles.content}>
-          Resend OTP
-        </Text>
-        
-      </View>)}
+            until={180}
+            size={17}
+            onFinish={() => {
+              //Alert.alert('Resend otp')
+            }}
+            digitStyle={{ backgroundColor: '#FFF' }}
+            digitTxtStyle={{ color: '#1CC625' }}
+            timeToShow={['M', 'S']}
+            // timeToShow={['S']}
+            // timeLabels={{m: 'MM', s: 'SS'}}
+            timeLabels={{ s: '' }}
+
+          />
+          <Text style={styles.content}>
+            Resend OTP
+          </Text>
+
+        </View>)}
 
     </View>
   );
@@ -242,7 +253,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.POPPINS_MEDIUM,
     fontWeight: "bold",
     lineHeight: 20 * 1.4,
-    marginTop: 50,
+    marginTop: 5,
     marginBottom: 10,
     marginHorizontal: 20,
   },

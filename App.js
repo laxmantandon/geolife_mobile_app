@@ -35,11 +35,8 @@ import Card from './src/components/Card';
 import { Colors, Fonts } from './src/contants';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { PermissionsAndroid } from 'react-native';
-import CallLogs from 'react-native-call-log'
 
-
-SplashScreen.hide();
+// SplashScreen.hide();
 CameraPermission()
 
 
@@ -166,7 +163,7 @@ const Stack = createNativeStackNavigator();
 function App({navigation}) {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" >
+      <Stack.Navigator initialRouteName="Login" >
         <Stack.Screen name="Home" component={HomeScreen} 
         // options={() => ({
         //   headerShown: true,
