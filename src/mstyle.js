@@ -27,7 +27,7 @@ export default mstyle = StyleSheet.create({
         textAlign: 'center',
       },
       title: {
-        color: 'gray',
+        color: 'Balck',
         // textAlign: "center",
         fontSize: 16,
         borderBottomColor:'silver',
@@ -51,7 +51,7 @@ export default mstyle = StyleSheet.create({
     marginHorizontal: 20,
   },
   inputContainer: {
-    backgroundColor: Colors.LIGHT_GREEN,
+    backgroundColor: Colors.LIGHT_GREY2,
     paddingHorizontal: 7,
     marginHorizontal: 10,
     borderRadius: 4,
@@ -86,5 +86,44 @@ export default mstyle = StyleSheet.create({
     color: Colors.DEFAULT_WHITE,
     fontFamily: Fonts.POPPINS_MEDIUM,
   },
+
+  //For cards
+  ListContainer: {
+    backgroundColor: 'white',
+    // borderColor: 'silver',
+    // borderWidth: 1,
+    borderBottomColor: Colors.SECONDARY_WHITE,
+    borderBottomWidth:1,
+    paddingHorizontal: 7,
+    paddingVertical:14,
+    borderRadius: 4,
+    flexDirection: 'row',
+    marginHorizontal: 7,
+    marginVertical: 2,
+    elevation:2
+   
+
+  },
+  detailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    marginHorizontal: 10,
+    alignItems: 'center',
+    // width: '55%',
+  },
+
+  listListTitle: {
+    color: 'black',
+    fontFamily: Fonts.POPPINS_MEDIUM,
+    fontSize: 14,
+    fontWeight: 'bold',
+    letterSpacing: 0.1,
+    // width: '100%',
+  },
+  titleContainer: {
+    // flexDirection: 'column',
+    // width: '10%',
+  }
 
 })

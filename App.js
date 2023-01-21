@@ -32,8 +32,11 @@ import SplashScreen from 'react-native-splash-screen';
 import CameraPermission from './src/services/permissionservices';
 import mstyle from './src/mstyle';
 import Card from './src/components/Card';
-import { Colors } from './src/contants';
+import { Colors, Fonts } from './src/contants';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import { PermissionsAndroid } from 'react-native';
+import CallLogs from 'react-native-call-log'
 
 
 SplashScreen.hide();
@@ -42,11 +45,11 @@ CameraPermission()
 
 function HomeScreen({ navigation }) {
   const [data, setdata] = React.useState([
-    { title: 'My Tasks', route: 'Myday' },
-    { title: 'My day', route: 'Myday' },
-    { title: 'My farmer', route: 'Myfarmer' },
-    { title: 'Crop Seminar', route: 'CropSeminar' },
-    { title: 'My dealers', route: 'Mydealers' }
+    { title: 'My Tasks', route: 'Myday',icon:'ios-list-outline', color:'red' },
+    { title: 'My day', route: 'Myday',icon:'ios-sunny-outline', color:'gold' },
+    { title: 'My farmer', route: 'Myfarmer',icon:'ios-person-outline' , color:'black' },
+    { title: 'Crop Seminar', route: 'CropSeminar',icon:'ios-list' , color:'green' },
+    { title: 'My dealers', route: 'Mydealers',icon:'ios-list' , color:'blue' }
   ])
 
   const [task, settask] = React.useState([
@@ -77,20 +80,54 @@ function HomeScreen({ navigation }) {
         translucent
       />
       <ScrollView>
+                  {/* <View
+                  style={mstyle.ListContainer} >
+                 
+                  <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
+                  source={{ uri: '' }} />
+
+                  <View style={mstyle.detailContainer}>
+                    <View style={mstyle.titleContainer}>
+                      <Text style={mstyle.listListTitle} numberOfLines={1}>
+                        UserName
+                      </Text>
+                      <Text style={{ color: 'gray',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
+            }} numberOfLines={2}> Mobile number</Text>
+                    </View>
+                    
+                  </View>
+                </View> */}
         <View>
           <FlatList
             data={data}
             numColumns={2}
             renderItem={(item) => {
               return (
-                <Pressable style={{ flex: 1 }} onPress={() => { navigation.navigate(item.item.route) }}>
-                  <Card item={item} />
+                <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
+                  {/* <Icon name='ios-checkmark-circle' size={30}  style={{paddingTop:5,paddingLeft:20}}/>
+
+                  <Card item={item} /> */}
+                                    <View
+                  style={mstyle.ListContainer} >
+                 
+                 <Icon name={item.item.icon} size={30}  style={{paddingTop:5,paddingLeft:20,color:item.item.color}}/>
+
+                  <View style={mstyle.detailContainer}>
+                    <View style={mstyle.titleContainer}>
+                      <Text style={mstyle.listListTitle} numberOfLines={1}>
+                        {item.item.title}
+                      </Text>
+                      
+                    </View>
+                    
+                  </View>
+                </View>
                 </Pressable>
               )
             }} />
         </View>
 
-        <Text style={mstyle.title}>Pending task</Text>
+        <Text style={mstyle.title}>Current Task</Text>
 
         <View>
           <FlatList
@@ -100,7 +137,6 @@ function HomeScreen({ navigation }) {
                 <Pressable style={{ flex: 1,flexDirection:'row' }} onPress={() => { navigation.navigate(item.route) }}>
                   <Icon name='ios-checkmark-circle' size={22}  style={{paddingTop:18,paddingLeft:20}}/>
                   <Card item={item} />
-
                 </Pressable>
 
               )

@@ -4,7 +4,7 @@ import Card from '../src/components/Card'
 
 const ExpenseScreen = ({navigation}) => {
   const [data, setdata] = useState( [
-    {title:'Expense type', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Amount'},
+    {title:'Expense type', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'350.00'},
     
   ])
   return (
@@ -14,7 +14,7 @@ const ExpenseScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          onPress={() => navigation.navigate('ExpenseDetails')}
+          onPress={() => navigation.navigate('ExpenseDetails',{item})}
           >
           <Card item={item} />
 

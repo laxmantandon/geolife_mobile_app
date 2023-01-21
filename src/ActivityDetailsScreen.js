@@ -1,17 +1,8 @@
-import { View, Text, TextInput, StyleSheet, Button, PermissionsAndroid, Image, Pressable, ScrollView, FlatList } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import SelectDropdown from 'react-native-select-dropdown'
-import ImagePicker, { launchCamera } from 'react-native-image-picker';
-import CameraPermission from './services/permissionservices';
-import Icon from 'react-native-vector-icons/Ionicons';
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
-import { Images } from './contants';
 import Buttons from './components/Buttons';
-
-
-const countries = ["Option 01", "Option 02", "Option 03", "Option 04"]
-
 
 
 const ActivityDetailsScreen = ({ props,
@@ -39,11 +30,6 @@ const ActivityDetailsScreen = ({ props,
     }
   }
 
-  useEffect(() => {
-   
-
-  }, [])
-  
 
   const submit =()=>{
     console.log(formdata)
@@ -56,7 +42,7 @@ const ActivityDetailsScreen = ({ props,
 
 
   return (
-    <View style={mstyle.container}>
+    <ScrollView style={mstyle.container}>
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
@@ -77,7 +63,7 @@ const ActivityDetailsScreen = ({ props,
 
 
 
-    </View>
+    </ScrollView>
   )
 }
 

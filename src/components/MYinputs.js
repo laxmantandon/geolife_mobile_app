@@ -9,6 +9,7 @@ import ImageView from "react-native-image-viewing";
 import SelectDropdown from 'react-native-select-dropdown'
 import Feather from 'react-native-vector-icons/Feather';
 import { Display } from '../utils'
+import Icon from 'react-native-vector-icons/Feather'
 
 
 
@@ -101,9 +102,10 @@ const MYinputs = ({ item }) => {
           <Separator width={10} />
 
           <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50 }} >
-            <Image style={{ width: 50, height: 50 }}
+            <Icon name='camera' size={30}  style={{backgroundColor:Colors.LIGHT_GREEN,color:'green', borderRadius:50,padding:10}}/>
+            {/* <Image style={{ width: 50, height: 50 }}
               source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
-            />
+            /> */}
           </Pressable>
         </View>
       ) : (
@@ -119,12 +121,12 @@ const MYinputs = ({ item }) => {
                     defaultValue={item?.value}
                     defaultButtonText={item?.label}
                     buttonStyle={{
-                      backgroundColor: Colors.LIGHT_GREY,
+                      backgroundColor: Colors.LIGHT_GREY2,
                       width:'100%', height: Display.setHeight(6)
                     }}
                     buttonTextStyle={{fontSize:14}}
                     dropdownStyle={[mstyle.inputContainer]}
-                    selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY}}
+                    selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY2}}
                     rowTextStyle={{fontSize:14}}
 
                     onSelect={(selectedItem, index) => {
@@ -144,12 +146,11 @@ const MYinputs = ({ item }) => {
                     }}
                   />
 
-<Feather
+{/* <Feather
                     name="phone"
                     size={18}
                     color={Colors.DEFAULT_GREY}
-                    style={{ marginRight: 10 }}
-                  />
+                  /> */}
                 </View>
               ) : (
 

@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   },
 
   ListContainer: {
+    flex: 1,
     backgroundColor: 'white',
     // borderColor: 'silver',
     // borderWidth: 1,
-    borderBottomColor: Colors.SECONDARY_WHITE,
+    borderBottomColor: Colors.LIGHT_GREY2,
     borderBottomWidth:1,
     paddingHorizontal: 7,
     paddingVertical:4,
