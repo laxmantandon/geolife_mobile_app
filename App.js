@@ -77,7 +77,7 @@ function HomeScreen({ navigation }) {
         translucent
       />
       <ScrollView>
-                  {/* <View
+                  <View
                   style={mstyle.ListContainer} >
                  
                   <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
@@ -88,12 +88,12 @@ function HomeScreen({ navigation }) {
                       <Text style={mstyle.listListTitle} numberOfLines={1}>
                         UserName
                       </Text>
-                      <Text style={{ color: 'gray',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-            }} numberOfLines={2}> Mobile number</Text>
+                      <Text style={{ color: 'green',fontSize:25,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
+            }} numberOfLines={2}>Working time ......</Text>
                     </View>
                     
                   </View>
-                </View> */}
+                </View>
         <View>
           <FlatList
             data={data}
@@ -107,7 +107,7 @@ function HomeScreen({ navigation }) {
                                     <View
                   style={mstyle.ListContainer} >
                  
-                 <Icon name={item.item.icon} size={30}  style={{paddingTop:5,paddingLeft:20,color:item.item.color}}/>
+                 <Icon name={item.item.icon} size={22}  style={{paddingTop:5,paddingLeft:20,color:item.item.color}}/>
 
                   <View style={mstyle.detailContainer}>
                     <View style={mstyle.titleContainer}>
