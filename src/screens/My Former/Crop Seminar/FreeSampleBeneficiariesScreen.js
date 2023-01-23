@@ -1,15 +1,15 @@
 import { View, Text, FlatList, Pressable, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import Card from '../../components/Card'
-import FabButton from '../../components/FabButton'
-import mstyle from '../../mstyle'
-import { Colors } from '../../contants'
+import Card from '../../../components/Card'
+import FabButton from '../../../components/FabButton'
+import mstyle from '../../../mstyle'
+import { Colors } from '../../../contants'
 
-const MyFarmerListScreen = ({ navigation }) => {
+const FreeSampleBeneficiariesScreen = ({ navigation }) => {
 
   const [data, setdata] = useState([
-    { title: 'Farmer Name', subtitle: '9685062116', },
-    { title: 'Farmer Name1', subtitle: '9685062115', }])
+    { title: 'Farmer Name', subtitle: '9685062116', image:'' },
+    { title: 'Farmer Name1', subtitle: '9685062115', image:''}])
 
   const searchFilterFunction = (text) => {
     console.log(text)
@@ -54,14 +54,14 @@ const MyFarmerListScreen = ({ navigation }) => {
             </Pressable>
           )
         }} />
-      <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>
+      {/* <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>
         <FabButton />
 
-      </Pressable>
+      </Pressable> */}
 
 
     </View>
   )
 }
 
-export default MyFarmerListScreen
+export default FreeSampleBeneficiariesScreen

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Colors, Fonts } from '../contants';
 
 const Card = ({ item }) => {
-  console.log(item.item)
+  // console.log(item.item)
   const data = item.item
   return (
     <View

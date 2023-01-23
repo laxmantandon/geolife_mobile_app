@@ -16,7 +16,7 @@ const MyFarmerScreen = ({navigation}) => {
       ])
     
       return (
-        <View style={mstyle.container}>
+        <View style={mstyle.container1}>
            <FlatList
           data={data}
           renderItem={(item) =>{

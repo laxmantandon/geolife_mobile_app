@@ -34,6 +34,11 @@ import mstyle from './src/mstyle';
 import Card from './src/components/Card';
 import { Colors, Fonts } from './src/contants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CreateSeminarScreen from './src/screens/My Former/Crop Seminar/CreateSeminarScreen';
+import FreeSampleBeneficiariesScreen from './src/screens/My Former/Crop Seminar/FreeSampleBeneficiariesScreen';
+import AttendanceScreen from './src/screens/My Former/Crop Seminar/AttendanceScreen';
+import PreActivityScreen from './src/screens/My Former/Crop Seminar/PreActivityScreen';
+import PostActivityScreen from './src/screens/My Former/Crop Seminar/PostActivityScreen';
 
 
 // SplashScreen.hide();
@@ -41,6 +46,8 @@ CameraPermission()
 
 
 function HomeScreen({ navigation }) {
+SplashScreen.hide();
+  
   const [data, setdata] = React.useState([
     { title: 'My Tasks', route: 'Myday',icon:'ios-list-outline', color:'red' },
     { title: 'My day', route: 'Myday',icon:'ios-sunny-outline', color:'gold' },
@@ -68,6 +75,16 @@ function HomeScreen({ navigation }) {
 
   ])
 
+  React.useEffect(() => {
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'Home' }],
+    // });
+  
+   
+  }, [])
+  
+
 
   return (
     <View style={mstyle.container}>
@@ -76,34 +93,35 @@ function HomeScreen({ navigation }) {
         backgroundColor={Colors.SECONDARY_WHITE}
         translucent
       />
-      <ScrollView>
-                  <View
-                  style={mstyle.ListContainer} >
-                 
-                  <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
-                  source={{ uri: '' }} />
-
-                  <View style={mstyle.detailContainer}>
-                    <View style={mstyle.titleContainer}>
-                      <Text style={mstyle.listListTitle} numberOfLines={1}>
-                        UserName
-                      </Text>
-                      <Text style={{ color: 'green',fontSize:25,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-            }} numberOfLines={2}>Working time ......</Text>
-                    </View>
-                    
-                  </View>
-                </View>
+                  
         <View>
           <FlatList
             data={data}
             numColumns={2}
+            // ListHeaderComponent={()=>{
+            //   return(
+            //     <View
+            //       style={mstyle.ListContainer} >
+                 
+            //       <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
+            //       source={{ uri: '' }} />
+
+            //       <View style={mstyle.detailContainer}>
+            //         <View style={mstyle.titleContainer}>
+            //           <Text style={mstyle.listListTitle} numberOfLines={1}>
+            //             UserName
+            //           </Text>
+            //           <Text style={{ color: 'green',fontSize:25,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
+            // }} numberOfLines={2}>Working time ......</Text>
+            //         </View>
+                    
+            //       </View>
+            //     </View>
+            //   )
+            // }}
             renderItem={(item) => {
               return (
                 <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
-                  {/* <Icon name='ios-checkmark-circle' size={30}  style={{paddingTop:5,paddingLeft:20}}/>
-
-                  <Card item={item} /> */}
                                     <View
                   style={mstyle.ListContainer} >
                  
@@ -121,26 +139,33 @@ function HomeScreen({ navigation }) {
                 </View>
                 </Pressable>
               )
-            }} />
-        </View>
+            }}
 
-        <Text style={mstyle.title}>Current Task</Text>
+            ListFooterComponent={()=>{
+              return(
+                    <View>
+                      <Text style={mstyle.title}>Current Task</Text>
+                      <FlatList
+                        data={task}
+                        renderItem={(item) => {
+                          return (
+                            <Pressable style={{ flex: 1,flexDirection:'row' }} onPress={() => { navigation.navigate(item.route) }}>
+                              <Icon name='ios-checkmark-circle' size={22}  style={{paddingTop:18,paddingLeft:20}}/>
+                              <Card item={item} />
+                            </Pressable>
 
-        <View>
-          <FlatList
-            data={task}
-            renderItem={(item) => {
-              return (
-                <Pressable style={{ flex: 1,flexDirection:'row' }} onPress={() => { navigation.navigate(item.route) }}>
-                  <Icon name='ios-checkmark-circle' size={22}  style={{paddingTop:18,paddingLeft:20}}/>
-                  <Card item={item} />
-                </Pressable>
+                          )
+                        }} />
+                    </View>
 
               )
-            }} />
+            }}
+            
+            />
         </View>
 
-      </ScrollView>
+        
+
 
     </View>
   );
@@ -184,13 +209,13 @@ function App({navigation}) {
             shadowOpacity: 100,
           },
           headerTitleAlign: 'left',
-          // headerLeft: () => (
-          //   // <TouchableOpacity>
-          //   //   <Icon name="menu" size={25} style={{ paddingLeft: 10, color: 'black', fontWeight: '500' }} 
-          //   //   onPress={() => navigation.openDrawer()} />
-
-          //   // </TouchableOpacity>
-          // ),
+          headerLeft: () =>(
+            <Image
+              source={require('./src/assets/images/logo.png')}
+              style={{width: 105,height:45,}}
+              resizeMode="contain"
+            />
+          ),
           headerRight: () => (
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity>
@@ -209,14 +234,15 @@ function App({navigation}) {
 
 
           ),
-          headerTitle: () => (
-            // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
-            <Image
-              source={require('./src/assets/images/logo.png')}
-              style={{width: 105,height:45,}}
-              resizeMode="contain"
-            />
-          ),
+          headerTitle: () =>null
+          // (
+          //   // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
+          //   <Image
+          //     source={require('./src/assets/images/logo.png')}
+          //     style={{width: 105,height:45,}}
+          //     resizeMode="contain"
+          //   />
+          // ),
         })}
         
         
@@ -244,6 +270,15 @@ function App({navigation}) {
         {/* My Crop Seminar screen */}
         <Stack.Screen name='CropSeminar' component={CropSeminarScreen} />
         <Stack.Screen name='SeminarEventDetailsScreen' component={SeminarEventDetailsScreen} />
+        <Stack.Screen name='CreateSeminar' component={CreateSeminarScreen} />
+        <Stack.Screen name='FreeSampleBeneficiaries' component={FreeSampleBeneficiariesScreen} />
+        <Stack.Screen name='AttendanceScreen' component={AttendanceScreen} />
+        <Stack.Screen name='PreActivityScreen' component={PreActivityScreen} />
+        <Stack.Screen name='PostActivityScreen' component={PostActivityScreen} />
+
+        {/* <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} /> */}
+
+
 
         {/* My My Dealers screen */}
         <Stack.Screen name='Mydealers' component={MyDealersScreen} />

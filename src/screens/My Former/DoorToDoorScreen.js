@@ -8,10 +8,9 @@ import Buttons from '../../components/Buttons';
 const DoorToDoorScreen = () => {
   const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
   const [formdata, setformdata] = useState([
-    { label: 'Daily Whatsapp Message', key: '', value: '', options: activity_type, type: 'textarea', },
-    { label: 'Name', placeholder: 'Enter Name', key: 'title', value: '', type: 'text' },
-    { label: 'Notes', placeholder: 'Enter Notes', key: 'subtitle', value: '', type: 'text', keyboard: 'numeric' },
-    { label: 'My Image', value: [], type: 'image', key: 'image', },
+    { label: 'About Door  to Door visit', placeholder:'Note : About Door  to Door visit', key: 'message', value:'',
+     type: 'textarea', },
+      { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
   // if (item) {
   //   console.log(item)
@@ -38,26 +37,28 @@ const DoorToDoorScreen = () => {
 
 
   return (
-    <ScrollView style={mstyle.container}>
+    <View style={mstyle.container}>
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <Pressable
-            >
+            <Pressable>
               <MYinputs item={item} />
-
             </Pressable>
           )
-        }} />
+        }}
 
-      <Pressable>
-        <Buttons title={'Send'} onPress={()=>{submit()}} loading={false}/>
-      </Pressable>
+        ListFooterComponent={()=>{
+          return(
+            <Pressable>
+            <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+          </Pressable>
+          )
+        }}
+        
+        />
 
-
-
-    </ScrollView>
+    </View>
   )
 }
 

@@ -48,6 +48,7 @@ const MYinputs = ({ item }) => {
         // captureimage=basse64image
 
         // captureimage=basse64image
+        
         item.value.push(basse64image)
         // console.log(item.value)
        
@@ -66,7 +67,7 @@ const MYinputs = ({ item }) => {
 
   }
   return (
-    <View>
+    <View >
       <Text style={mstyle.content}>{item.label}</Text>
 
       {item?.type == 'image' ? (
@@ -162,7 +163,7 @@ const MYinputs = ({ item }) => {
                   selectionColor={Colors.DEFAULT_GREY}
                   style={mstyle.inputText}
                   // maxLength={10}
-                  multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type == 'textarea' ? 6 : 1}
+                  multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
                   onChangeText={text => {
                     item.value = text
                     // console.log(item)

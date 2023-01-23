@@ -12,11 +12,11 @@ const CameraPermission = () => {
            buttonPositive: "OK"
          }
          );
-         if (grantedcamera === PermissionsAndroid.RESULTS.GRANTED) {
-           console.log("Camera permission given");
-         } else {
-           console.log("Camera permission denied");
-         }
+        //  if (grantedcamera === PermissionsAndroid.RESULTS.GRANTED) {
+        //   //  console.log("Camera permission given");
+        //  } else {
+        //   //  console.log("Camera permission denied");
+        //  }
        } catch (err) {
        console.warn(err);
         }    
