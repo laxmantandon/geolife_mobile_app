@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Pressable, Keyboard, Alert
+  Pressable, Keyboard, Alert, ToastAndroid
 } from 'react-native';
 import { Separator, ToggleButton } from './components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation, setToken }) => {
 
   const signIn = async () => {
     // setotp(false)
-    navigation.navigate('Home')
+    // navigation.navigate('Home')
 
     if(username==='' ||username.length < 10){
       setIsLoading(false);
@@ -102,8 +102,12 @@ const LoginScreen = ({ navigation, setToken }) => {
         AsyncStorage.setItem('user_info', JSON.stringify(response.data));     
         navigation.navigate('Home')
       }else{
+        ToastAndroid.showWithGravityAndOffset(
+          response?.message,
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
         // setErrorMessage(response?.msg);
-        setErrorMessage(response?.message);
+        // setErrorMessage(response?.message);
       }
     });
     }
@@ -200,7 +204,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           </TouchableOpacity>
 
 
-          {/* <CountDown
+          <CountDown
             until={180}
             size={17}
             onFinish={() => {
@@ -211,8 +215,8 @@ const LoginScreen = ({ navigation, setToken }) => {
             timeToShow={['M', 'S']}
             // timeToShow={['S']}
             // timeLabels={{m: 'MM', s: 'SS'}}
-            timeLabels={{ s: 'SS' }}
-          /> */}
+            timeLabels={{ s: '' }}
+          />
           <Text style={styles.content}>
             Resend OTP
           </Text>

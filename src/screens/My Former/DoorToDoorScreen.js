@@ -7,13 +7,13 @@ import { AuthenicationService } from '../../services';
 import submitReqData from '../../services/FormData';
 
 
-const DoorToDoorScreen = () => {
-  const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+const DoorToDoorScreen = ({navigation}) => {
   const [formdata, setformdata] = useState([
-    { label: 'About Door  to Door visit', placeholder:'Note : About Door  to Door visit', key: 'message', value:'',
+    { label: 'About Door  to Door visit', placeholder:'Note : About Door  to Door visit', key: 'notes', value:'',
      type: 'textarea', },
       { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
+  const [loading, setloading]= useState(false)
   // if (item) {
   //   console.log(item)
 
@@ -28,23 +28,25 @@ const DoorToDoorScreen = () => {
   // }
 
 
-  const submit =()=>{
-    console.log(formdata)
+  const submit = () => {
+    setloading(true)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
-
-    AuthenicationService.door_to_door_awareness(req).then(response => {
-      // setIsLoading(false);
-      console.log(response)
-      if (response?.status== true) {
-      navigation.goBack()
-      }else{
+    console.log(req)
+    AuthenicationService.door_to_door_awareness(req).then(r => {
+      console.log(r)
+      if (r.status == true) {
+        setloading(false)
+        navigation.goBack()
+      } else {
         ToastAndroid.showWithGravityAndOffset(
-      'Oops! Something went wrong check internet connection',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-    );
-       
+          e.message,
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+
       }
+    }).catch(e => {
+      console.log(e);
+      setloading(false)
     })
 
   }
@@ -70,7 +72,7 @@ const DoorToDoorScreen = () => {
         ListFooterComponent={()=>{
           return(
             <Pressable onPress={()=>{submit()}}>
-            <Buttons title={'Submit'}  loading={false}/>
+            <Buttons title={'Submit'}  loading={loading}/>
           </Pressable>
           )
         }}

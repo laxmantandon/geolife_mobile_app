@@ -6,14 +6,14 @@ import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
 const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
+// const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
+
 // const [user, setuser] = useState([])
 
 
   // const userdata =async req=>{
     let user =[]
-    let api_key = ''
-    let api_secret =''
-
+ 
     const gettoken =()=>{
       let token ='jkh kjhk'
       AsyncStorage.getItem('user_info').then((muser) =>{
@@ -108,10 +108,10 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://api3.thefarmpeople.in/api/v1/users/external", requestOptions)
-  .then(response => response.text())
-  .then(result =>{ return result})
-  .catch(error => console.log('error', error));
+return fetch("https://api3.thefarmpeople.in/api/v1/users/external", requestOptions)
+  // .then(response => response.text())
+  // .then(result =>{result})
+  // .catch(error => console.log('error', error));
 }
 
 const searchfarmerData =async req=>{
@@ -130,13 +130,13 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
-  .then(response => response.text())
-  .then(result => {
-    console.log('farmer search', result)
+return fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
+  // .then(response => response.text())
+  // .then(result => {
+  //   console.log('farmer search', result)
     
-    return result})
-  .catch(error => console.log('error', error));
+  //   return result})
+  // .catch(error => console.log('error', error));
 }
 
 const checkUserExist = async (type, value) => {
@@ -225,7 +225,7 @@ const crop_alert = async req => {
 };
 
 const activity_list = async req => {
-//  console.log('hg hg ', gettoket())
+ console.log('token ', gettoket())
   try {
     
     let Response = await AuthRequest.get(
@@ -298,6 +298,8 @@ const create_expenses = async req => {
 };
 
 const door_to_door_awareness = async req => {
+  gettoken()
+  console.log('gettoken()', gettoken())
   try {
     let Response = await AuthRequest.post(
       `${base_url}.door_to_door_awareness`,
