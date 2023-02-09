@@ -34,23 +34,19 @@ const ActivityDetailsScreen = ({navigation, props,
   }
 
   useEffect(() => {
-    let req =null
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
     AuthenicationService.activity_type(req).then(response => {
-      // setIsLoading(false);
       console.log(response)
       if (response?.status== true) {
-        // setactivity_type(response.)
+        setactivity_type(response?.data)
       }else{
-        ToastAndroid.showWithGravityAndOffset(
-      'Oops! Something went wrong check internet connection',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-    );
-       
       }
     })
-   
-  }, [])
-  
+  }
 
 
   const submit =()=>{

@@ -132,7 +132,10 @@ var requestOptions = {
 
 fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
   .then(response => response.text())
-  .then(result => {return result})
+  .then(result => {
+    console.log('farmer search', result)
+    
+    return result})
   .catch(error => console.log('error', error));
 }
 
@@ -334,7 +337,7 @@ const activity_type = async req => {
       `${base_url}.activity_type`,
       {headers: gettoken()}
     );
-    return Response?.data
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(

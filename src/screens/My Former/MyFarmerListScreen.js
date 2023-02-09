@@ -16,7 +16,7 @@ const MyFarmerListScreen = ({ navigation }) => {
   const searchFilterFunction = (text) => {
     console.log(text)
     AuthenicationService.searchfarmerData(text).then(response => {
-      console.log(response)
+      console.log('jj', response)
       if (response?.status== true) {
         setdata(response?.data)
       }else{
