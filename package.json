@@ -20,6 +20,7 @@
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-call-log": "^2.1.2",
+    "react-native-checkbox": "^2.0.0",
     "react-native-countdown-component": "^2.7.1",
     "react-native-image-picker": "^4.10.2",
     "react-native-image-viewing": "^0.2.2",
@@ -45,5 +46,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "projectConfig": {
+    "backendApiBaseUrl": "http://localhost:8000"
   }
 }

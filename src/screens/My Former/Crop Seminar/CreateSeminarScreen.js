@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react'
 import MYinputs from '../../../components/MYinputs';
 import mstyle from '../../../mstyle';
 import Buttons from '../../../components/Buttons';
+import { AuthenicationService } from '../../../services';
+import submitReqData from '../../../services/FormData';
 
 
 const CreateSeminarScreen = () => {
   const [villages, setvillages] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+  const [venue, setvenue] = useState([])
+  const [bkcenter, setbkcenter] = useState([])
   const [formdata, setformdata] = useState([
     { label: 'Select Village', value: [], type: 'select', key: 'village', options:villages },
 
     { label: 'Date', value: '2023-01-02', type: 'date', key: 'date'  },
     { label: 'Time', value: '10:00', type: 'time', key: 'time' },
-    { label: 'Select The Venue', value: '', type: 'select', key: 'venue', options:villages },
+    { label: 'Select The Venue', value: '', type: 'select', key: 'venue', options:venue },
 
     { label: 'Automated Message', placeholder:'', key: 'message', value:'',type: 'textarea', },
 
-    { label: 'Nearest BK Center Village', value: '', type: 'select', key: 'center', options:villages },
+    { label: 'Nearest BK Center Village', value: '', type: 'select', key: 'center', options:bkcenter },
 
      { label: 'My Image', value: [], type: 'image', key: 'image', },
 
@@ -38,9 +42,44 @@ const CreateSeminarScreen = () => {
   //   }
   // }
 
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
+    AuthenicationService.activity_list(req).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        // setdata(response?.data)
+        // setbkcenter()
+        // setvenue()
+        // setvillages()
+      }else{
+      }
+    })
+  }
+
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.create_crop_seminar(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{

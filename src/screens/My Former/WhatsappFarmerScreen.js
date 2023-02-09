@@ -1,16 +1,21 @@
-import { View, StyleSheet, Pressable, FlatList, ScrollView, Share, Linking } from 'react-native'
+import { View, StyleSheet, Pressable, FlatList, ScrollView, Share, Linking, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
 import submitReqData from '../../services/FormData';
+import { AuthenicationService } from '../../services';
 
 
 const WhatsappFarmerScreen = () => {
   const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+  const [msg, setmsg] = useState('')
+  const [mimage, setmimage] = useState(null)
+  const [murl, setmurl] = useState(null)
   const [formdata, setformdata] = useState([
-    { label: 'Daily Whatsapp Message', key: 'message', value: '', type: 'textarea', },
-    { label: 'My Image', value: [], type: 'image', key: 'image', },
+    { label: 'Daily Whatsapp Message', key: 'message', value: msg, type: 'textarea', },
+    { label: 'Video Url', key: 'video', value: murl,  },
+    // { label: 'My Image', value: mimage, type: 'image', key: 'image', },
   ])
   // if (item) {
   //   console.log(item)
@@ -24,20 +29,37 @@ const WhatsappFarmerScreen = () => {
   //     }
   //   }
   // }
-
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
+    AuthenicationService.whatsapp_templates(req).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+        // setmimage()
+        // setmsg()
+        // setmurl()
+      }else{
+      }
+    })
+  }
 
   const submit = () => {
 
     let req = submitReqData(formdata)
-    console.log('submited', req)
+    // console.log('submited', req)
+    Linking.openURL(`whatsapp://send?text=${msg}&media=${mimage}`)
 
-    const shareOptions = {
-      title: req['Daily Whatsapp Message'],
-      message: req['Daily Whatsapp Message'], // Note that according to the documentation at least one of "message" or "url" fields is required
-      url: req['image'],
-      subject: 'Subject'
-    };
-    Share.share(shareOptions)
+    // const shareOptions = {
+    //   title: req['Daily Whatsapp Message'],
+    //   message: req['Daily Whatsapp Message'], // Note that according to the documentation at least one of "message" or "url" fields is required
+    //   url: req['image'],
+    //   subject: 'Subject'
+    // };
+    // Share.share(shareOptions)
 
     
   }
@@ -47,6 +69,7 @@ const WhatsappFarmerScreen = () => {
 
   return (
     <View style={mstyle.container}>
+
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
@@ -59,9 +82,15 @@ const WhatsappFarmerScreen = () => {
 
         ListFooterComponent={() => {
           return (
+            <View>
+            <Image style={{ width: '100%',minHeight:150, maxHeight:250, backgroundColor:'silver' }} 
+            source={{ uri: mimage }} />
+
             <Pressable onPress={() => { submit() }}>
               <Buttons title={'Share'}  loading={false} />
             </Pressable>
+
+            </View>
           )
         }}
 

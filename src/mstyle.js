@@ -52,7 +52,7 @@ export default mstyle = StyleSheet.create({
     marginHorizontal: 20,
   },
   inputContainer: {
-    backgroundColor: Colors.LIGHT_GREY2,
+    backgroundColor: Colors.LIGHT_GREY,
     paddingHorizontal: 7,
     marginHorizontal: 10,
     borderRadius: 4,

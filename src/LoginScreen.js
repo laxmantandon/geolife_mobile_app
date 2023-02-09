@@ -27,7 +27,6 @@ import CountDown from 'react-native-countdown-component';
 const LoginScreen = ({ navigation, setToken }) => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [username, setUsername] = useState('');
-  const [aksi, setAksi] = useState('login');
   const [isMounted, setIsMounted] = useState(true);
   const [userdata, setUserdata] = useState('');
   const [password, setPassword] = useState('');
@@ -59,28 +58,25 @@ const LoginScreen = ({ navigation, setToken }) => {
       setotp(false)
 
     } else {
-      setotp(true)
-
-
       let user = {
-        aksi,
         username,
-        otpCode,
       };
-      // AuthenicationService.sendotp(user).then(response => {
-      //   setIsLoading(false);
-      //   // console.log(user)
-      //   console.log(response)
-      //   // setToken(response?.data);
-      //   if (response?.success == true) {
-      //     AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
-      //     navigation.navigate('Home')
-      //   }else{
-      //     setotp(false)
-      //     // setErrorMessage(response?.msg);
-      //     setErrorMessage(response?.message);
-      //   }
-      // });
+      AuthenicationService.sendOTP(user).then(response => {
+        setIsLoading(false);
+        // console.log(user)
+        console.log(response)
+        // setToken(response?.data);
+        if (response?.status== true) {
+          setotp(true)
+
+          // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
+          // navigation.navigate('Home')
+        }else{
+          setotp(false)
+          // setErrorMessage(response?.msg);
+          setErrorMessage(response?.message);
+        }
+      })
     }
   }
 
@@ -88,29 +84,29 @@ const LoginScreen = ({ navigation, setToken }) => {
     // setotp(false)
     navigation.navigate('Home')
 
-    // if(username==='' ||username.length < 10){
-    //   setIsLoading(false);
-    //   setErrorMessage('Please check your mobile number')
-    // }else{
+    if(username==='' ||username.length < 10){
+      setIsLoading(false);
+      setErrorMessage('Please check your mobile number')
+    }else{
 
-    // let user = {
-    //   aksi,
-    //   username,
-    // };
-    // AuthenicationService.login(user).then(response => {
-    //   setIsLoading(false);
-    //   // console.log(user)
-    //   console.log(response)
-    //   // setToken(response?.data);
-    //   if (response?.success == true) {
-    //     AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
-    //     navigation.navigate('Root')
-    //   }else{
-    //     // setErrorMessage(response?.msg);
-    //     setErrorMessage(response?.message);
-    //   }
-    // });
-    // }
+    let user = {
+      username,
+      otpCode
+    };
+    AuthenicationService.login(user).then(response => {
+      setIsLoading(false);
+      // console.log(user)
+      console.log(response)
+      // setToken(response?.data);
+      if (response?.status== true) {
+        AsyncStorage.setItem('user_info', JSON.stringify(response.data));     
+        navigation.navigate('Home')
+      }else{
+        // setErrorMessage(response?.msg);
+        setErrorMessage(response?.message);
+      }
+    });
+    }
   };
 
   return (
@@ -173,7 +169,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           {isLoading ? (
             <LottieView source={Images.LOADING} autoPlay />
           ) : (
-            <Text style={styles.signinButtonText}>Login </Text>
+            <Text style={styles.signinButtonText}>Send OTP </Text>
           )}
         </TouchableOpacity>
       </View>
@@ -204,7 +200,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           </TouchableOpacity>
 
 
-          <CountDown
+          {/* <CountDown
             until={180}
             size={17}
             onFinish={() => {
@@ -215,9 +211,8 @@ const LoginScreen = ({ navigation, setToken }) => {
             timeToShow={['M', 'S']}
             // timeToShow={['S']}
             // timeLabels={{m: 'MM', s: 'SS'}}
-            timeLabels={{ s: '' }}
-
-          />
+            timeLabels={{ s: 'SS' }}
+          /> */}
           <Text style={styles.content}>
             Resend OTP
           </Text>

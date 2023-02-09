@@ -1,12 +1,31 @@
 import { StyleSheet, View, FlatList, Pressable } from 'react-native';
 import React, { useState } from 'react'
 import Card from '../src/components/Card'
+import { useEffect } from 'react';
+import { AuthenicationService } from './services';
+import FabButton from './components/FabButton';
 
 const ExpenseScreen = ({navigation}) => {
   const [data, setdata] = useState( [
     {title:'Expense type', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'350.00'},
     
   ])
+
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
+    AuthenicationService.expenses_list(req).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+      }else{
+      }
+    })
+  }
+
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
       <FlatList
@@ -21,6 +40,10 @@ const ExpenseScreen = ({navigation}) => {
           </Pressable>
           )
       }} />
+
+<Pressable onPress={()=>{navigation.navigate('ExpenseDetails',{item:''})}}>
+          <FabButton />
+      </Pressable>
     </View>
   )
 }

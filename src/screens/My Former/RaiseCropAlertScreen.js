@@ -1,8 +1,10 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
+import submitReqData from '../../services/FormData';
+import { AuthenicationService } from '../../services';
 
 
 const RaiseCropAlertScreen = () => {
@@ -28,6 +30,23 @@ const RaiseCropAlertScreen = () => {
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.crop_alert(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{
@@ -50,8 +69,8 @@ const RaiseCropAlertScreen = () => {
 
         ListFooterComponent={()=>{
           return(
-            <Pressable>
-            <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+            <Pressable onPress={()=>{submit()}}>
+            <Buttons title={'Submit'}  loading={false}/>
           </Pressable>
           )
         }}

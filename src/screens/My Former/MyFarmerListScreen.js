@@ -4,6 +4,8 @@ import Card from '../../components/Card'
 import FabButton from '../../components/FabButton'
 import mstyle from '../../mstyle'
 import { Colors } from '../../contants'
+import { useEffect } from 'react'
+import { AuthenicationService } from '../../services'
 
 const MyFarmerListScreen = ({ navigation }) => {
 
@@ -13,12 +15,34 @@ const MyFarmerListScreen = ({ navigation }) => {
 
   const searchFilterFunction = (text) => {
     console.log(text)
-    const res = data.filter(obj => Object.values(obj).some(val => val.includes(text)));
-    console.log(res)
-    if(res.length >=0){
-      setdata(res)
+    AuthenicationService.searchfarmerData(text).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+      }else{
+      }
+    })
+    // const res = data.filter(obj => Object.values(obj).some(val => val.includes(text)));
+    // console.log(res)
+    // if(res.length >=0){
+    //   setdata(res)
+    // }
+  }
 
-    }
+
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
+    AuthenicationService.farmerData(req).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+      }else{
+      }
+    })
   }
 
   return (
@@ -46,7 +70,7 @@ const MyFarmerListScreen = ({ navigation }) => {
           return (
             <Pressable
               onPress={() => {
-                navigation.navigate(item.item.route)
+                // navigation.navigate(item.item.route)
               }}
             >
               <Card item={item} />
@@ -54,10 +78,10 @@ const MyFarmerListScreen = ({ navigation }) => {
             </Pressable>
           )
         }} />
-      <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>
+      {/* <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>
         <FabButton />
 
-      </Pressable>
+      </Pressable> */}
 
 
     </View>

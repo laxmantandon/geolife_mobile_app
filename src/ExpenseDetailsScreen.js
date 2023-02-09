@@ -1,8 +1,9 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
 import Buttons from './components/Buttons';
+import { AuthenicationService } from './services';
 
 
 const ExpenseDetailsScreen = ({ props,
@@ -33,6 +34,23 @@ const ExpenseDetailsScreen = ({ props,
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.create_activity(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{

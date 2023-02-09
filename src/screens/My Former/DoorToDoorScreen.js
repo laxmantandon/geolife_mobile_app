@@ -1,8 +1,10 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
+import { AuthenicationService } from '../../services';
+import submitReqData from '../../services/FormData';
 
 
 const DoorToDoorScreen = () => {
@@ -28,6 +30,23 @@ const DoorToDoorScreen = () => {
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.door_to_door_awareness(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{
@@ -50,8 +69,8 @@ const DoorToDoorScreen = () => {
 
         ListFooterComponent={()=>{
           return(
-            <Pressable>
-            <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+            <Pressable onPress={()=>{submit()}}>
+            <Buttons title={'Submit'}  loading={false}/>
           </Pressable>
           )
         }}

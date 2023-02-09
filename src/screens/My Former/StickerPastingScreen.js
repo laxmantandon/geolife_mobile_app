@@ -1,14 +1,17 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
+import submitReqData from '../../services/FormData';
+import { AuthenicationService } from '../../services';
 
 
 const StickerPastingScreen = () => {
+  const [data, setdata] = useState(['Farmer 01', 'Farmer 02', 'Farmer 03'])
   const [formdata, setformdata] = useState([
     { label: 'Select Farmer', placeholder:'Note : About Alert', key: 'farmer', value:'',
-     type: 'select', options:['Farmer 01', 'Farmer 02', 'Farmer 03'] },
+     type: 'select', options:data },
 
       { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
       { label: 'Capture sticker picture with farmer', value: [], type: 'image', key: 'image', },
@@ -26,9 +29,41 @@ const StickerPastingScreen = () => {
   //   }
   // }
 
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = (text)=>{
+    AuthenicationService.searchfarmerData(text).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+      }else{
+      }
+    })
+  }
+  
+
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.sticker_pasting(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{
@@ -39,6 +74,7 @@ const StickerPastingScreen = () => {
 
   return (
     <View style={mstyle.container}>
+      
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {

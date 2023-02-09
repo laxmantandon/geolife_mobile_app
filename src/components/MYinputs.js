@@ -122,12 +122,12 @@ const MYinputs = ({ item }) => {
                     defaultValue={item?.value}
                     defaultButtonText={item?.label}
                     buttonStyle={{
-                      backgroundColor: Colors.LIGHT_GREY2,
+                      backgroundColor: Colors.LIGHT_GREY,
                       width:'100%', height: Display.setHeight(6)
                     }}
                     buttonTextStyle={{fontSize:14}}
                     dropdownStyle={[mstyle.inputContainer]}
-                    selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY2}}
+                    selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY}}
                     rowTextStyle={{fontSize:14}}
 
                     onSelect={(selectedItem, index) => {

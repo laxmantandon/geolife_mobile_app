@@ -1,5 +1,7 @@
-// const config = require('../../package.json').projectConfig;
-const BACKEND_BASE_URL = 'http://localhost:8000';
+const config = require('../../package.json').projectConfig;
+// const BACKEND_BASE_URL = 'http://localhost:8000';
+const BACKEND_BASE_URL = config.backendApiBaseUrl;
+
 
 const COUNTRY_FLAG = {
   BASE_URL: `http://localhost:8000`,
@@ -8,9 +10,9 @@ const COUNTRY_FLAG = {
 };
 
 const BACKEND_API = {
-  BASE_API_URL: `${BACKEND_BASE_URL}/api/method`,
-  REGISTER: '/proses-api.php',
-  LOGIN: '/proses-api.php',
+  BASE_API_URL: `${BACKEND_BASE_URL}api/method/geolife_agritech.v1.geolife_api`,
+  SEND_OTP: '.generate_otp',
+  LOGIN: '.validate_otp',
   USER_EXIST: '/proses-api.php',
 };
 

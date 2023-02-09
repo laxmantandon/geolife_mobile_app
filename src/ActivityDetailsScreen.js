@@ -1,11 +1,14 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
 import Buttons from './components/Buttons';
+import { AuthenicationService } from './services';
+import submitReqData from './services/FormData';
+import { back } from 'react-native/Libraries/Animated/Easing';
 
 
-const ActivityDetailsScreen = ({ props,
+const ActivityDetailsScreen = ({navigation, props,
   route: {
     params: { item },
   },
@@ -33,6 +36,23 @@ const ActivityDetailsScreen = ({ props,
 
   const submit =()=>{
     console.log(formdata)
+    let req = submitReqData(formdata);
+      // setIsLoading(true);
+
+    AuthenicationService.create_activity(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+
   }
 
   const update =()=>{
@@ -42,7 +62,7 @@ const ActivityDetailsScreen = ({ props,
 
 
   return (
-    <ScrollView style={mstyle.container}>
+    <View style={mstyle.container}>
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
@@ -57,13 +77,13 @@ const ActivityDetailsScreen = ({ props,
 
       {item.item ? (<Pressable onPress={()=>{update()}}>
         <Buttons title={'Update'} loading={false}/>
-      </Pressable>):(<Pressable>
-        <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+      </Pressable>):(<Pressable onPress={()=>{submit()}}>
+        <Buttons title={'Submit'}  loading={false}/>
       </Pressable>)}
 
 
 
-    </ScrollView>
+    </View>
   )
 }
 

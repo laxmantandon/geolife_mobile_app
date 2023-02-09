@@ -2,12 +2,29 @@ import { StyleSheet, StatusBar, Text, View, Alert, FlatList, Image, TouchableOpa
 import React, { useState } from 'react'
 import Card from '../src/components/Card'
 import FabButton from './components/FabButton';
+import { useEffect } from 'react';
+import { AuthenicationService } from './services';
 
 const ActivityScreen = ({navigation}) => {
   const [data, setdata] = useState( [
     {title:'kamehsn mdf df', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Subtitle'},
     {title:'jkdh kjdfkjdff',image:'' ,subtitle:'subtitle'} 
   ])
+
+  useEffect(() => {
+    getData()    
+  }, [])
+ 
+  const getData = ()=>{
+    req=null
+    AuthenicationService.activity_list(req).then(response => {
+      console.log(response)
+      if (response?.status== true) {
+        setdata(response?.data)
+      }else{
+      }
+    })
+  }
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
       <FlatList
