@@ -13,7 +13,7 @@ const ActivityDetailsScreen = ({navigation, props,
     params: { item },
   },
 }) => {
-  const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+  const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
     { label: 'Please Select Activity Type', key: 'type', value: '', options: activity_type, type: 'select', },
     { label: 'Name', placeholder: 'Enter Name', key: 'title', value: '', type: 'text' },
@@ -32,6 +32,25 @@ const ActivityDetailsScreen = ({navigation, props,
       }
     }
   }
+
+  useEffect(() => {
+    let req =null
+    AuthenicationService.activity_type(req).then(response => {
+      // setIsLoading(false);
+      console.log(response)
+      if (response?.status== true) {
+        // setactivity_type(response.)
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    })
+   
+  }, [])
+  
 
 
   const submit =()=>{

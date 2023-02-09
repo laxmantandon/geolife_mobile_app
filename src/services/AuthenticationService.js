@@ -14,21 +14,27 @@ const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geol
     let api_key = ''
     let api_secret =''
 
-   AsyncStorage.getItem('user_info').then((muser) =>{
-    console.log('muser', muser) 
-     user= JSON.parse(muser)
-     api_key = muser?.api_key
-     api_secret=muser?.api_secret
-     
-    // return JSON.parse(muser)
-  })
+    const gettoken =()=>{
+      let token ='jkh kjhk'
+      AsyncStorage.getItem('user_info').then((muser) =>{
+        // console.log('muser', muser) 
+         user= JSON.parse(muser)
+        //  console.log('muser', `token ${user.api_key}:${user.api_secret}`) 
+
+          token = `token ${user.api_key}:${user.api_secret}`
+        
+         })
+         return {
+          'Content-Type': 'application/json',
+          'Authorization': `token ${user.api_key}:${user.api_secret}`
+        }
+
+    }
+   
 
 
 
-const headers = {
-  'Content-Type': 'application/json',
-  'Authorization': `token ${api_key}:${api_secret}`
-}
+const headers = gettoken()
 
 const AuthRequest = axios.create({
   baseURL: ApiContants.BACKEND_API.BASE_API_URL,
@@ -48,7 +54,7 @@ const register = async user => {
       ApiContants.BACKEND_API.REGISTER,
       requestBody,
     );
-    return registerResponse?.data;
+    return registerResponse?.data.message
   } catch (error) {
     console.log(error);
     return {status: false, message: 'Oops! Something went wrong'};
@@ -135,10 +141,10 @@ const checkUserExist = async (type, value) => {
     let params = {[type]: value};
     let userCheckResponse = await AuthRequest.get(
       ApiContants.BACKEND_API.USER_EXIST, 
-      {params},{headers: headers}
+      {params},{headers:gettoken()}
     );
     
-    return userCheckResponse?.data;
+    return userCheckResponse?.data.message
   } catch (error) {
     console.log(error);
     return {status: false, message: 'Oops! Something went wrong'};
@@ -152,7 +158,7 @@ const crop_seminar = async req => {
       `${base_url}.crop_seminar`,
       {headers: headers},
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -167,9 +173,9 @@ const create_crop_seminar = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.crop_seminar`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -184,9 +190,9 @@ const update_crop_seminar = async req => {
   try {
     let Response = await AuthRequest.put(
       `${base_url}.crop_seminar`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -202,9 +208,9 @@ const crop_alert = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.raise_crop_alert`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -216,13 +222,14 @@ const crop_alert = async req => {
 };
 
 const activity_list = async req => {
+//  console.log('hg hg ', gettoket())
   try {
     
     let Response = await AuthRequest.get(
-      `${base_url}.activity_list`,{headers: headers}
+      `${base_url}.activity_list`,{headers:gettoken()}
       
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -240,9 +247,9 @@ const create_activity = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.activity_list`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -259,7 +266,7 @@ const expenses_list = async req => {
       `${base_url}.expenses`,
       {headers: headers}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -274,9 +281,9 @@ const create_expenses = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.expenses`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -291,9 +298,9 @@ const door_to_door_awareness = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.door_to_door_awareness`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -308,9 +315,9 @@ const sticker_pasting = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.sticker_pasting`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -325,9 +332,9 @@ const activity_type = async req => {
   try {
     let Response = AuthRequest.get(
       `${base_url}.activity_type`,
-      {headers: headers}
+      {headers: gettoken()}
     );
-    return Response?.data;
+    return Response?.data
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -342,9 +349,9 @@ const create_free_sample = async req => {
   try {
     let Response = await AuthRequest.post(
       `${base_url}.create_free_sample`,
-      req,{headers: headers}
+      req,{headers:gettoken()}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -361,7 +368,7 @@ const update_status_free_sample = async req => {
       `${base_url}.update_status_free_sample`,
       {headers: headers}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -377,7 +384,7 @@ const whatsapp_templates = async req => {
       `${base_url}.whatsapp_to_farmer`,
       {headers: headers}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
@@ -394,7 +401,7 @@ const bk_center = async req => {
       `${base_url}.bk_center`,
       {headers: headers}
     );
-    return Response?.data;
+    return Response?.data.message
   } catch (error) {
     console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
