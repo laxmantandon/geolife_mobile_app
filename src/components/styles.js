@@ -14,7 +14,8 @@ export const TextInputHidden = styled.TextInput`
   border-radius: 5px;
   padding: 15px;
   margin-top: 50px;
-  color: white; */
+  color: black; */
+  color: black;
   position: absolute;
   opacity: 0;
 `;
@@ -23,6 +24,7 @@ export const SplitOTPBoxesContainer = styled.Pressable`
   width: 80%;
   flex-direction: row;
   justify-content: space-evenly;
+  color:red;
 `;
 export const SplitBoxes = styled.View`
   border-color: #e5e5e5;

@@ -9,24 +9,25 @@ import { AuthenicationService } from '../../services'
 
 const MyFarmerListScreen = ({ navigation }) => {
 
-  const [data, setdata] = useState([
-    { title: 'Farmer Name', subtitle: '9685062116', },
-    { title: 'Farmer Name1', subtitle: '9685062115', }])
+  const [data, setdata] = useState([])
 
   const searchFilterFunction = (text) => {
-    console.log(text)
-    AuthenicationService.searchfarmerData(text).then(response => {
-      console.log('jj', response)
-      if (response?.status== true) {
-        setdata(response?.data)
-      }else{
-      }
+    // console.log(text)
+    AuthenicationService.searchfarmerData(text)
+      .then(x => {
+        x.text().then(m => {
+          y = JSON.parse(m)
+          if (y.success == true ) {
+            let mapped_array = []
+            y.data.forEach(a=> {
+              mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
+            })
+            setdata(mapped_array)
+        } else {
+        }
+        })
+      
     })
-    // const res = data.filter(obj => Object.values(obj).some(val => val.includes(text)));
-    // console.log(res)
-    // if(res.length >=0){
-    //   setdata(res)
-    // }
   }
 
 
@@ -36,13 +37,30 @@ const MyFarmerListScreen = ({ navigation }) => {
  
   const getData = ()=>{
     req=null
-    AuthenicationService.farmerData(req).then(response => {
-      console.log(response)
-      if (response?.status== true) {
-        setdata(response?.data)
-      }else{
-      }
+    AuthenicationService.farmerData(req).then(x => {
+      x.text().then(m => {
+        let y = JSON.parse(m)
+        if (y.success == true) {
+            let mapped_array = []
+            y.data.forEach(a=> {
+              mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
+            })
+            setdata(mapped_array)
+        } else {
+        }
+      })
     })
+    // console.log('kamesh', kamesh)
+    
+    // .then(response => {
+    //   console.log('response from api', response)
+    //   console.log('success', response?.success)
+    //   if (response?.success== true) {
+    //     console.log('inside success ', response)
+    //     setdata(response?.data)
+    //   }else{
+    //   }
+    // })
   }
 
   return (

@@ -4,7 +4,7 @@ const submitReqData = (formdata)=>{
     // console.log('form data', formdata)
     for (let i in formdata){
         // let ing = `${formdata[i].label} : ${formdata[i].value}`
-        req[formdata[i].label ] = formdata[i].value
+        req[formdata[i].key ] = formdata[i].value
         // console.log(req)
         // console.log('submit' ,formdata[i].label)
       

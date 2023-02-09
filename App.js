@@ -253,44 +253,44 @@ function App({navigation}) {
         <Stack.Screen name="Details" component={DetailsScreen} />
 
         {/* My farmer screen */}
-        <Stack.Screen name='Myfarmer' component={MyFarmerScreen} />
-        <Stack.Screen name='AddFarmer' component={AddFarmerScreen} />
-        <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} />
-        <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} />
-        <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} />
-        <Stack.Screen name='EventsScreen' component={EventsScreen} />
-        <Stack.Screen name='CreateEventScreen' component={CreateEventScreen} />
-        <Stack.Screen name='UploadPhotosScreen' component={UploadPhotosScreen} />
-        <Stack.Screen name='PravaktaScreen' component={PravaktaScreen} />
-        <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} />
-        <Stack.Screen name='WhatsappFarmerScreen' component={WhatsappFarmerScreen} />
-        <Stack.Screen name='CallFarmerScreen' component={CallFarmerScreen} />
+        <Stack.Screen name='Myfarmer' component={MyFarmerScreen} options={() => ({headerTitle: "My Farmer"})} />
+        <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({headerTitle: "New Farmer"})} />
+        <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} options={() => ({headerTitle: "Farmer List"})}/>
+        <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} options={() => ({headerTitle: "Door To Door Visit"})} />
+        <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} options={() => ({headerTitle: "Sticker Pasting"})} />
+        <Stack.Screen name='EventsScreen' component={EventsScreen} options={() => ({headerTitle: "Events"})} />
+        <Stack.Screen name='CreateEventScreen' component={CreateEventScreen} options={() => ({headerTitle: "New Event"})} />
+        <Stack.Screen name='UploadPhotosScreen' component={UploadPhotosScreen} options={() => ({headerTitle: "Upload File"})}  />
+        <Stack.Screen name='PravaktaScreen' component={PravaktaScreen} options={() => ({headerTitle: "Pravakta"})} />
+        <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} options={() => ({headerTitle: "Crop Alert"})}  />
+        <Stack.Screen name='WhatsappFarmerScreen' component={WhatsappFarmerScreen} options={() => ({headerTitle: "Whatsapp"})}  />
+        <Stack.Screen name='CallFarmerScreen' component={CallFarmerScreen } options={() => ({headerTitle: "Call"})} />
 
 
         {/* My Crop Seminar screen */}
-        <Stack.Screen name='CropSeminar' component={CropSeminarScreen} />
-        <Stack.Screen name='SeminarEventDetailsScreen' component={SeminarEventDetailsScreen} />
-        <Stack.Screen name='CreateSeminar' component={CreateSeminarScreen} />
-        <Stack.Screen name='FreeSampleBeneficiaries' component={FreeSampleBeneficiariesScreen} />
-        <Stack.Screen name='AttendanceScreen' component={AttendanceScreen} />
-        <Stack.Screen name='PreActivityScreen' component={PreActivityScreen} />
-        <Stack.Screen name='PostActivityScreen' component={PostActivityScreen} />
+        <Stack.Screen name='CropSeminar' component={CropSeminarScreen} options={() => ({headerTitle: "Crop Seminar"})} />
+        <Stack.Screen name='SeminarEventDetailsScreen' component={SeminarEventDetailsScreen} options={() => ({headerTitle: "Seminar Event Details"})} />
+        <Stack.Screen name='CreateSeminar' component={CreateSeminarScreen} options={() => ({headerTitle: "New Seminar"})} />
+        <Stack.Screen name='FreeSampleBeneficiaries' component={FreeSampleBeneficiariesScreen} options={() => ({headerTitle: "Free Sample Beneficiaries"})} />
+        <Stack.Screen name='AttendanceScreen' component={AttendanceScreen} options={() => ({headerTitle: "Attendance"})} />
+        <Stack.Screen name='PreActivityScreen' component={PreActivityScreen} options={() => ({headerTitle: "Pre Activity"})} />
+        <Stack.Screen name='PostActivityScreen' component={PostActivityScreen} options={() => ({headerTitle: "Post Activity"})} />
 
         {/* <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} /> */}
 
 
 
         {/* My My Dealers screen */}
-        <Stack.Screen name='Mydealers' component={MyDealersScreen} />
+        <Stack.Screen name='Mydealers' component={MyDealersScreen} options={() => ({headerTitle: "My Dealers"})} />
 
         {/* My day Screen */}
-        <Stack.Screen name="Myday" component={MydayScreen} />
-        <Stack.Screen name="Activity" component={ActivityScreen} />
-        <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} />
-        <Stack.Screen name="Expense" component={ExpenseScreen} />
-        <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} />
-        <Stack.Screen name="Customer" component={CustomerScreen} />
-        <Stack.Screen name="Dayplan" component={DayplanScreen} />
+        <Stack.Screen name="Myday" component={MydayScreen} options={() => ({headerTitle: "My Day"})} />
+        <Stack.Screen name="Activity" component={ActivityScreen} options={() => ({headerTitle: "Activity"})} />
+        <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} options={() => ({headerTitle: "Activity Details"})} />
+        <Stack.Screen name="Expense" component={ExpenseScreen} options={() => ({headerTitle: "Expenses"})} />
+        <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({headerTitle: "Expenses Details"})} />
+        <Stack.Screen name="Customer" component={CustomerScreen} options={() => ({headerTitle: "Customer"})} />
+        <Stack.Screen name="Dayplan" component={DayplanScreen} options={() => ({headerTitle: "Day Plan"})} />
       </Stack.Navigator>
     </NavigationContainer>
   );
