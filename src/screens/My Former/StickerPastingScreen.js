@@ -5,10 +5,11 @@ import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
 import submitReqData from '../../services/FormData';
 import { AuthenicationService } from '../../services';
+import SearchableDropDown from 'react-native-searchable-dropdown';
 
 
 const StickerPastingScreen = () => {
-  const [data, setdata] = useState(['Farmer 01', 'Farmer 02', 'Farmer 03'])
+  const [data, setdata] = useState([])
   const [formdata, setformdata] = useState([
     { label: 'Select Farmer', placeholder:'Note : About Alert', key: 'farmer', value:'',
      type: 'select', options:data },
@@ -16,6 +17,8 @@ const StickerPastingScreen = () => {
       { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
       { label: 'Capture sticker picture with farmer', value: [], type: 'image', key: 'image', },
   ])
+
+  const [selectedItems, setselectedItems] = useState('')
   // if (item) {
   //   console.log(item)
 
@@ -74,6 +77,69 @@ const StickerPastingScreen = () => {
 
   return (
     <View style={mstyle.container}>
+       
+          <SearchableDropDown
+            onItemSelect={(item) => {
+              console.log(item)
+              // const items = this.state.selectedItems;
+              // items.push(item)
+              // this.setState({ selectedItems: items });
+            }}
+            containerStyle={{ padding: 5 }}
+            onRemoveItem={(item, index) => {
+              const items = selectedItems.filter((sitem) => sitem.id !== item.id);
+              setselectedItems(items)
+            }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: 'white',
+              borderColor: 'silver',
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            itemTextStyle={{ color: '#222' }}
+            itemsContainerStyle={{ maxHeight: 140 }}
+            items={data}
+            defaultIndex={2}
+            resetValue={false}
+            textInputProps={
+              {
+                placeholder: "Search Farmer",
+                underlineColorAndroid: "transparent",
+                style: {
+                    padding: 12,
+                    borderWidth: 1,
+                    borderColor: '#ccc',
+                    borderRadius: 5,
+                },
+                onTextChange: text => 
+                {
+                  AuthenicationService.searchfarmerData(text)
+                    .then(x => {
+                      x.text().then(m => {
+                        y = JSON.parse(m)
+                        if (y.success == true) {
+                          let mapped_array = []
+                          y.data.forEach(a => {
+                            mapped_array.push({ "name": a.fullName , "id": a.mobileNumber })
+                          })
+                          setdata(mapped_array)
+                        } else {
+                        }
+                      })
+
+                    })
+                }
+              }
+            }
+            listProps={
+              {
+                nestedScrollEnabled: true,
+              }
+            }
+        />
+      
       
       <FlatList
         data={formdata}

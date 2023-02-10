@@ -225,7 +225,6 @@ const crop_alert = async req => {
 };
 
 const activity_list = async req => {
-//  console.log('hg hg ', gettoket())
   try {
     
     let Response = await AuthRequest.get(
@@ -239,15 +238,16 @@ const activity_list = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+    return {status: false, message: 'Oops! Something went wrong '};
 
   }
 };
 
-
-
 const create_activity = async req => {
+  gettoken()
+  console.log('gettoken()', gettoken())
   try {
+    console.log(req)
     let Response = await AuthRequest.post(
       `${base_url}.activity_list`,
       req,{headers:gettoken()}
@@ -335,9 +335,11 @@ const sticker_pasting = async req => {
 
 const activity_type = async req => {
   try {
-    let Response = AuthRequest.get(
-      `${base_url}.activity_type`,
-      {headers: gettoken()}
+    gettoken()
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.activity_type`,{headers:gettoken()}
+      
     );
     return Response?.data.message
   } catch (error) {
@@ -346,7 +348,8 @@ const activity_type = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong '};
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
   }
 };
 

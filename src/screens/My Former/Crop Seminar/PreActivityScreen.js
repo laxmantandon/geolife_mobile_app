@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable,CheckBox } from 'react-native'
+import { View, Text, FlatList, Pressable } from 'react-native'
 import React from 'react'
 import mstyle from '../../../mstyle'
 import { useState } from 'react'
@@ -21,11 +21,18 @@ const PreActivityScreen = () => {
           return (
             <Pressable
             >
-              <CheckBox
-          value={true}
-          // onValueChange={setSelection}
-          // style={styles.checkbox}
-        />
+              {/* <CheckBox
+    style={{flex: 1, padding: 10}}
+    onClick={()=>{
+      console.log()
+      // this.setState({
+      //     isChecked:!this.state.isChecked
+      // })
+    }}
+    isChecked={true}
+    leftText={"CheckBox"}
+/> */}
+              
 
             </Pressable>
           )
