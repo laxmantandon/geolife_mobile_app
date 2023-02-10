@@ -12,56 +12,45 @@ const MyFarmerListScreen = ({ navigation }) => {
   const [data, setdata] = useState([])
 
   const searchFilterFunction = (text) => {
+    let req = {
+      "text": text
+    }
     // console.log(text)
-    AuthenicationService.searchfarmerData(text)
+    AuthenicationService.searchfarmerData(req)
       .then(x => {
-        x.text().then(m => {
-          y = JSON.parse(m)
-          if (y.success == true ) {
-            let mapped_array = []
-            y.data.forEach(a=> {
-              mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
-            })
-            setdata(mapped_array)
+        if (x.status == true) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+          })
+          setdata(mapped_array)
         } else {
         }
-        })
-      
-    })
+      })
   }
 
 
   useEffect(() => {
-    getData()    
+    // getData()
+    searchFilterFunction("")    
   }, [])
  
-  const getData = ()=>{
-    req=null
-    AuthenicationService.farmerData(req).then(x => {
-      x.text().then(m => {
-        let y = JSON.parse(m)
-        if (y.success == true) {
-            let mapped_array = []
-            y.data.forEach(a=> {
-              mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
-            })
-            setdata(mapped_array)
-        } else {
-        }
-      })
-    })
-    // console.log('kamesh', kamesh)
-    
-    // .then(response => {
-    //   console.log('response from api', response)
-    //   console.log('success', response?.success)
-    //   if (response?.success== true) {
-    //     console.log('inside success ', response)
-    //     setdata(response?.data)
-    //   }else{
-    //   }
-    // })
-  }
+  // const getData = ()=>{
+  //   req=null
+  //   AuthenicationService.farmerData(req).then(x => {
+  //     x.text().then(m => {
+  //       let y = JSON.parse(m)
+  //       if (y.success == true) {
+  //           let mapped_array = []
+  //           y.data.forEach(a=> {
+  //             mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
+  //           })
+  //           setdata(mapped_array)
+  //       } else {
+  //       }
+  //     })
+  //   })
+  // }
 
   return (
     <View style={mstyle.container1}>

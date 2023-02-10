@@ -8,17 +8,18 @@ import { AuthenicationService } from '../../services';
 import SearchableDropDown from 'react-native-searchable-dropdown';
 
 
-const StickerPastingScreen = () => {
+const StickerPastingScreen = ({navigation}) => {
   const [data, setdata] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Select Farmer', placeholder:'Note : About Alert', key: 'farmer', value:'',
-     type: 'select', options:data },
+    // { label: 'Select Farmer', placeholder:'Note : About Alert', key: 'farmer', value:'',
+    //  type: 'select', options:data },
 
       { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
       { label: 'Capture sticker picture with farmer', value: [], type: 'image', key: 'image', },
   ])
 
   const [selectedItems, setselectedItems] = useState('')
+  const [loading, setIsLoading] = useState(false)
   // if (item) {
   //   console.log(item)
 
@@ -33,30 +34,43 @@ const StickerPastingScreen = () => {
   // }
 
   useEffect(() => {
-    getData()    
+    getData("")    
   }, [])
  
   const getData = (text)=>{
-    AuthenicationService.searchfarmerData(text).then(response => {
-      console.log(response)
-      if (response?.status== true) {
-        setdata(response?.data)
-      }else{
-      }
-    })
+    let req = {
+      "text": text
+    }
+    // console.log(text)
+    AuthenicationService.searchfarmerData(req)
+      .then(x => {
+        // console.log('MMMMMM', x.data)
+        // if (x.status == true) {
+        //   let mapped_array = []
+        //   x.data.forEach(a => {
+        //     mapped_array.push({ "id": a.first_name, "name": a.mobile_number })
+        //   })
+        //   setdata(mapped_array)
+        // } else {
+        // }
+      }).catch(e => {
+        console.log(e)
+      })
   }
   
 
 
   const submit =()=>{
-    console.log(formdata)
+    // console.log(formdata)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
-
-    AuthenicationService.sticker_pasting(req).then(response => {
-      // setIsLoading(false);
-      console.log(response)
-      if (response?.status== true) {
+      setIsLoading(true);
+      req.farmer_name=selectedItems.id
+      console.log(req)
+    AuthenicationService.sticker_pasting(req).then(r => {
+      console.log('EEEEE', r)
+      setIsLoading(false);
+      // console.log(response)
+      if (r?.status== true) {
       navigation.goBack()
       }else{
         ToastAndroid.showWithGravityAndOffset(
@@ -65,12 +79,15 @@ const StickerPastingScreen = () => {
     );
        
       }
+    }).catch(e => {
+      setIsLoading(false);
+      console.log(e)
     })
 
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 
@@ -80,9 +97,11 @@ const StickerPastingScreen = () => {
        
           <SearchableDropDown
             onItemSelect={(item) => {
-              console.log(item)
+              formdata[0].value = item.name
+              console.log(formdata[0].value)
               // const items = this.state.selectedItems;
               // items.push(item)
+              setselectedItems(item)
               // this.setState({ selectedItems: items });
             }}
             containerStyle={{ padding: 5 }}
@@ -112,24 +131,27 @@ const StickerPastingScreen = () => {
                     borderWidth: 1,
                     borderColor: '#ccc',
                     borderRadius: 5,
+                    color: "black"
                 },
                 onTextChange: text => 
                 {
-                  AuthenicationService.searchfarmerData(text)
+                  let req = {
+                    "text": text
+                  }
+                  AuthenicationService.searchfarmerData(req)
                     .then(x => {
-                      x.text().then(m => {
-                        y = JSON.parse(m)
-                        if (y.success == true) {
+                        if (x.status == true) {
                           let mapped_array = []
-                          y.data.forEach(a => {
-                            mapped_array.push({ "name": a.fullName , "id": a.mobileNumber })
+                          x.data.forEach(a => {
+                            mapped_array.push({ "name": `${a.first_name} ${a.last_name}` , "id": a.mobile_number })
                           })
                           setdata(mapped_array)
                         } else {
                         }
                       })
-
-                    })
+                      .catch(error => {
+                        console.log(error)
+                      })
                 }
               }
             }
@@ -153,8 +175,8 @@ const StickerPastingScreen = () => {
 
         ListFooterComponent={()=>{
           return(
-            <Pressable>
-            <Buttons title={'Submit '} onPress={()=>{submit()}} loading={false}/>
+            <Pressable onPress={()=>{submit()}}>
+            <Buttons title={'Submit '}  loading={loading}/>
           </Pressable>
           )
         }}

@@ -8,7 +8,7 @@ import submitReqData from '../../../services/FormData';
 
 
 const CreateSeminarScreen = () => {
-  const [villages, setvillages] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+  const [villages, setvillages] = useState([])
   const [venue, setvenue] = useState([])
   const [bkcenter, setbkcenter] = useState([])
   const [formdata, setformdata] = useState([
@@ -43,14 +43,21 @@ const CreateSeminarScreen = () => {
   // }
 
   useEffect(() => {
-    getData()    
+    getSeminarMasters()
+    // getVillages()    
   }, [])
  
-  const getData = ()=>{
+  const getSeminarMasters = ()=>{
     req=null
-    AuthenicationService.activity_list(req).then(response => {
-      console.log(response)
-      if (response?.status== true) {
+    AuthenicationService.get_seminar_masters(req).then(r => {
+      console.log(r)
+      if (r?.status== true) {
+        setvillages(r.data.villages)
+        setvenue(r.data.venues)
+        setbkcenter(r.data.bk_center)
+        formdata[0].options = villages
+        formdata[3].options = bkcenter
+        formdata[5].options = venue
         // setdata(response?.data)
         // setbkcenter()
         // setvenue()
@@ -59,7 +66,6 @@ const CreateSeminarScreen = () => {
       }
     })
   }
-
 
   const submit =()=>{
     console.log(formdata)

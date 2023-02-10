@@ -1,95 +1,99 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { PermissionsAndroid } from 'react-native';
-import CallLogs from 'react-native-call-log'
-import Card from '../../components/Card';
-import mstyle from '../../mstyle';
-import { Fonts } from '../../contants';
+import { View, Text, FlatList, Pressable, TextInput, Linking } from 'react-native'
+import React, { useState } from 'react'
+import Card from '../../components/Card'
+import FabButton from '../../components/FabButton'
+import mstyle from '../../mstyle'
+import { Colors } from '../../contants'
+import { useEffect } from 'react'
+import { AuthenicationService } from '../../services'
+import Icon from 'react-native-vector-icons/Ionicons';
 
+const CallFarmerScreen = ({ navigation }) => {
 
+  const [data, setdata] = useState([])
 
-const CallFarmerScreen = () => {
-const [data, setdata] = useState(null)
-// CallLogs.load(5).then(c => {console.log(c)
-// setdata(c)});
-const abc =async()=>{
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-      {
-        title: 'Call Log Example',
-        message:
-          'Access your call logs',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      // console.log('permission hai',CallLogs);
-      CallLogs.load(25).then(c => {
-        setdata(c)
-        console.log(c)});
-    } else {
-    
-      console.log('Call Log permission denied');
+  const searchFilterFunction = (text) => {
+    let req = {
+      "text": text
     }
+    // console.log(text)
+    AuthenicationService.searchfarmerData(req)
+      .then(x => {
+        if (x.status == true) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+          })
+          setdata(mapped_array)
+        } else {
+        }
+      })
   }
-  catch (e) {
-    console.log(e);
-  }
- 
- 
-}
-useEffect(() => {
-  // abc()
-  const filter = {
-    minTimestamp: 1571835032, 
-    maxTimestamp: "1675934104400",  
-    phoneNumbers: '+919926100041', 
-  }
-  
-  const callLogs = CallLogs.load(-1, filter) 
-  console.log('77728',callLogs)
-  setdata(callLogs)
-  
-}, [])
 
+
+  useEffect(() => {
+    // getData()
+    searchFilterFunction("")    
+  }, [])
+ 
+  // const getData = ()=>{
+  //   req=null
+  //   AuthenicationService.farmerData(req).then(x => {
+  //     x.text().then(m => {
+  //       let y = JSON.parse(m)
+  //       if (y.success == true) {
+  //           let mapped_array = []
+  //           y.data.forEach(a=> {
+  //             mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
+  //           })
+  //           setdata(mapped_array)
+  //       } else {
+  //       }
+  //     })
+  //   })
+  // }
 
   return (
     <View style={mstyle.container1}>
-      <FlatList 
-      data={data}
-      renderItem={({item})=>{
-        return(
-          <View
-          style={mstyle.ListContainer} >
-         
-          {/* <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
-          source={{ uri: '' }} /> */}
+      
+      <View style={mstyle.inputContainer}>
+        <View style={mstyle.inputSubContainer}>
 
-          <View style={mstyle.detailContainer}>
-            <View style={mstyle.titleContainer}>
-              <Text style={mstyle.listListTitle} numberOfLines={1}>
-                {item?.name ?item?.name:'No name'}
-              </Text>
-              <Text style={{ color: 'green',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-    }} numberOfLines={2}>{item.phoneNumber}</Text>
-
-<Text style={{ color: 'green',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-    }} numberOfLines={2}>{item.dateTime}</Text>
-    
-    <Text style={{ color: 'green',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-  }} numberOfLines={2}>{item.type}</Text>
-  
-  <Text style={{ color: 'green',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
-}} numberOfLines={2}>{item.duration}</Text>
-            </View>
-            
-          </View>
+          <TextInput
+            placeholder={'Type something'}
+            placeholderTextColor={Colors.DEFAULT_GREY}
+            selectionColor={Colors.DEFAULT_GREY}
+            style={mstyle.inputText}
+            onChangeText={text => {
+              searchFilterFunction(text)
+            }}
+          />
         </View>
-        )
-      }} />
+      </View>
+
+
+      <FlatList
+        data={data}
+        renderItem={(item) => {
+          return (
+            <Pressable style={{flex:1,  flexDirection:'row'}}
+              onPress={() => {
+                Linking.openURL(`tel:${item.item.subtitle}`)
+              }}
+            >
+
+              <Card item={item} />
+              <Icon name={'ios-call'} size={22} color='black' style={{paddingTop:15,paddingRight:20,color:'black'}}/>
+
+            </Pressable>
+          )
+        }} />
+      {/* <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>
+        <FabButton />
+
+      </Pressable> */}
+
+
     </View>
   )
 }

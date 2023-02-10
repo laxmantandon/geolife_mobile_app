@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View,Image, Text, Button, TextInput, FlatList, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { View,Image, Text, Button, TextInput, FlatList, StatusBar, ScrollView, TouchableOpacity, ToastAndroid ,useEffect} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MydayScreen from './src/MydayScreen';
@@ -39,6 +39,7 @@ import FreeSampleBeneficiariesScreen from './src/screens/My Former/Crop Seminar/
 import AttendanceScreen from './src/screens/My Former/Crop Seminar/AttendanceScreen';
 import PreActivityScreen from './src/screens/My Former/Crop Seminar/PreActivityScreen';
 import PostActivityScreen from './src/screens/My Former/Crop Seminar/PostActivityScreen';
+import { AuthenicationService } from './src/services';
 
 
 // SplashScreen.hide();
@@ -56,33 +57,27 @@ SplashScreen.hide();
     { title: 'My dealers', route: 'Mydealers',icon:'ios-list' , color:'blue' }
   ])
 
-  const [task, settask] = React.useState([
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    {
-      title: 'Farmer Screen farmer details not updated',
-      subtitle: 'Add mobile number or other contact details '
-    },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
-    { title: 'Some task are pending', subtitle: 'some details about task' },
+  const [task, settask] = React.useState([{ title: 'Sample Task' , subtitle:'Details Description of task' }])
 
-  ])
+  // useEffect(() => {
 
-  React.useEffect(() => {
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'Home' }],
-    // });
-  
+    // to be implemented later token not working
+    // AuthenicationService.get_users_task(null).then(r => {
+    //   console.log('RRRRR', r)
+    //   let my_tasks = []
+    //   if (r.status == true) {
+    //     r.data.forEach(d => {
+    //       my_tasks.push({'subtitle': d.priority, 'title': d.description})
+    //     })
+    //     settask(my_tasks)
+    //   } else {
+
+    //   }
+    // }).catch(e => {
+    //   console.log(e);
+    // })
    
-  }, [])
+  // }, [])
   
 
 

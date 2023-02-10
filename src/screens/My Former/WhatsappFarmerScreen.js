@@ -35,15 +35,19 @@ const WhatsappFarmerScreen = () => {
  
   const getData = ()=>{
     req=null
-    AuthenicationService.whatsapp_templates(req).then(response => {
-      console.log(response)
-      if (response?.status== true) {
-        setdata(response?.data)
-        // setmimage()
-        // setmsg()
-        // setmurl()
+    AuthenicationService.whatsapp_templates(req).then(r => {
+      console.log(r)
+      if (r?.status== true) {
+        // setformdata(r?.data)
+        setmimage(r?.data.image)
+        formdata[0].value=r.data.message
+        formdata[1].value=r.data.video_url
+        setmsg( r.data.message)
+        setmurl(r.data.video_url)
       }else{
       }
+    }).catch(e => {
+      console.log('eeeeee', e)
     })
   }
 
@@ -51,8 +55,8 @@ const WhatsappFarmerScreen = () => {
 
     let req = submitReqData(formdata)
     // console.log('submited', req)
-    Linking.openURL(`whatsapp://send?text=${msg}&media=${mimage}`)
-
+    Linking.openURL(`whatsapp://send?text=${murl}%0A%0A${msg}%0A%0AImage%20Link%20:%20${mimage}`)
+    
     // const shareOptions = {
     //   title: req['Daily Whatsapp Message'],
     //   message: req['Daily Whatsapp Message'], // Note that according to the documentation at least one of "message" or "url" fields is required

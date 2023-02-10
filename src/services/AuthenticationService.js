@@ -98,46 +98,67 @@ const sendOTP = async user => {
   }
 };
 
-const farmerData =async req=>{
-  var myHeaders = new Headers();
-myHeaders.append("Authorization", "Bearer GEOLIFE.S1zRI1gprVmgYct9iqF9MfAvkeCS1YRYk9Ztgfzelop6eJgwaA1tJrJu");
+// const farmerData =async req=>{
+//   var myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer GEOLIFE.S1zRI1gprVmgYct9iqF9MfAvkeCS1YRYk9Ztgfzelop6eJgwaA1tJrJu");
 
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-};
+// var requestOptions = {
+//   method: 'GET',
+//   headers: myHeaders,
+//   redirect: 'follow'
+// };
 
-return fetch("https://api3.thefarmpeople.in/api/v1/users/external", requestOptions)
-  // .then(response => response.text())
-  // .then(result =>{result})
-  // .catch(error => console.log('error', error));
-}
+// return fetch("https://api3.thefarmpeople.in/api/v1/users/external", requestOptions)
+//   // .then(response => response.text())
+//   // .then(result =>{result})
+//   // .catch(error => console.log('error', error));
+// }
 
-const searchfarmerData =async req=>{
-  var myHeaders = new Headers();
-myHeaders.append("Authorization", "Bearer GEOLIFE.S1zRI1gprVmgYct9iqF9MfAvkeCS1YRYk9Ztgfzelop6eJgwaA1tJrJu");
-myHeaders.append("Content-Type", "application/json");
+// const searchfarmerData =async req=>{
+//   var myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer GEOLIFE.S1zRI1gprVmgYct9iqF9MfAvkeCS1YRYk9Ztgfzelop6eJgwaA1tJrJu");
+// myHeaders.append("Content-Type", "application/json");
 
-var raw = JSON.stringify({
-  "text": req
-});
+// var raw = JSON.stringify({
+//   "text": req
+// });
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
+// var requestOptions = {
+//   method: 'POST',
+//   headers: myHeaders,
+//   body: raw,
+//   redirect: 'follow'
+// };
 
-return fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
-  // .then(response => response.text())
-  // .then(result => {
-  //   console.log('farmer search', result)
+// return fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
+//   // .then(response => response.text())
+//   // .then(result => {
+//   //   console.log('farmer search', result)
     
-  //   return result})
-  // .catch(error => console.log('error', error));
-}
+//   //   return result})
+//   // .catch(error => console.log('error', error));
+// }
+
+const searchfarmerData = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.post(
+      `${base_url}.search_farmer`, req, {headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
 
 const checkUserExist = async (type, value) => {
   try {
@@ -154,12 +175,13 @@ const checkUserExist = async (type, value) => {
   }
 };
 
+
 const crop_seminar = async req => {
   try {
-
-    let Response = AuthRequest.get(
-      `${base_url}.crop_seminar`,
-      {headers: headers},
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.crop_seminar`,{headers:gettoken()}
+      
     );
     return Response?.data.message
   } catch (error) {
@@ -169,6 +191,7 @@ const crop_seminar = async req => {
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
     return {status: false, message: 'Oops! Something went wrong '};
+
   }
 };
 
@@ -371,10 +394,11 @@ const create_free_sample = async req => {
 };
 
 const update_status_free_sample = async req => {
+  gettoken()
   try {
     let Response = AuthRequest.get(
       `${base_url}.update_status_free_sample`,
-      {headers: headers}
+      {headers: gettoken()}
     );
     return Response?.data.message
   } catch (error) {
@@ -386,11 +410,14 @@ const update_status_free_sample = async req => {
     return {status: false, message: 'Oops! Something went wrong '};
   }
 };
+
 const whatsapp_templates = async req => {
   try {
-    let Response = AuthRequest.get(
-      `${base_url}.whatsapp_to_farmer`,
-      {headers: headers}
+    gettoken()
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.whatsapp_to_farmer`,{headers:gettoken()}
+      
     );
     return Response?.data.message
   } catch (error) {
@@ -399,15 +426,18 @@ const whatsapp_templates = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong '};
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
   }
 };
 
-const bk_center = async req => {
+const get_seminar_masters = async req => {
   try {
-    let Response = AuthRequest.get(
-      `${base_url}.bk_center`,
-      {headers: headers}
+    gettoken()
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.get_seminar_masters`,{headers:gettoken()}
+      
     );
     return Response?.data.message
   } catch (error) {
@@ -416,13 +446,33 @@ const bk_center = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong '};
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
   }
 };
 
 
+const get_users_task = async req => {
+  try {
+    await AsyncStorage.getItem('user_info').then((muser) => {
+      user = JSON.parse(muser)
+      let api_headers = {'Content-Type': 'application/json', 'Authorization': `token ${user.api_key}:${user.api_secret}`}
+      AuthRequest.get(`${base_url}.get_user_task`, { headers: api_headers })
+        .then(x => { 
+          console.log('x.data.message', x.data.message)
+          return x.data.message
+        });
+      
+    })
 
-export default {login, sendOTP, searchfarmerData, farmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
+  } catch (error) {
+    console.log('API ERROR ', error);
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
+export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
-  door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,bk_center
+  door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, get_users_task, gettoken
 };
