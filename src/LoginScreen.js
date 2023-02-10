@@ -204,10 +204,11 @@ const LoginScreen = ({ navigation, setToken }) => {
           </TouchableOpacity>
 
 
-          <CountDown
+          {/* <CountDown
             until={180}
             size={17}
             onFinish={() => {
+              console.log('time over for otp')
               //Alert.alert('Resend otp')
             }}
             digitStyle={{ backgroundColor: '#FFF' }}
@@ -216,7 +217,7 @@ const LoginScreen = ({ navigation, setToken }) => {
             // timeToShow={['S']}
             // timeLabels={{m: 'MM', s: 'SS'}}
             timeLabels={{ s: '' }}
-          />
+          /> */}
           <Text style={styles.content}>
             Resend OTP
           </Text>

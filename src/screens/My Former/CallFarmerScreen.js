@@ -42,16 +42,16 @@ const abc =async()=>{
  
 }
 useEffect(() => {
-  abc()
-  // const filter = {
-  //   minTimestamp: 1571835032, 
-  //   maxTimestamp: 1571835033,  
-  //   phoneNumbers: '+917737351725', 
-  // }
+  // abc()
+  const filter = {
+    minTimestamp: 1571835032, 
+    maxTimestamp: "1675934104400",  
+    phoneNumbers: '+919926100041', 
+  }
   
-  // const callLogs = CallLogs.load(-1, filter) 
-  // console.log('77728',callLogs)
-  // setdata(callLogs)
+  const callLogs = CallLogs.load(-1, filter) 
+  console.log('77728',callLogs)
+  setdata(callLogs)
   
 }, [])
 

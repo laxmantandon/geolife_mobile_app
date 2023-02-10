@@ -1,4 +1,4 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
+import { View, StyleSheet, Pressable, FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
@@ -8,16 +8,17 @@ import submitReqData from './services/FormData';
 import { back } from 'react-native/Libraries/Animated/Easing';
 
 
-const ActivityDetailsScreen = ({navigation, props,
+const ActivityDetailsScreen = ({ navigation, props,
   route: {
     params: { item },
   },
 }) => {
+ 
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Activity Type', key: 'type', value: '', options: activity_type, type: 'select', },
-    { label: 'Name', placeholder: 'Enter Name', key: 'title', value: '', type: 'text' },
-    { label: 'Notes', placeholder: 'Enter Notes', key: 'subtitle', value: '', type: 'text', keyboard: 'numeric' },
+    { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'select', },
+    { label: 'Name', placeholder: 'Enter Name', key: 'activity_name', value: '', type: 'text' },
+    { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
     { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
   if (item) {
@@ -33,44 +34,49 @@ const ActivityDetailsScreen = ({navigation, props,
     }
   }
 
-  useEffect(() => {
-    getData()    
-  }, [])
- 
-  const getData = ()=>{
-    req=null
-    AuthenicationService.activity_type(req).then(response => {
-      console.log(response)
-      if (response?.status== true) {
-        setactivity_type(response?.data)
-      }else{
+  if (activity_type.length===0){
+    console.log(activity_type.length)
+    AuthenicationService.activity_type(req).then(res => {
+      // console.log(res.data)
+      if (res?.status == true) {
+        mapped_array=[]
+        res.data.forEach(a=> {
+          mapped_array.push( a.name)
+        })
+        formdata[0].options =mapped_array
+        setactivity_type(mapped_array)
+      } else {
       }
     })
+
   }
 
 
-  const submit =()=>{
+  const submit = () => {
     console.log(formdata)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
+    // setIsLoading(true);
 
     AuthenicationService.create_activity(req).then(response => {
       // setIsLoading(false);
       console.log(response)
-      if (response?.status== true) {
-      navigation.goBack()
-      }else{
+      if (response?.status == true) {
         ToastAndroid.showWithGravityAndOffset(
-      'Oops! Something went wrong check internet connection',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-    );
-       
+          response?.message,
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+        navigation.goBack()
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          response?.message,
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+
       }
     })
 
   }
 
-  const update =()=>{
+  const update = () => {
     console.log(formdata)
   }
 
@@ -90,10 +96,10 @@ const ActivityDetailsScreen = ({navigation, props,
           )
         }} />
 
-      {item.item ? (<Pressable onPress={()=>{update()}}>
-        <Buttons title={'Update'} loading={false}/>
-      </Pressable>):(<Pressable onPress={()=>{submit()}}>
-        <Buttons title={'Submit'}  loading={false}/>
+      {item.item ? (<Pressable onPress={() => { update() }}>
+        <Buttons title={'Update'} loading={false} />
+      </Pressable>) : (<Pressable onPress={() => { submit() }}>
+        <Buttons title={'Submit'} loading={false} />
       </Pressable>)}
 
 
