@@ -1,25 +1,55 @@
 import { View, Text, FlatList, Pressable, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
-import FabButton from '../../components/FabButton'
 import mstyle from '../../mstyle'
 import { Colors } from '../../contants'
+import { useEffect } from 'react'
+import { AuthenicationService } from '../../services'
 
 const PravaktaScreen = ({ navigation }) => {
 
-  const [data, setdata] = useState([
-    { title: 'Farmer Name', subtitle: '9685062116', },
-    { title: 'Farmer Name1', subtitle: '9685062115', }])
+  const [data, setdata] = useState([])
 
   const searchFilterFunction = (text) => {
-    console.log(text)
-    const res = data.filter(obj => Object.values(obj).some(val => val.includes(text)));
-    console.log(res)
-    if(res.length >=0){
-      setdata(res)
-
+    let req = {
+      "text": text
     }
+    // console.log(text)
+    AuthenicationService.searchfarmerData(req)
+      .then(x => {
+        if (x.status == true) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+          })
+          setdata(mapped_array)
+        } else {
+        }
+      })
   }
+
+
+  useEffect(() => {
+    // getData()
+    searchFilterFunction("")    
+  }, [])
+ 
+  // const getData = ()=>{
+  //   req=null
+  //   AuthenicationService.farmerData(req).then(x => {
+  //     x.text().then(m => {
+  //       let y = JSON.parse(m)
+  //       if (y.success == true) {
+  //           let mapped_array = []
+  //           y.data.forEach(a=> {
+  //             mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
+  //           })
+  //           setdata(mapped_array)
+  //       } else {
+  //       }
+  //     })
+  //   })
+  // }
 
   return (
     <View style={mstyle.container1}>
@@ -46,7 +76,7 @@ const PravaktaScreen = ({ navigation }) => {
           return (
             <Pressable
               onPress={() => {
-                navigation.navigate(item.item.route)
+                // navigation.navigate(item.item.route)
               }}
             >
               <Card item={item} />

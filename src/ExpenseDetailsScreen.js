@@ -13,7 +13,7 @@ const ExpenseDetailsScreen = ({ props,
 }) => {
   const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Activity Type', key: 'type', value: '', options: activity_type, type: 'select', },
+    { label: ' Select Expense Type', key: 'type', value: '', options: activity_type, type: 'select', },
     { label: 'Name', placeholder: 'Enter Name', key: 'title', value: '', type: 'text' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'subtitle', value: '', type: 'text', keyboard: 'numeric' },
     { label: 'My Image', value: [], type: 'image', key: 'image', },

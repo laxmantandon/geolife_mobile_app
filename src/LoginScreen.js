@@ -81,9 +81,6 @@ const LoginScreen = ({ navigation, setToken }) => {
   }
 
   const signIn = async () => {
-    // setotp(false)
-    // navigation.navigate('Home')
-
     if(username==='' ||username.length < 10){
       setIsLoading(false);
       setErrorMessage('Please check your mobile number')
@@ -95,12 +92,12 @@ const LoginScreen = ({ navigation, setToken }) => {
     };
     AuthenicationService.login(user).then(response => {
       setIsLoading(false);
-      // console.log(user)
-      console.log(response)
-      // setToken(response?.data);
+      AsyncStorage.clear()
       if (response?.status== true) {
+
         AsyncStorage.setItem('user_info', JSON.stringify(response.data));     
         navigation.navigate('Home')
+        console.log(AuthenicationService.gettoken())
       }else{
         ToastAndroid.showWithGravityAndOffset(
           response?.message,

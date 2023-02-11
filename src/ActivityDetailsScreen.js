@@ -53,7 +53,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
 
   const submit = () => {
-    console.log(formdata)
+    // console.log(formdata)
     let req = submitReqData(formdata);
     // setIsLoading(true);
 
@@ -72,6 +72,8 @@ const ActivityDetailsScreen = ({ navigation, props,
         );
 
       }
+    }).catch(e=>{
+      console.log(e)
     })
 
   }

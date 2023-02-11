@@ -184,9 +184,9 @@ const MYinputs = ({ item }) => {
                   />
 
                 {item?.type=='time'? (
-                  <Text style={mstyle.inputText}>{item?.value.toTimeString().slice(0,5)}</Text>
+                  <Text style={mstyle.inputText}>{item.value.toTimeString().slice(0,5)}</Text>
                 ):(
-                  <Text style={mstyle.inputText}>{item?.value.toISOString().split('T')[0]}</Text>
+                  <Text style={mstyle.inputText}>{item.value.toISOString().split('T')[0]}</Text>
                 )}
 
                 </View>

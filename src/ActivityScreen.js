@@ -20,7 +20,17 @@ const ActivityScreen = ({navigation}) => {
     AuthenicationService.activity_list(req).then(response => {
       console.log(response)
       if (response?.status== true) {
-        setdata(response?.data)
+        mapped_array=[]
+        response.data.forEach(a=> {
+          let m ={
+            title:a.activity_name,
+            subtitle:a.activity_type,
+            image:a?.image,
+          }
+          mapped_array.push(m)
+        })
+        setdata(mapped_array)
+
       }else{
       }
     })

@@ -8,7 +8,7 @@ import submitReqData from '../../../services/FormData';
 
 
 const CreateSeminarScreen = () => {
-  const [loading, setIsLoading] = useState(false)
+  const [loading, setIsLoading] = useState(true)
   const [villages, setvillages] = useState([])
   const [venue, setvenue] = useState([])
   const [bkcenter, setbkcenter] = useState([])
@@ -26,7 +26,7 @@ const CreateSeminarScreen = () => {
      { label: 'My Image', value: [], type: 'image', key: 'image', },
 
      { label: 'Speeker Didi Name',placeholder:'Enter name', value: '',  key: 'speeker_name' },
-     { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no' },
+     { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no', keyboard:'numeric' },
 
 
     ])
@@ -53,6 +53,8 @@ const CreateSeminarScreen = () => {
     AuthenicationService.get_seminar_masters(req).then(r => {
       // console.log(r)
       if (r?.status== true) {
+        setIsLoading(false)
+
         setvillages(r.data["villages"])
         setvenue(r.data["venues"])
         setbkcenter(r.data["bk_center"])
@@ -64,6 +66,7 @@ const CreateSeminarScreen = () => {
         // setvenue()
         // setvillages()
       }else{
+        navigation.goBack()
       }
     })
   }
@@ -78,7 +81,7 @@ const CreateSeminarScreen = () => {
 
     AuthenicationService.create_crop_seminar(req).then(r => {
       setIsLoading(false);
-      // console.log(r)
+      console.log(r)
       if (r?.status == true) {
         navigation.goBack()
       } else {
@@ -101,6 +104,8 @@ const CreateSeminarScreen = () => {
   return (
       <ScrollView style={mstyle.container}>
         <FlatList
+        onRefresh={()=>{getSeminarMasters()}}
+        refreshing={loading}
         data={formdata}
         renderItem={({ item, index }) => {
           return (

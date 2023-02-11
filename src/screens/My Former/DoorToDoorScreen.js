@@ -46,6 +46,8 @@ const DoorToDoorScreen = ({navigation}) => {
         setloading(false)
         navigation.goBack()
       } else {
+        setloading(false)
+
         ToastAndroid.showWithGravityAndOffset(
           e.message,
           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50

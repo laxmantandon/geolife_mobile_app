@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, FlatList, ScrollView, Share, Linking, Image } from 'react-native'
+import { View, StyleSheet, Pressable, FlatList, ScrollView, Share, Linking, Image, PermissionsAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
@@ -54,16 +54,15 @@ const WhatsappFarmerScreen = () => {
   const submit = () => {
 
     let req = submitReqData(formdata)
-    // console.log('submited', req)
-    Linking.openURL(`whatsapp://send?text=${murl}%0A%0A${msg}%0A%0AImage%20Link%20:%20${mimage}`)
+    // Linking.openURL(`whatsapp://send?text=${murl}%0A%0A${msg}%0A%0AImage%20Link%20:%20${mimage}`)
     
-    // const shareOptions = {
-    //   title: req['Daily Whatsapp Message'],
-    //   message: req['Daily Whatsapp Message'], // Note that according to the documentation at least one of "message" or "url" fields is required
-    //   url: req['image'],
-    //   subject: 'Subject'
-    // };
-    // Share.share(shareOptions)
+    const shareOptions = {
+      title: req['Daily Whatsapp Message'],
+      message: msg, // Note that according to the documentation at least one of "message" or "url" fields is required
+      url: mimage,
+      subject: 'Subject'
+    };
+    Share.share(shareOptions)
 
     
   }

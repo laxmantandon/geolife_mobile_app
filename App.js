@@ -48,7 +48,8 @@ CameraPermission()
 
 function HomeScreen({ navigation }) {
 SplashScreen.hide();
-  
+console.log(AuthenicationService.gettoken())
+
   const [data, setdata] = React.useState([
     { title: 'My Tasks', route: 'Myday',icon:'ios-list-outline', color:'red' },
     { title: 'My day', route: 'Myday',icon:'ios-sunny-outline', color:'gold' },
