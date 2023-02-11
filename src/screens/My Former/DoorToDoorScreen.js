@@ -31,9 +31,17 @@ const DoorToDoorScreen = ({navigation}) => {
   const submit = () => {
     setloading(true)
     let req = submitReqData(formdata);
-    console.log(req)
+    // console.log(req)
+    if (req.notes == "" || req.notes == undefined) {
+      setloading(false)
+      ToastAndroid.showWithGravityAndOffset(
+        "Please enter notes",
+        ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+      );
+      return
+    }
     AuthenicationService.door_to_door_awareness(req).then(r => {
-      console.log(r)
+      // console.log(r)
       if (r.status == true) {
         setloading(false)
         navigation.goBack()
@@ -52,7 +60,7 @@ const DoorToDoorScreen = ({navigation}) => {
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 

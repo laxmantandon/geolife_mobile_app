@@ -196,6 +196,8 @@ const crop_seminar = async req => {
 };
 
 const create_crop_seminar = async req => {
+  gettoken()
+  console.log('Auth', gettoken())
   try {
     let Response = await AuthRequest.post(
       `${base_url}.crop_seminar`,

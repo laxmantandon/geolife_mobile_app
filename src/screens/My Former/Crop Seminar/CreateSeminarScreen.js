@@ -1,4 +1,4 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../../../components/MYinputs';
 import mstyle from '../../../mstyle';
@@ -8,24 +8,25 @@ import submitReqData from '../../../services/FormData';
 
 
 const CreateSeminarScreen = () => {
+  const [loading, setIsLoading] = useState(false)
   const [villages, setvillages] = useState([])
   const [venue, setvenue] = useState([])
   const [bkcenter, setbkcenter] = useState([])
   const [formdata, setformdata] = useState([
     { label: 'Select Village', value: [], type: 'select', key: 'village', options:villages },
 
-    { label: 'Date', value: '2023-01-02', type: 'date', key: 'date'  },
-    { label: 'Time', value: '10:00', type: 'time', key: 'time' },
+    { label: 'Date', value: new Date(), type: 'date', key: 'seminar_date'  },
+    { label: 'Time', value: new Date(), type: 'time', key: 'seminar_time' },
     { label: 'Select The Venue', value: '', type: 'select', key: 'venue', options:venue },
 
     { label: 'Automated Message', placeholder:'', key: 'message', value:'',type: 'textarea', },
 
-    { label: 'Nearest BK Center Village', value: '', type: 'select', key: 'center', options:bkcenter },
+    { label: 'Nearest BK Center', value: '', type: 'select', key: 'bk_center', options:bkcenter },
 
      { label: 'My Image', value: [], type: 'image', key: 'image', },
 
-     { label: 'Speeker Didi Name',placeholder:'Enter name', value: '',  key: 'name' },
-     { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'number' },
+     { label: 'Speeker Didi Name',placeholder:'Enter name', value: '',  key: 'speeker_name' },
+     { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no' },
 
 
     ])
@@ -50,14 +51,14 @@ const CreateSeminarScreen = () => {
   const getSeminarMasters = ()=>{
     req=null
     AuthenicationService.get_seminar_masters(req).then(r => {
-      console.log(r)
+      // console.log(r)
       if (r?.status== true) {
-        setvillages(r.data.villages)
-        setvenue(r.data.venues)
-        setbkcenter(r.data.bk_center)
-        formdata[0].options = villages
-        formdata[3].options = bkcenter
-        formdata[5].options = venue
+        setvillages(r.data["villages"])
+        setvenue(r.data["venues"])
+        setbkcenter(r.data["bk_center"])
+        formdata[0].options = r.data["villages"]
+        formdata[3].options = r.data["venues"]
+        formdata[5].options = r.data["bk_center"]
         // setdata(response?.data)
         // setbkcenter()
         // setvenue()
@@ -67,37 +68,38 @@ const CreateSeminarScreen = () => {
     })
   }
 
-  const submit =()=>{
-    console.log(formdata)
+  const submit = () => {
+    // console.log(formdata)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
+    req.seminar_date =req.seminar_date.toISOString().split('T')[0]
+    req.seminar_time =req.seminar_time.toTimeString().slice(0,5)
+    setIsLoading(true);
+    console.log('REQUEST', req)
 
-    AuthenicationService.create_crop_seminar(req).then(response => {
-      // setIsLoading(false);
-      console.log(response)
-      if (response?.status== true) {
-      navigation.goBack()
-      }else{
+    AuthenicationService.create_crop_seminar(req).then(r => {
+      setIsLoading(false);
+      // console.log(r)
+      if (r?.status == true) {
+        navigation.goBack()
+      } else {
         ToastAndroid.showWithGravityAndOffset(
-      'Oops! Something went wrong check internet connection',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-    );
-       
+          r.message,
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+
       }
     })
 
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 
 
   return (
-    <View style={mstyle.container}>
-      <ScrollView>
-        <View>
+      <ScrollView style={mstyle.container}>
         <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
@@ -110,17 +112,13 @@ const CreateSeminarScreen = () => {
 
         ListFooterComponent={()=>{
           return(
-            <Pressable style={{margin:10}}>
-            <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+            <Pressable style={{margin:10}} onPress={()=>{submit()}}> 
+            <Buttons title={'Submit'}  loading={loading}/>
           </Pressable>
           )
         }}
-        
         />
-        </View>
       </ScrollView>
-
-    </View>
   )
 }
 

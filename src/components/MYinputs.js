@@ -10,6 +10,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import Feather from 'react-native-vector-icons/Feather';
 import { Display } from '../utils'
 import Icon from 'react-native-vector-icons/Feather'
+import DatePicker from 'react-native-date-picker'
 
 
 
@@ -18,9 +19,10 @@ const MYinputs = ({ item }) => {
 
   const [visible, setIsVisible] = useState(false);
   const [captureimage, setcaptureimage] = useState([])
+  const [open, setOpen] = useState(false)
 
   const startCamera = () => {
-    // requestCameraPermission()
+    
     CameraPermission()
     let options = {
       includeBase64: true,
@@ -42,7 +44,7 @@ const MYinputs = ({ item }) => {
       } else {
         // const source = { uri: response.uri };
         // console.log('response', JSON.stringify(response.assets[0].base64));
-        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response.assets[0].base64)
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
         setcaptureimage([])
         // item?.value=basse64image
         // captureimage=basse64image
@@ -155,7 +157,41 @@ const MYinputs = ({ item }) => {
                 </View>
               ) : (
 
+<View style={{flex:1, flexDirection:'row'}}>
+{item?.type === 'date' || item?.type === 'time' ? (
+                <View style={{flex:1 ,flexDirection:'row'}}>
+                  {/* <Button title="Open" onPress={() => setOpen(true)} style={mstyle.PrimaryButton} /> */}
+                  <DatePicker
+                    mode={item?.type=='date'?'date':'time'}
+                    modal
+                    open={open}
+                    date={item?.value}
+                    onConfirm={text => {item.value = text 
+                      console.log(item)
+                      setOpen(false)
+                    }}
+                    onCancel={() => {
+                      setOpen(false)
+                    }} 
+                  />
 
+              <Feather
+                    onPress={() => setOpen(true)}
+                    name={item?.type == 'date'? "calendar" : "clock"}
+                    size={30}
+                    color={Colors.DEFAULT_GREY}
+                    style={{paddingTop:5, paddingRight: 8}}
+                  />
+
+                {item?.type=='time'? (
+                  <Text style={mstyle.inputText}>{item?.value.toTimeString().slice(0,5)}</Text>
+                ):(
+                  <Text style={mstyle.inputText}>{item?.value.toISOString().split('T')[0]}</Text>
+                )}
+
+                </View>
+              ) : (
+                <View>
 
                 <TextInput
                   placeholder={item.placeholder} keyboardType={item?.keyboard ? item?.keyboard : ''}
@@ -171,8 +207,12 @@ const MYinputs = ({ item }) => {
                   // value={item?.value}
                   defaultValue={item?.value}
                 />
-
+</View>
               )}
+
+              </View>
+
+)}
 
             </View>
           </View>
