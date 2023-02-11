@@ -15,7 +15,7 @@ import DatePicker from 'react-native-date-picker'
 
 
 const MYinputs = ({ item }) => {
-  // console.log(item)
+  // console.log('FROM MY INPUT',  item)
 
   const [visible, setIsVisible] = useState(false);
   const [captureimage, setcaptureimage] = useState([])
@@ -52,7 +52,7 @@ const MYinputs = ({ item }) => {
         // captureimage=basse64image
         
         item.value.push(basse64image)
-        // console.log(item.value)
+        // console.log(''item.value)
        
         setcaptureimage(item.value)
 

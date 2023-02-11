@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 const CropSeminarScreen = ({navigation}) => {
 
   const [data, setdata] = useState([
-    {title:'Event name', subtitle:'Event Activity', image:'smndbmns'},
+    // {title:'Event name', subtitle:'Event Activity', image:'smndbmns'},
   ])
 
   useEffect(() => {
@@ -18,10 +18,19 @@ const CropSeminarScreen = ({navigation}) => {
  
   const getData = ()=>{
     req=null
-    AuthenicationService.crop_seminar(req).then(response => {
-      console.log(response)
-      if (response?.status== true) {
-        setdata(response?.data)
+    AuthenicationService.crop_seminar(req).then(r => {
+      console.log(r)
+      if (r?.status== true) {
+        let mapped_array=[]
+        r.data.forEach(a=> {
+          let m ={
+            title:`At ${a.village}, ${a.venue}`,
+            subtitle:`${a.seminar_date} - ${a.seminar_time}`,
+            image:a?.image,
+          }
+          mapped_array.push(m)
+        })
+        setdata(mapped_array)
       }else{
       }
     })
@@ -39,16 +48,9 @@ const CropSeminarScreen = ({navigation}) => {
           )
       }} 
       
-      ListFooterComponent={()=>{
-        return(
-          <Pressable onPress={()=>{navigation.navigate('CreateSeminar')}}>
-            <FabButton />
-          </Pressable>
-        )
+    />
 
-      }}/>
-
-<Pressable onPress={()=>{navigation.navigate('CreateSeminar')}}>
+        <Pressable onPress={()=>{navigation.navigate('CreateSeminar')}}>
             <FabButton />
           </Pressable>
     </View>

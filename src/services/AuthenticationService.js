@@ -177,11 +177,12 @@ const checkUserExist = async (type, value) => {
 
 
 const crop_seminar = async req => {
+  gettoken()
+  console.log('from auth service', gettoken())
   try {
     
     let Response = await AuthRequest.get(
       `${base_url}.crop_seminar`,{headers:gettoken()}
-      
     );
     return Response?.data.message
   } catch (error) {
@@ -436,6 +437,7 @@ const whatsapp_templates = async req => {
 const get_seminar_masters = async req => {
   try {
     gettoken()
+    console.log('FROM AUTH SERVICE', gettoken())
     
     let Response = await AuthRequest.get(
       `${base_url}.get_seminar_masters`,{headers:gettoken()}

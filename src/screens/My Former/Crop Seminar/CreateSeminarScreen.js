@@ -7,7 +7,7 @@ import { AuthenicationService } from '../../../services';
 import submitReqData from '../../../services/FormData';
 
 
-const CreateSeminarScreen = () => {
+const CreateSeminarScreen = ({navigation}) => {
   const [loading, setIsLoading] = useState(true)
   const [villages, setvillages] = useState([])
   const [venue, setvenue] = useState([])
@@ -45,29 +45,38 @@ const CreateSeminarScreen = () => {
 
   useEffect(() => {
     getSeminarMasters()
+    setTimeout(()=> {
+      getSeminarMasters()
+      clearTimeout();
+    }, 500)
     // getVillages()    
   }, [])
  
   const getSeminarMasters = ()=>{
+    // console.log('SEMINAR MASTERS CALLED')
     req=null
     AuthenicationService.get_seminar_masters(req).then(r => {
-      // console.log(r)
+      console.log('SEMINAR MASTERS', r)
       if (r?.status== true) {
         setIsLoading(false)
-
-        setvillages(r.data["villages"])
-        setvenue(r.data["venues"])
-        setbkcenter(r.data["bk_center"])
-        formdata[0].options = r.data["villages"]
-        formdata[3].options = r.data["venues"]
-        formdata[5].options = r.data["bk_center"]
+        setvillages(r?.data["villages"])
+        setvenue(r?.data["venues"])
+        setbkcenter(r?.data["bk_center"])
+        // setformdata(formdata)
+        
+        formdata[0].options = r?.data["villages"]
+        formdata[3].options = r?.data["venues"]
+        formdata[5].options = r?.data["bk_center"]
+        // console.log('formadata  add',formdata)
         // setdata(response?.data)
         // setbkcenter()
         // setvenue()
         // setvillages()
       }else{
-        navigation.goBack()
+        // navigation.goBack()
       }
+    }).catch(e => {
+      console.log(e)
     })
   }
 
@@ -77,11 +86,12 @@ const CreateSeminarScreen = () => {
     req.seminar_date =req.seminar_date.toISOString().split('T')[0]
     req.seminar_time =req.seminar_time.toTimeString().slice(0,5)
     setIsLoading(true);
-    console.log('REQUEST', req)
+    // req.image = "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+    // console.log('REQUEST', req)
 
     AuthenicationService.create_crop_seminar(req).then(r => {
       setIsLoading(false);
-      console.log(r)
+      // console.log(r)
       if (r?.status == true) {
         navigation.goBack()
       } else {
@@ -102,10 +112,13 @@ const CreateSeminarScreen = () => {
 
 
   return (
-      <ScrollView style={mstyle.container}>
+      <View style={mstyle.container}>
+      {/* <Pressable style={{ margin: 10 }} onPress={() => { getSeminarMasters() }}>
+        <Buttons title={'Get Seminar Masters'} />
+      </Pressable> */}
         <FlatList
-        onRefresh={()=>{getSeminarMasters()}}
-        refreshing={loading}
+        // onRefresh={()=>{getSeminarMasters()}}
+        // refreshing={loading}
         data={formdata}
         renderItem={({ item, index }) => {
           return (
@@ -123,7 +136,7 @@ const CreateSeminarScreen = () => {
           )
         }}
         />
-      </ScrollView>
+      </View>
   )
 }
 
