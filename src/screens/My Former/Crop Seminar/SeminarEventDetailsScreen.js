@@ -2,11 +2,14 @@ import { View, Text, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
 
-const SeminarEventDetailsScreen = ({navigation}) => {
+const SeminarEventDetailsScreen = ({navigation , props,
+  route: {
+    params: { item },
+  },}) => {
     const [data, setdata] = useState([
-        {title:'Pre Activities', route:'PreActivityScreen'},
-        {title:'Post Activities', route:'PostActivityScreen'},
-        {title:'Upload Photos', route:'UploadPhotosScreen'},
+        {title:'Pre Activities', route:'PreActivityScreen', value:item.item.crop.details.pre_activities},
+        {title:'Post Activities', route:'PostActivityScreen',value:item.item.crop.details.post_activities},
+        {title:'Upload Photos', route:'UploadPhotosScreen', value:item.item.name},
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries'},
         {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries'},
         {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries'},
@@ -15,6 +18,17 @@ const SeminarEventDetailsScreen = ({navigation}) => {
       ])
     const [event, setevent] = useState([{title:'Event name', subtitle:'Event Activity', image:'smndbmns'}])
 
+    console.log(item.item.crop.details)
+   if(item){
+    event[0].title= item.item.title
+    event[0].subtitle=item.item.subtitle
+    event[0].image=item.item.image
+    event[0].name=item.item.name
+
+    data[0].value = item.item.crop.details.pre_activities
+    data[1].value = item.item.crop.details.post_activities
+   
+   }
     
       return (
         <View style={{flex:1, backgroundColor:'white'}}>
@@ -22,14 +36,14 @@ const SeminarEventDetailsScreen = ({navigation}) => {
           data={event}
           renderItem={(item) =>{
             return (
-              <Pressable style={{padding:10,}}
+              <View style={{padding:10,}}
                  onPress={() => {
                    navigation.navigate(item.item.route)
                  }} 
                  >
               <Card item={item} />
     
-              </Pressable>
+              </View>
               )
           }} 
           
@@ -42,7 +56,7 @@ const SeminarEventDetailsScreen = ({navigation}) => {
                 return (
                   <Pressable
                      onPress={() => {
-                       navigation.navigate(item.item.route)
+                       navigation.navigate(item.item.route, item)
                      }} 
                      >
                   <Card item={item} />

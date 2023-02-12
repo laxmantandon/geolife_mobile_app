@@ -51,6 +51,7 @@ const LoginScreen = ({ navigation, setToken }) => {
   })
 
   const sendOTP = async () => {
+    setIsLoading(true)
     if (username === '' || username.length != 10) {
       setIsLoading(false);
       Alert.alert('Please check your mobile number')
@@ -68,11 +69,13 @@ const LoginScreen = ({ navigation, setToken }) => {
         // setToken(response?.data);
         if (response?.status== true) {
           setotp(true)
-
+setIsLoading(false)
           // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
           // navigation.navigate('Home')
         }else{
           setotp(false)
+          setIsLoading(false)
+
           // setErrorMessage(response?.msg);
           setErrorMessage(response?.message);
         }
@@ -81,6 +84,8 @@ const LoginScreen = ({ navigation, setToken }) => {
   }
 
   const signIn = async () => {
+    setIsLoading(true)
+
     if(username==='' ||username.length < 10){
       setIsLoading(false);
       setErrorMessage('Please check your mobile number')

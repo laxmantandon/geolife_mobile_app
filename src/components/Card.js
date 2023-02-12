@@ -8,7 +8,7 @@ const Card = ({ item }) => {
   return (
     <View
       style={styles.ListContainer} >
-      {data?.image ? (<Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60,
+      {data?.image ? (<Image style={{ margin: "auto", backgroundColor: Colors.LIGHT_GREY, height: 60, width: 60,
      borderRadius: 4, }} source={{ uri: data?.image }} />) : ('')}
       {data?.avatar ? (<Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} source={{ uri: data?.avatar }} />) : ('')}
 

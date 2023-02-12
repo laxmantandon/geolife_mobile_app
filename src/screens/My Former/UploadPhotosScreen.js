@@ -3,30 +3,48 @@ import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
 import Buttons from '../../components/Buttons';
+import submitReqData from '../../services/FormData';
+import { AuthenicationService } from '../../services';
 
 
-const UploadPhotosScreen = () => {
+const UploadPhotosScreen = ({navigation, route: {
+  params: { item },
+},}) => {
   const [formdata, setformdata] = useState([
-    { label: 'Alert msg', placeholder:'Note : About Alert', key: 'message', value:'',
+    { label: 'Notes', placeholder:'Note :Note', key: 'notes', value:'',
      type: 'textarea', },
       { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
-  // if (item) {
-  //   console.log(item)
-
-  //   for (let i in formdata) {
-  //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
-  //       if (formdata[i].key === n) {
-  //         formdata[i].value = item.item[n]
-  //       }
-  //     }
-  //   }
-  // }
-
+  const [loading, setIsLoading] = useState(false)
+console.log(item)
 
   const submit =()=>{
-    console.log(formdata)
+    let req = submitReqData(formdata)
+    req = {
+      upload_photos:req,
+      name:item.item.name
+    }
+    console.log(req)
+      setIsLoading(true);
+      console.log(req)
+    AuthenicationService.update_crop_seminar(req).then(r => {
+      console.log('EEEEE', r)
+      setIsLoading(false);
+      // console.log(response)
+      if (r?.status== true) {
+      navigation.goBack()
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+      'Oops! Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    );
+       
+      }
+    }).catch(e => {
+      setIsLoading(false);
+      console.log(e)
+    })
+
   }
 
   const update =()=>{
@@ -49,8 +67,8 @@ const UploadPhotosScreen = () => {
 
         ListFooterComponent={()=>{
           return(
-            <Pressable>
-            <Buttons title={'Upload'} onPress={()=>{submit()}} loading={false}/>
+            <Pressable onPress={()=>{submit()}}>
+            <Buttons title={'Upload'}  loading={loading}/>
           </Pressable>
           )
         }}

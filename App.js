@@ -185,6 +185,7 @@ function App({navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" >
+        
         <Stack.Screen name="Home" component={HomeScreen} 
         // options={() => ({
         //   headerShown: true,

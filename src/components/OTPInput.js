@@ -56,6 +56,8 @@ const OTPInput = ({ code, setCode, maximumLength, setIsPinReady }) => {
         {boxArray.map(boxDigit)}
       </SplitOTPBoxesContainer>
       <TextInputHidden
+      keyboardType='numeric'
+      placeholder="*"
         value={code}
         onChangeText={setCode}
         maxLength={maximumLength}

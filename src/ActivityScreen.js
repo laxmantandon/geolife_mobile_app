@@ -7,8 +7,8 @@ import { AuthenicationService } from './services';
 
 const ActivityScreen = ({navigation}) => {
   const [data, setdata] = useState( [
-    {title:'kamehsn mdf df', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Subtitle'},
-    {title:'jkdh kjdfkjdff',image:'' ,subtitle:'subtitle'} 
+    // {title:'kamehsn mdf df', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Subtitle'},
+    // {title:'jkdh kjdfkjdff',image:'' ,subtitle:'subtitle'} 
   ])
 
   useEffect(() => {
