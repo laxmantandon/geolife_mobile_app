@@ -11,24 +11,26 @@ const UploadPhotosScreen = ({navigation, route: {
   params: { item },
 },}) => {
   const [formdata, setformdata] = useState([
-    { label: 'Notes', placeholder:'Note :Note', key: 'notes', value:'',
+    { label: 'Note', placeholder:'Note :Note', key: 'note', value:'',
      type: 'textarea', },
       { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
   const [loading, setIsLoading] = useState(false)
-console.log(item)
+  // console.log('IIIIIIIIIII', item.value.item.crop.name)
 
   const submit =()=>{
     let req = submitReqData(formdata)
     req = {
-      upload_photos:req,
-      name:item.item.name
+      name: item.value.item.crop.name,
+      is_upload_photos: "Yes",
+      image: req.image[0],
+      note: req.note
     }
-    console.log(req)
+    console.log('REQ', req)
       setIsLoading(true);
-      console.log(req)
+      // console.log(req)
     AuthenicationService.update_crop_seminar(req).then(r => {
-      console.log('EEEEE', r)
+      // console.log('EEEEE', r)
       setIsLoading(false);
       // console.log(response)
       if (r?.status== true) {
@@ -48,7 +50,7 @@ console.log(item)
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 

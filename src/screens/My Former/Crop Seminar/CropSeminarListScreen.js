@@ -20,7 +20,7 @@ const CropSeminarScreen = ({navigation}) => {
   const getData = ()=>{
     req=null
     AuthenicationService.crop_seminar(req).then(r => {
-      console.log(r)
+      // console.log(r)
       if (r?.status== true) {
         let mapped_array=[]
         r.data.forEach(a=> {

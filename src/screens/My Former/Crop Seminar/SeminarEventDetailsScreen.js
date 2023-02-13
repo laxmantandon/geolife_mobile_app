@@ -9,7 +9,7 @@ const SeminarEventDetailsScreen = ({navigation , props,
     const [data, setdata] = useState([
         {title:'Pre Activities', route:'PreActivityScreen', value:item.item.crop.details.pre_activities},
         {title:'Post Activities', route:'PostActivityScreen',value:item.item.crop.details.post_activities},
-        {title:'Upload Photos', route:'UploadPhotosScreen', value:item.item.name},
+        {title:'Upload Photos', route:'UploadPhotosScreen', value:item},
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries'},
         {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries'},
         {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries'},

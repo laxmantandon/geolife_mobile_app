@@ -4,27 +4,26 @@ import mstyle from '../../../mstyle'
 import { useState } from 'react'
 import Card from '../../../components/Card'
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { useEffect } from 'react'
 
 const PostActivityScreen = ({navigation ,  route: {
   params: { item },
 },})  => {
-  const [data, setdata] = useState([
-    { title: 'Adding crop to app', value: '', key: "adding_crop_to_app"},
-    { title: 'Auto ivr tts trig', value: '', key: "auto_ivr_tts_trig"},
-    { title: 'Auto whatsapp message trigger', value: '', key: "auto_whatsapp_message_trigger" },
-    { title: 'CNP notifications whatssapp', value: '', key: "cnp_notifications_whatssapp" },
-    { title: 'CNP  videos whatssapp', value: '', key: "cnp_videos_whatssapp" },
-    ])
+  const [data, setdata] = useState([])
 
-  console.log(item.value[0])
-  for (let m in item.value[0]){
-    for (let n in data){
-      if (data[n].key == m){
-        data[n].value = item.value[0][m]
-      }
+
+  useEffect(() => {
+
+    if(item) {
+      let mapped_array = []
+      item.value.forEach(i => {
+        // console.log('iiiiiiii', data)
+        mapped_array.push({"title": i.activity_name, "value": i.activity_status})
+      })
+      setdata(mapped_array)
     }
-  }
+}, [])
+
 
   return (
     <View style={mstyle.container1}>
