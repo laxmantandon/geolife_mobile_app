@@ -28,7 +28,7 @@ export default mstyle = StyleSheet.create({
         textAlign: 'center',
       },
       title: {
-        color: 'Balck',
+        color: 'gray',
         // textAlign: "center",
         fontSize: 16,
         borderBottomColor:'silver',

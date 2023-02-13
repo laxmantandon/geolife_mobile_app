@@ -104,7 +104,6 @@ function HomeScreen({ navigation }) {
       backAction,
     );
 
-    return () => backHandler.remove();
 
 
     // to be implemented later token not working
@@ -122,6 +121,9 @@ function HomeScreen({ navigation }) {
     }).catch(e => {
       console.log(e);
     })
+
+
+    return () => backHandler.remove();
 
   }, [])
 
@@ -209,7 +211,7 @@ function HomeScreen({ navigation }) {
                   renderItem={(item) => {
                     return (
                       <Pressable style={{ flex: 1, flexDirection: 'row' }} onPress={() => { navigation.navigate(item.route) }}>
-                        <Icon name='ios-checkmark-circle' size={22} style={{ paddingTop: 18, paddingLeft: 20 }} />
+                        <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} />
                         <Card item={item} />
                       </Pressable>
 

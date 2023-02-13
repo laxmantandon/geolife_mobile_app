@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           onPress: () => null,
           style: 'cancel',
         },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
+        { text: 'YES', onPress: () => BackHandler.exitApp() },
       ]);
       return true;
     };
@@ -86,18 +86,24 @@ const LoginScreen = ({ navigation, setToken }) => {
         // console.log(user)
         console.log(response)
         // setToken(response?.data);
-        if (response?.status== true) {
+        if (response?.status == true) {
           setotp(true)
-setIsLoading(false)
+          setIsLoading(false)
           // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
           // navigation.navigate('Home')
-        }else{
+        } else {
           setotp(false)
           setIsLoading(false)
 
           // setErrorMessage(response?.msg);
           setErrorMessage(response?.message);
         }
+      }).catch(e=>{
+        setIsLoading(false)
+        ToastAndroid.showWithGravityAndOffset(
+          'Please check your internet connection',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
       })
     }
   }
@@ -105,34 +111,40 @@ setIsLoading(false)
   const signIn = async () => {
     setIsLoading(true)
 
-    if(username==='' ||username.length < 10){
+    if (username === '' || username.length < 10) {
       setIsLoading(false);
       setErrorMessage('Please check your mobile number')
-    }else{
+    } else {
 
-    let user = {
-      username,
-      otpCode
-    };
-    AuthenicationService.login(user).then(response => {
-      setIsLoading(false);
-      AsyncStorage.clear()
-      if (response?.status== true) {
+      let user = {
+        username,
+        otpCode
+      };
+      AuthenicationService.login(user).then(response => {
+        setIsLoading(false);
+        AsyncStorage.clear()
+        if (response?.status == true) {
 
-        AsyncStorage.setItem('user_info', JSON.stringify(response.data));     
-        navigation.navigate('Home')
-        DevSettings.reload()
-        console.log(AuthenicationService.gettoken())
-        setotp(false)
-      }else{
+          AsyncStorage.setItem('user_info', JSON.stringify(response.data));
+          navigation.navigate('Home')
+          DevSettings.reload()
+          console.log(AuthenicationService.gettoken())
+          setotp(false)
+        } else {
+          ToastAndroid.showWithGravityAndOffset(
+            response?.message,
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+          // setErrorMessage(response?.msg);
+          // setErrorMessage(response?.message);
+        }
+      }).catch(e=>{
+        setIsLoading(false)
         ToastAndroid.showWithGravityAndOffset(
-          response?.message,
-      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-    );
-        // setErrorMessage(response?.msg);
-        // setErrorMessage(response?.message);
-      }
-    });
+          'Please check your internet connection',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+      })
     }
   };
 
@@ -157,7 +169,7 @@ setIsLoading(false)
       {!otp ? (<View>
         <View style={{
           justifyContent: 'center',
-          alignItems: 'center', marginTop:120
+          alignItems: 'center', marginTop: 120
         }}>
 
           <Image source={require('../src/assets/images/logo.png')}
@@ -204,7 +216,7 @@ setIsLoading(false)
       ) : (
 
         <View  >
-          <Text style={[styles.title,{marginTop:50}]}>Verify OTP</Text>
+          <Text style={[styles.title, { marginTop: 50 }]}>Verify OTP</Text>
           <Text style={styles.content}>
             OTP successfullt sent to your mobile number
           </Text>

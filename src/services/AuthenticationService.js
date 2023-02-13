@@ -461,18 +461,12 @@ const get_seminar_masters = async req => {
 
 
 const get_users_task = async req => {
-  try {
-    await AsyncStorage.getItem('user_info').then((muser) => {
-      user = JSON.parse(muser)
-      let api_headers = {'Content-Type': 'application/json', 'Authorization': `token ${user.api_key}:${user.api_secret}`}
-      AuthRequest.get(`${base_url}.get_user_task`, { headers: api_headers })
-        .then(x => { 
-          console.log('x.data.message', x.data.message)
-          return x.data.message
-        });
-      
-    })
-
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url}.get_user_task`,{headers:gettoken()}
+          
+        );
+        return Response?.data.message
   } catch (error) {
     console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
