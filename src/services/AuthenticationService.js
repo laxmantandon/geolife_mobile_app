@@ -15,19 +15,23 @@ const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geol
     let user =[]
  
     const gettoken =()=>{
-      let token ='jkh kjhk'
+      let token ='';
+
       AsyncStorage.getItem('user_info').then((muser) =>{
         // console.log('muser', muser) 
          user= JSON.parse(muser)
         //  console.log('muser', `token ${user.api_key}:${user.api_secret}`) 
 
-          token = `token ${user.api_key}:${user.api_secret}`
+          // token = `token ${user.api_key}:${user.api_secret}`
         
          })
-         return {
-          'Content-Type': 'application/json',
-          'Authorization': `token ${user.api_key}:${user.api_secret}`
-        }
+         if(user?.api_key){
+          return {
+            'Content-Type': 'application/json',
+            'Authorization': `token ${user.api_key}:${user.api_secret}`
+          }
+         }
+        
 
     }
    

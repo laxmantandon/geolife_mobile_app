@@ -13,11 +13,12 @@ const ExpenseDetailsScreen = ({ props,
 }) => {
   const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
   const [formdata, setformdata] = useState([
-    { label: ' Select Expense Type', key: 'type', value: '', options: activity_type, type: 'select', },
-    { label: 'Name', placeholder: 'Enter Name', key: 'title', value: '', type: 'text' },
-    { label: 'Notes', placeholder: 'Enter Notes', key: 'subtitle', value: '', type: 'text', keyboard: 'numeric' },
-    { label: 'My Image', value: [], type: 'image', key: 'image', },
+    // { label: ' Select Expense Type', key: 'type', value: '', options: activity_type, type: 'select', },
+    { label: 'Amount Against Expense', placeholder: '00.00', key: 'amount', value: '',  keyboard: 'numeric' },
+    { label: 'Notes', placeholder: 'Enter Notes', key: 'note', value: '', type: 'textarea' },
+    { label: 'Image', value: [], type: 'image', key: 'image', },
   ])
+  const [isLoading, setisLoading] = useState(false)
   if (item) {
     console.log(item)
 
@@ -35,10 +36,10 @@ const ExpenseDetailsScreen = ({ props,
   const submit =()=>{
     console.log(formdata)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
+      setisLoading(true);
 
     AuthenicationService.create_activity(req).then(response => {
-      // setIsLoading(false);
+      setisLoading(false);
       console.log(response)
       if (response?.status== true) {
       navigation.goBack()
@@ -60,7 +61,7 @@ const ExpenseDetailsScreen = ({ props,
 
 
   return (
-    <ScrollView style={mstyle.container}>
+    <View style={mstyle.container}>
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
@@ -74,14 +75,14 @@ const ExpenseDetailsScreen = ({ props,
         }} />
 
       {item.item ? (<Pressable onPress={()=>{update()}}>
-        <Buttons title={'Update'} loading={false}/>
-      </Pressable>):(<Pressable>
-        <Buttons title={'Submit'} onPress={()=>{submit()}} loading={false}/>
+        <Buttons title={'Update'} loading={isLoading}/>
+      </Pressable>):(<Pressable onPress={()=>{submit()}}>
+        <Buttons title={'Submit'}  loading={isLoading}/>
       </Pressable>)}
 
 
 
-    </ScrollView>
+    </View>
   )
 }
 

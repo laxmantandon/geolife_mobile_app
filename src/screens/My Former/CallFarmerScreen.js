@@ -11,14 +11,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const CallFarmerScreen = ({ navigation }) => {
 
   const [data, setdata] = useState([])
+  const [serachingData, setserachingData] = useState(true)
 
   const searchFilterFunction = (text) => {
+    setserachingData(true)
     let req = {
       "text": text
     }
     // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
+        setserachingData(false)
+
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -73,6 +77,10 @@ const CallFarmerScreen = ({ navigation }) => {
 
 
       <FlatList
+       refreshing={serachingData}
+       onRefresh={()=>{
+         searchFilterFunction("")
+       }}
         data={data}
         renderItem={(item) => {
           return (

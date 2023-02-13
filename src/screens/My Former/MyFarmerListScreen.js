@@ -10,14 +10,18 @@ import { AuthenicationService } from '../../services'
 const MyFarmerListScreen = ({ navigation }) => {
 
   const [data, setdata] = useState([])
+  const [serachingData, setserachingData] = useState(true)
 
   const searchFilterFunction = (text) => {
+    setserachingData(true)
+
     let req = {
       "text": text
     }
     // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
+        setserachingData(false)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -72,6 +76,10 @@ const MyFarmerListScreen = ({ navigation }) => {
 
 
       <FlatList
+      refreshing={serachingData}
+      onRefresh={()=>{
+        searchFilterFunction("")
+      }}
         data={data}
         renderItem={(item) => {
           return (

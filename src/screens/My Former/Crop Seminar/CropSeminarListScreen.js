@@ -5,6 +5,7 @@ import mstyle from '../../../mstyle'
 import FabButton from '../../../components/FabButton'
 import { AuthenicationService } from '../../../services'
 import { useEffect } from 'react'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 
 const CropSeminarScreen = ({navigation}) => {
 
@@ -12,14 +13,17 @@ const CropSeminarScreen = ({navigation}) => {
     // {title:'Event name', subtitle:'Event Activity', image:'smndbmns'},
   ])
   const [crop_data, setcrop_data] = useState([])
+  const [serachingData, setserachingData] = useState(true)
 
   useEffect(() => {
     getData()    
   }, [])
  
   const getData = ()=>{
+    setserachingData(true)
     req=null
     AuthenicationService.crop_seminar(req).then(r => {
+      setserachingData(false)
       // console.log(r)
       if (r?.status== true) {
         let mapped_array=[]
@@ -43,6 +47,10 @@ const CropSeminarScreen = ({navigation}) => {
   return (
     <View style={mstyle.container1}>
        <FlatList
+        refreshing={serachingData}
+        onRefresh={()=>{
+          getData()
+        }}
       data={data}
       renderItem={(item,index) =>{
         return (

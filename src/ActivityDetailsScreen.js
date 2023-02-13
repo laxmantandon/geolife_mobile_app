@@ -21,6 +21,7 @@ const ActivityDetailsScreen = ({ navigation, props,
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
     { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
+  const [isLoading, setisLoading] = useState(false)
   if (item) {
     console.log(item)
 
@@ -55,10 +56,10 @@ const ActivityDetailsScreen = ({ navigation, props,
   const submit = () => {
     // console.log(formdata)
     let req = submitReqData(formdata);
-    // setIsLoading(true);
+    setisLoading(true);
 
     AuthenicationService.create_activity(req).then(response => {
-      // setIsLoading(false);
+      setisLoading(false);
       console.log(response)
       if (response?.status == true) {
         ToastAndroid.showWithGravityAndOffset(
@@ -99,9 +100,9 @@ const ActivityDetailsScreen = ({ navigation, props,
         }} />
 
       {item.item ? (<Pressable onPress={() => { update() }}>
-        <Buttons title={'Update'} loading={false} />
+        <Buttons title={'Update'} loading={isLoading} />
       </Pressable>) : (<Pressable onPress={() => { submit() }}>
-        <Buttons title={'Submit'} loading={false} />
+        <Buttons title={'Submit'} loading={isLoading} />
       </Pressable>)}
 
 

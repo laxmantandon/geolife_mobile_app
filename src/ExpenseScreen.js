@@ -39,7 +39,18 @@ const ExpenseScreen = ({navigation}) => {
 
           </Pressable>
           )
-      }} />
+      }} 
+
+      ListFooterComponent={()=>{
+        return(
+          <View>
+            <Text>Total Expense of the day</Text>
+            </View>
+        )
+      }}
+      
+      
+      />
 
 <Pressable onPress={()=>{navigation.navigate('ExpenseDetails',{item:''})}}>
           <FabButton />

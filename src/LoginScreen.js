@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Pressable, Keyboard, Alert, ToastAndroid
+  Pressable, Keyboard, Alert, ToastAndroid, BackHandler, DevSettings
 } from 'react-native';
 import { Separator, ToggleButton } from './components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -47,6 +47,25 @@ const LoginScreen = ({ navigation, setToken }) => {
         setIsMounted(false)
       });
     }
+
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
 
   })
 
@@ -102,7 +121,9 @@ setIsLoading(false)
 
         AsyncStorage.setItem('user_info', JSON.stringify(response.data));     
         navigation.navigate('Home')
+        DevSettings.reload()
         console.log(AuthenicationService.gettoken())
+        setotp(false)
       }else{
         ToastAndroid.showWithGravityAndOffset(
           response?.message,
