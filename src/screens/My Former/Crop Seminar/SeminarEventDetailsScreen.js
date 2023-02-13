@@ -10,11 +10,11 @@ const SeminarEventDetailsScreen = ({navigation , props,
         {title:'Pre Activities', route:'PreActivityScreen', value:item.item.crop.details.pre_activities},
         {title:'Post Activities', route:'PostActivityScreen',value:item.item.crop.details.post_activities},
         {title:'Upload Photos', route:'UploadPhotosScreen', value:item},
-        {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries'},
-        {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries'},
-        {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries'},
-        {title:'Free Sample Distribution Update Status', route:'FreeSampleBeneficiaries'},
-        {title:'Raise Crop Alert', route:'RaiseCropAlertScreen'},
+        {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item},
+        {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries', value:item},
+        {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries', value:item},
+        {title:'Free Sample Distribution Update Status', route:'FreeSampleBeneficiaries', value:item},
+        {title:'Raise Crop Alert', route:'RaiseCropAlertScreen', value:item},
       ])
     const [event, setevent] = useState([{title:'Event name', subtitle:'Event Activity', image:'smndbmns'}])
 

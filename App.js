@@ -210,7 +210,9 @@ function HomeScreen({ navigation }) {
                   data={task}
                   renderItem={(item) => {
                     return (
-                      <Pressable style={{ flex: 1, flexDirection: 'row' }} onPress={() => { navigation.navigate(item.route) }}>
+                      <Pressable style={{ flex: 1, flexDirection: 'row' }}
+                      //  onPress={() => { navigation.navigate(item.route) }}
+                       >
                         <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} />
                         <Card item={item} />
                       </Pressable>
