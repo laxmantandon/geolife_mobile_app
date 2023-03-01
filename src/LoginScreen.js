@@ -22,6 +22,7 @@ import SplashScreen from 'react-native-splash-screen'
 import { AuthenicationService } from './services';
 import OTPInput from './components/OTPInput';
 import CountDown from 'react-native-countdown-component';
+import RNRestart from 'react-native-restart';
 
 
 const LoginScreen = ({ navigation, setToken }) => {
@@ -108,6 +109,17 @@ const LoginScreen = ({ navigation, setToken }) => {
     }
   }
 
+  const resendOtp = async()=>{
+   await Alert.alert('OTP Expaired!', 'Do you want to resend otp?', [
+      {
+        text: 'Cancel',
+        onPress: () =>{ setotp(false)},
+        style: 'cancel',
+      },
+      { text: 'YES', onPress: () => {sendOTP()} },
+    ]);
+  }
+
   const signIn = async () => {
     setIsLoading(true)
 
@@ -126,8 +138,9 @@ const LoginScreen = ({ navigation, setToken }) => {
         if (response?.status == true) {
 
           AsyncStorage.setItem('user_info', JSON.stringify(response.data));
-          navigation.navigate('Home')
-          DevSettings.reload()
+          // navigation.navigate('Home')
+          // DevSettings.reload()
+          RNRestart.restart();
           console.log(AuthenicationService.gettoken())
           setotp(false)
         } else {
@@ -218,7 +231,7 @@ const LoginScreen = ({ navigation, setToken }) => {
         <View  >
           <Text style={[styles.title, { marginTop: 50 }]}>Verify OTP</Text>
           <Text style={styles.content}>
-            OTP successfullt sent to your mobile number
+            OTP successfully sent to your mobile number <Text style={{color:'green'}}>{username}</Text>
           </Text>
           <OTPInput
             code={otpCode}
@@ -239,12 +252,21 @@ const LoginScreen = ({ navigation, setToken }) => {
           </TouchableOpacity>
 
 
+          <View style={{flexDirection:'row'}}>
+          <Text style={[styles.content,{paddingTop:12,paddingHorizontal:10,}]}>
+            Your are able to resend otp in
+            <TouchableOpacity  onPress={()=>{setotp(false)}}>
+            <View>
+              <Text style={{paddingHorizontal:10, color:'green'}}>Resend OTP</Text>
+            </View>
+          </TouchableOpacity>
+          </Text>
+         
           {/* <CountDown
             until={180}
-            size={17}
+            size={15}
             onFinish={() => {
-              console.log('time over for otp')
-              //Alert.alert('Resend otp')
+              setotp(false)
             }}
             digitStyle={{ backgroundColor: '#FFF' }}
             digitTxtStyle={{ color: '#1CC625' }}
@@ -253,10 +275,9 @@ const LoginScreen = ({ navigation, setToken }) => {
             // timeLabels={{m: 'MM', s: 'SS'}}
             timeLabels={{ s: '' }}
           /> */}
-          <Text style={styles.content}>
-            Resend OTP
-          </Text>
+         
 
+          </View>
         </View>)}
 
     </View>

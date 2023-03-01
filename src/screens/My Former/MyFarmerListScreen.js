@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, TextInput } from 'react-native'
+import { View, Text, FlatList, Pressable, TextInput, Linking } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
 import FabButton from '../../components/FabButton'
@@ -6,6 +6,7 @@ import mstyle from '../../mstyle'
 import { Colors } from '../../contants'
 import { useEffect } from 'react'
 import { AuthenicationService } from '../../services'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const MyFarmerListScreen = ({ navigation }) => {
 
@@ -14,7 +15,6 @@ const MyFarmerListScreen = ({ navigation }) => {
 
   const searchFilterFunction = (text) => {
     setserachingData(true)
-
     let req = {
       "text": text
     }
@@ -22,6 +22,7 @@ const MyFarmerListScreen = ({ navigation }) => {
     AuthenicationService.searchfarmerData(req)
       .then(x => {
         setserachingData(false)
+
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -76,21 +77,33 @@ const MyFarmerListScreen = ({ navigation }) => {
 
 
       <FlatList
-      refreshing={serachingData}
-      onRefresh={()=>{
-        searchFilterFunction("")
-      }}
+       refreshing={serachingData}
+       onRefresh={()=>{
+         searchFilterFunction("")
+       }}
         data={data}
         renderItem={(item) => {
           return (
-            <Pressable
-              onPress={() => {
-                // navigation.navigate(item.item.route)
+            <View style={{flex:1,  flexDirection:'row'}}>
+            <Pressable onPress={() => {
+                navigation.navigate('FarmerDetails',{item})
               }}
-            >
+              style={{flex:1,  flexDirection:'row'}}>
               <Card item={item} />
+              </Pressable>
 
-            </Pressable>
+              <Icon  onPress={() => {
+                Linking.openURL(`whatsapp://send?phone=${item.item.subtitle}`)
+              }} 
+              name={'logo-whatsapp'} size={25} color='green' style={{paddingTop:15,paddingRight:10,color:'green'}}/>
+
+              <Icon onPress={() => {
+                Linking.openURL(`tel:${item.item.subtitle}`)
+              }}
+              name={'ios-call'} size={22} color='black' style={{paddingTop:15,paddingRight:20,color:'black'}}/>
+              
+            
+            </View>
           )
         }} />
       {/* <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>

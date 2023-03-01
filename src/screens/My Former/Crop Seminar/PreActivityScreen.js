@@ -9,7 +9,20 @@ import { useEffect } from 'react'
 const PreActivityScreen = ({navigation ,  route: {
   params: { item },
 },})  => {
-  const [data1, setdata1] = useState([])
+  const [data1, setdata1] = useState([
+    { title: 'Auto ivr tts trigger', value: '', key: "auto_ivr_tts_trigger"},
+    { title: 'Auto whatsapp message tr', value: '', key: "auto_whatsapp_message_tr"},
+    { title: 'Bannerscnp hanging product wise', value: '', key: "bannerscnp_hanging_product_wise" },
+    { title: 'Crop leaflet', value: '', key: "crop_leaflet" },
+    { title: 'Coordination with bk didi  ', value: '', key: "coordination_with_bk_didi" },
+    { title: 'Coordination with bk didi  ', value: '', key: "pol_stickers" },
+    { title: 'Pol stickers  ', value: '', key: "pop_material" },
+    { title: 'Product leaflet  ', value: '', key: "product_leaflet" },
+    { title: 'Seminar event script', value: '', key: "seminar_event_script" },
+    { title: 'Stickers', value: '', key: "stickers" },
+    { title: 'Demo Board', value: '', key: "demo_board" },
+    { title: 'Book Dholvala', value: '', key: "book_dholvala" },
+  ])
     
   // console.log(item.value[0])
 

@@ -20,6 +20,8 @@ const CreateSeminarScreen = ({navigation}) => {
     { label: 'Select The Venue', value: '', type: 'select', key: 'venue', options:venue },
 
     { label: 'Automated Message', placeholder:'', key: 'message', value:'',type: 'textarea', },
+              { label: 'Address', placeholder:'', key: 'address', value:'',type: 'textarea', },
+              { label: 'Pincode', placeholder:'', key: 'pincode', value:'', },
 
     { label: 'Nearest BK Center', value: '', type: 'select', key: 'bk_center', options:bkcenter },
 
@@ -27,7 +29,6 @@ const CreateSeminarScreen = ({navigation}) => {
 
      { label: 'Speeker Didi Name',placeholder:'Enter name', value: '',  key: 'speeker_name' },
      { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no', keyboard:'numeric' },
-
 
     ])
   // if (item) {

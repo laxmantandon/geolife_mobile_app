@@ -10,6 +10,7 @@ const ActivityScreen = ({navigation}) => {
     // {title:'kamehsn mdf df', image:'https://www.rallis.com/Upload/homepage/banner-lead-rallis-03.JPG', subtitle:'Subtitle'},
     // {title:'jkdh kjdfkjdff',image:'' ,subtitle:'subtitle'} 
   ])
+  const [loading, setloading] = useState(true)
 
   useEffect(() => {
     getData()    
@@ -17,15 +18,18 @@ const ActivityScreen = ({navigation}) => {
  
   const getData = ()=>{
     req=null
+    setloading(true)
     AuthenicationService.activity_list(req).then(response => {
       console.log(response)
+      setloading(false)
       if (response?.status== true) {
+        
         mapped_array=[]
         response.data.forEach(a=> {
           let m ={
             title:a.activity_name,
             subtitle:a.activity_type,
-            image:a?.image,
+            image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
           }
           mapped_array.push(m)
         })
@@ -38,6 +42,10 @@ const ActivityScreen = ({navigation}) => {
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
       <FlatList
+      refreshing={loading}
+      onRefresh={()=>{
+        getData()
+      }}
       data={data}
       renderItem={(item) =>{
         return (

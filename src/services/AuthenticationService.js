@@ -163,6 +163,26 @@ const searchfarmerData = async req => {
   }
 };
 
+const farmerCropData = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.post(
+      `${base_url}.farmer_Crop_Data`, req, {headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
 
 const checkUserExist = async (type, value) => {
   try {
