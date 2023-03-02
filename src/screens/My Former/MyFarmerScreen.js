@@ -9,7 +9,7 @@ const MyFarmerScreen = ({navigation}) => {
         {title:'Door to Door Visit for App Download ', route:'DoortoDoor'},
         {title:'Sticker pasting', route:'StickerPastingScreen'},
         {title:'WhatsApp to Farmer', route:'WhatsappFarmerScreen'},
-        {title:'Call to Farmer', route:'CallFarmerScreen'},
+        // {title:'Call to Farmer', route:'CallFarmerScreen'},
         {title:'Crop Seminar', route:'CropSeminar'},
         {title:'Pravakta Kisan', route:'PravaktaScreen'},
         {title:'Raise Crop Alert', route:'RaiseCropAlertScreen'},

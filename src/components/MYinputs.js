@@ -22,7 +22,7 @@ const MYinputs = ({ item }) => {
   const [open, setOpen] = useState(false)
 
   const startCamera = () => {
-    
+
     CameraPermission()
     let options = {
       includeBase64: true,
@@ -50,10 +50,10 @@ const MYinputs = ({ item }) => {
         // captureimage=basse64image
 
         // captureimage=basse64image
-        
+
         item.value.push(basse64image)
         // console.log(''item.value)
-       
+
         setcaptureimage(item.value)
 
 
@@ -80,18 +80,18 @@ const MYinputs = ({ item }) => {
               // style={{flex:1, flexDirection:'row'}}
               numColumns={4}
 
-              renderItem={({img,index}) => {
+              renderItem={({ img, index }) => {
                 return (
-                  <Pressable style={{margin:2}}
-                  onPress={() => {setIsVisible(true)}}
+                  <Pressable style={{ margin: 2 }}
+                    onPress={() => { setIsVisible(true) }}
                   >
-                    <Image style={{ width: 80, height: 80, backgroundColor:'silver' }} source={{ uri: item.value[index] }} />
+                    <Image style={{ width: 80, height: 80, backgroundColor: 'silver' }} source={{ uri: item.value[index] }} />
 
                   </Pressable>
                 )
-              }} 
-              
-              />
+              }}
+
+            />
             <ImageView
               images={item.value}
               imageIndex={0}
@@ -105,7 +105,7 @@ const MYinputs = ({ item }) => {
           <Separator width={10} />
 
           <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50 }} >
-            <Icon name='camera' size={30}  style={{backgroundColor:Colors.LIGHT_GREEN,color:'green', borderRadius:50,padding:10}}/>
+            <Icon name='camera' size={30} style={{ backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 10 }} />
             {/* <Image style={{ width: 50, height: 50 }}
               source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
             /> */}
@@ -117,24 +117,25 @@ const MYinputs = ({ item }) => {
             <View style={mstyle.inputSubContainer}>
 
               {item?.type === 'select' ? (
-                <View style={{flex:1 ,flexDirection:'row'}}>
-                  
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+
                   <SelectDropdown
                     data={item?.options}
                     defaultValue={item?.value}
                     defaultButtonText={item?.label}
                     buttonStyle={{
                       backgroundColor: Colors.LIGHT_GREY,
-                      width:'100%', height: Display.setHeight(6)
+                      width: '100%', height: Display.setHeight(6)
                     }}
-                    buttonTextStyle={{fontSize:14}}
+                    buttonTextStyle={{ fontSize: 14 }}
                     dropdownStyle={[mstyle.inputContainer]}
-                    selectedRowStyle={{backgroundColor:Colors.LIGHT_GREY}}
-                    rowTextStyle={{fontSize:14}}
+                    selectedRowStyle={{ backgroundColor: Colors.LIGHT_GREY }}
+                    rowTextStyle={{ fontSize: 14 }}
 
                     onSelect={(selectedItem, index) => {
-                      // console.log(selectedItem, index)
+                      console.log(selectedItem, index)
                       item.value = selectedItem
+                      item.index =index
 
                     }}
                     buttonTextAfterSelection={(selectedItem, index) => {
@@ -149,7 +150,7 @@ const MYinputs = ({ item }) => {
                     }}
                   />
 
-{/* <Feather
+                  {/* <Feather
                     name="phone"
                     size={18}
                     color={Colors.DEFAULT_GREY}
@@ -157,62 +158,63 @@ const MYinputs = ({ item }) => {
                 </View>
               ) : (
 
-<View style={{flex:1, flexDirection:'row'}}>
-{item?.type === 'date' || item?.type === 'time' ? (
-                <View style={{flex:1 ,flexDirection:'row'}}>
-                  {/* <Button title="Open" onPress={() => setOpen(true)} style={mstyle.PrimaryButton} /> */}
-                  <DatePicker
-                    mode={item?.type=='date'?'date':'time'}
-                    modal
-                    open={open}
-                    date={item?.value}
-                    onConfirm={text => {item.value = text 
-                      console.log(item)
-                      setOpen(false)
-                    }}
-                    onCancel={() => {
-                      setOpen(false)
-                    }} 
-                  />
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                  {item?.type === 'date' || item?.type === 'time' ? (
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                      {/* <Button title="Open" onPress={() => setOpen(true)} style={mstyle.PrimaryButton} /> */}
+                      <DatePicker
+                        mode={item?.type == 'date' ? 'date' : 'time'}
+                        modal
+                        open={open}
+                        date={item?.value}
+                        onConfirm={text => {
+                          item.value = text
+                          console.log(item)
+                          setOpen(false)
+                        }}
+                        onCancel={() => {
+                          setOpen(false)
+                        }}
+                      />
 
-              <Feather
-                    onPress={() => setOpen(true)}
-                    name={item?.type == 'date'? "calendar" : "clock"}
-                    size={30}
-                    color={Colors.DEFAULT_GREY}
-                    style={{paddingTop:5, paddingRight: 8}}
-                  />
+                      <Feather
+                        onPress={() => setOpen(true)}
+                        name={item?.type == 'date' ? "calendar" : "clock"}
+                        size={30}
+                        color={Colors.DEFAULT_GREY}
+                        style={{ paddingTop: 5, paddingRight: 8 }}
+                      />
 
-                {item?.type=='time'? (
-                  <Text style={mstyle.inputText}>{item.value.toTimeString().slice(0,5)}</Text>
-                ):(
-                  <Text style={mstyle.inputText}>{item.value.toISOString().split('T')[0]}</Text>
-                )}
+                      {item?.type == 'time' ? (
+                        <Text style={mstyle.inputText}>{item.value.toTimeString().slice(0, 5)}</Text>
+                      ) : (
+                        <Text style={mstyle.inputText}>{item.value.toISOString().split('T')[0]}</Text>
+                      )}
+
+                    </View>
+                  ) : (
+                    <View>
+
+                      <TextInput
+                        placeholder={item.placeholder} keyboardType={item?.keyboard ? item?.keyboard : ''}
+                        placeholderTextColor={Colors.DEFAULT_GREY}
+                        selectionColor={Colors.DEFAULT_GREY}
+                        style={mstyle.inputText}
+                        // maxLength={10}
+                        multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
+                        onChangeText={text => {
+                          item.value = text
+                          // console.log(item)
+                        }}
+                        // value={item?.value}
+                        defaultValue={item?.value}
+                      />
+                    </View>
+                  )}
 
                 </View>
-              ) : (
-                <View>
 
-                <TextInput
-                  placeholder={item.placeholder} keyboardType={item?.keyboard ? item?.keyboard : ''}
-                  placeholderTextColor={Colors.DEFAULT_GREY}
-                  selectionColor={Colors.DEFAULT_GREY}
-                  style={mstyle.inputText}
-                  // maxLength={10}
-                  multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
-                  onChangeText={text => {
-                    item.value = text
-                    // console.log(item)
-                  }}
-                  // value={item?.value}
-                  defaultValue={item?.value}
-                />
-</View>
               )}
-
-              </View>
-
-)}
 
             </View>
           </View>

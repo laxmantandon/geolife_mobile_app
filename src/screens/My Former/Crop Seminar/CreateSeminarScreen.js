@@ -1,4 +1,4 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../../../components/MYinputs';
 import mstyle from '../../../mstyle';
@@ -17,17 +17,17 @@ const CreateSeminarScreen = ({navigation}) => {
 
     { label: 'Date', value: new Date(), type: 'date', key: 'seminar_date'  },
     { label: 'Time', value: new Date(), type: 'time', key: 'seminar_time' },
-    { label: 'Select The Venue', value: '', type: 'select', key: 'venue', options:venue },
+    { label: 'Enter Seminar Venue', value: '',  key: 'venue' },
 
     { label: 'Automated Message', placeholder:'', key: 'message', value:'',type: 'textarea', },
-              { label: 'Address', placeholder:'', key: 'address', value:'',type: 'textarea', },
-              { label: 'Pincode', placeholder:'', key: 'pincode', value:'', },
+    { label: 'Address', placeholder:'Address', key: 'address', value:'',type: 'textarea', },
+    { label: 'Pincode', placeholder:'492001', key: 'pincode', value:'', },
 
-    { label: 'Nearest BK Center', value: '', type: 'select', key: 'bk_center', options:bkcenter },
+    { label: 'Nearest BK Center', value: '', index:'', type: 'select', key: 'bk_center', options:[] },
 
      { label: 'My Image', value: [], type: 'image', key: 'image', },
 
-     { label: 'Speeker Didi Name',placeholder:'Enter name', value: '',  key: 'speeker_name' },
+     { label: 'Speeker Didi Name',placeholder:'Enter name', value: "" ,  key: 'speeker_name' },
      { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no', keyboard:'numeric' },
 
     ])
@@ -60,6 +60,13 @@ const CreateSeminarScreen = ({navigation}) => {
       console.log('SEMINAR MASTERS', r)
       if (r?.status== true) {
         setIsLoading(false)
+
+        let bk=[]
+        for (let m in r?.data["bk_center"] ){
+          console.log(r?.data["bk_center"][m].name)
+          bk.push(r?.data["bk_center"][m].name)
+        }
+
         setvillages(r?.data["villages"])
         setvenue(r?.data["venues"])
         setbkcenter(r?.data["bk_center"])
@@ -67,8 +74,9 @@ const CreateSeminarScreen = ({navigation}) => {
         
         formdata[0].options = r?.data["villages"]
         formdata[3].options = r?.data["venues"]
-        formdata[5].options = r?.data["bk_center"]
-        // console.log('formadata  add',formdata)
+        formdata[7].options = bk
+
+        
         // setdata(response?.data)
         // setbkcenter()
         // setvenue()
@@ -125,6 +133,8 @@ const CreateSeminarScreen = ({navigation}) => {
           return (
             <View>
               <MYinputs item={item} />
+
+              <Text>{formdata[7].value}</Text>
             </View>
           )
         }}

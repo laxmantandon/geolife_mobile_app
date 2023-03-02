@@ -40,7 +40,7 @@ const WhatsappFarmerScreen = () => {
       console.log(r)
       if (r?.status== true) {
         // setformdata(r?.data)
-        setmimage(r?.data.image)
+        setmimage(r?.data.image.image)
         formdata[0].value=r.data.message
         formdata[1].value=r.data.video_url
         setmsg( r.data.message)
@@ -56,10 +56,9 @@ const WhatsappFarmerScreen = () => {
 
     let req = submitReqData(formdata)
     // Linking.openURL(`whatsapp://send?text=${murl}%0A%0A${msg}%0A%0AImage%20Link%20:%20${mimage}`)
-    
     const options = {
       title: req['Daily Whatsapp Message'],
-      message: `${murl} ${msg}`, // Note that according to the documentation at least one of "message" or "url" fields is required
+      message: `${murl}  ${msg}`, // Note that according to the documentation at least one of "message" or "url" fields is required
       url: mimage,
     };
     

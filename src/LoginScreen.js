@@ -139,7 +139,6 @@ const LoginScreen = ({ navigation, setToken }) => {
 
           AsyncStorage.setItem('user_info', JSON.stringify(response.data));
           // navigation.navigate('Home')
-          // DevSettings.reload()
           RNRestart.restart();
           console.log(AuthenicationService.gettoken())
           setotp(false)
