@@ -17,18 +17,18 @@ const CreateSeminarScreen = ({navigation}) => {
 
     { label: 'Date', value: new Date(), type: 'date', key: 'seminar_date'  },
     { label: 'Time', value: new Date(), type: 'time', key: 'seminar_time' },
-    { label: 'Enter Seminar Venue', value: '',  key: 'venue' },
+    { label: 'Enter Seminar Venue', value: '', placeholder:'Enter Seminar Venue',  key: 'venue' },
 
-    { label: 'Automated Message', placeholder:'', key: 'message', value:'',type: 'textarea', },
-    { label: 'Address', placeholder:'Address', key: 'address', value:'',type: 'textarea', },
-    { label: 'Pincode', placeholder:'492001', key: 'pincode', value:'', },
+    { label: 'Automated Message', placeholder:'Type Your Automated Message', key: 'message', value:'',type: 'textarea', },
+    { label: 'Address', placeholder:'H.no -123, Building Name, village, Near by area', key: 'address', value:'',type: 'textarea', },
+    { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric' },
 
     { label: 'Nearest BK Center', value: '', index:'', type: 'select', key: 'bk_center', options:[] },
 
      { label: 'My Image', value: [], type: 'image', key: 'image', },
 
-     { label: 'Speeker Didi Name',placeholder:'Enter name', value: "" ,  key: 'speeker_name' },
-     { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no', keyboard:'numeric' },
+    //  { label: 'Speeker Didi Name',placeholder:'Enter name', value: "" ,  key: 'speeker_name' },
+    //  { label: 'Speeker Didi Mobile', placeholder: 'Enter mobile number',value:'',  key: 'mobile_no', keyboard:'numeric' },
 
     ])
   // if (item) {
@@ -92,17 +92,23 @@ const CreateSeminarScreen = ({navigation}) => {
   const submit = () => {
     // console.log(formdata)
     let req = submitReqData(formdata);
+    req.speeker_name = bkcenter[formdata[7].index]['speaker_didi']
+    req.mobile_no =  bkcenter[formdata[7].index]['mobile_number']
     req.seminar_date =req.seminar_date.toISOString().split('T')[0]
     req.seminar_time =req.seminar_time.toTimeString().slice(0,5)
     setIsLoading(true);
-    // req.image = "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
     // console.log('REQUEST', req)
 
     AuthenicationService.create_crop_seminar(req).then(r => {
       setIsLoading(false);
       // console.log(r)
       if (r?.status == true) {
+        ToastAndroid.showWithGravityAndOffset(
+          'New Seminar created Successfully',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
         navigation.goBack()
+        
       } else {
         ToastAndroid.showWithGravityAndOffset(
           r.message,
@@ -112,10 +118,6 @@ const CreateSeminarScreen = ({navigation}) => {
       }
     })
 
-  }
-
-  const update =()=>{
-    // console.log(formdata)
   }
 
 
@@ -133,8 +135,6 @@ const CreateSeminarScreen = ({navigation}) => {
           return (
             <View>
               <MYinputs item={item} />
-
-              <Text>{formdata[7].value}</Text>
             </View>
           )
         }}

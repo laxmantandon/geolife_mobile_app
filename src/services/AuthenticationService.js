@@ -6,6 +6,7 @@ import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
 const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
+const base_url2 ='https://crop.erpgeolife.com/api/resource'
 // const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
 
 // const [user, setuser] = useState([])
@@ -383,10 +384,30 @@ const activity_type = async req => {
   }
 };
 
+
+const get_free_sample = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.free_sample_distribution`,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
 const create_free_sample = async req => {
   try {
     let Response = await AuthRequest.post(
-      `${base_url}.create_free_sample`,
+      `${base_url}.free_sample_distribution`,
       req,{headers:gettoken()}
     );
     return Response?.data.message
@@ -404,7 +425,7 @@ const update_status_free_sample = async req => {
   gettoken()
   try {
     let Response = AuthRequest.get(
-      `${base_url}.update_status_free_sample`,
+      `${base_url}.free_sample_distribution`,
       {headers: gettoken()}
     );
     return Response?.data.message
@@ -490,5 +511,5 @@ const farmerCropData = async req => {
 export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
-  get_users_task, gettoken, farmerCropData
+  get_users_task, gettoken, farmerCropData, get_free_sample
 };

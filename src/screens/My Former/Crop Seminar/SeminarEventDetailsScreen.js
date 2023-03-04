@@ -1,6 +1,8 @@
-import { View, Text, FlatList, Pressable } from 'react-native'
+import { View, Text, FlatList, Pressable,Linking } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const SeminarEventDetailsScreen = ({navigation , props,
   route: {
@@ -11,8 +13,8 @@ const SeminarEventDetailsScreen = ({navigation , props,
         {title:'Post Activities', route:'PostActivityScreen',value:item.item.crop.details.post_activities},
         {title:'Upload Photos', route:'UploadPhotosScreen', value:item},
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item},
-        {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries', value:item},
-        {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries', value:item},
+        // {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries', value:item},
+        // {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries', value:item},
         {title:'Free Sample Distribution Update Status', route:'FreeSampleBeneficiaries', value:item},
         {title:'Raise Crop Alert', route:'RaiseCropAlertScreen', value:item},
       ])
@@ -36,12 +38,11 @@ const SeminarEventDetailsScreen = ({navigation , props,
           data={event}
           renderItem={(item) =>{
             return (
-              <View style={{padding:10,}}
-                 onPress={() => {
-                   navigation.navigate(item.item.route)
-                 }} 
-                 >
+              <View style={{padding:10, flexDirection:'row'}} >
               <Card item={item} />
+              <Icon onPress={() => { Linking.openURL(`tel:${event[0].subtitle}`) }}
+              name={'ios-call'} size={22} color='black' style={{paddingTop:15,paddingRight:20,color:'black'}}/>
+              
     
               </View>
               )

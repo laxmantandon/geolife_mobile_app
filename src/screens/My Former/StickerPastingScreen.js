@@ -56,7 +56,7 @@ const StickerPastingScreen = ({navigation}) => {
       }).catch(e => {
         console.log(e)
       })
-  }
+  } 
   
 
 
@@ -72,6 +72,10 @@ const StickerPastingScreen = ({navigation}) => {
       // console.log(response)
       if (r?.status== true) {
       navigation.goBack()
+      ToastAndroid.showWithGravityAndOffset(
+        'Sticker Pasting Successfully Submited',
+        ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+      );
       }else{
         ToastAndroid.showWithGravityAndOffset(
       'Oops! Something went wrong check internet connection',

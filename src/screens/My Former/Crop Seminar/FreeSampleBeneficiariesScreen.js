@@ -5,6 +5,8 @@ import mstyle from '../../../mstyle'
 import { Colors } from '../../../contants'
 import { useEffect } from 'react'
 import { AuthenicationService } from '../../../services'
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const FreeSampleBeneficiariesScreen = ({ navigation, route: {
   params: { item },
@@ -22,7 +24,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number,"free_sample":a.free_sample })
           })
           setdata(mapped_array)
         } else {
@@ -44,7 +46,46 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         style: 'cancel',
       },
       { text: 'YES', onPress: () => submit(farmer) },
+      { text: 'Update', onPress: () => submit(farmer) },
     ]);
+  }
+
+
+  const OpenDropDown = (farmer)=>{
+    Alert.alert('Confirmation!', `Are you sure you Update ${farmer.title} for free sample ?`, [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      { text: 'YES', onPress: () => update(farmer) },
+      { text: 'Update', onPress: () => update(farmer) },
+    ]);
+  }
+
+
+  const update = (farmer)=>{
+    req={
+      farmer:farmer.subtitle,
+      name:item.value.item.crop.name,
+    }
+    console.log(req)
+    AuthenicationService.create_free_sample(req).then(x => {
+      console.log(x)
+      if(x.status){
+        ToastAndroid.showWithGravityAndOffset(
+          'Farmer Successfully Submited',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+          'Farmer Not Submited Please Try Again',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+
+      }
+   
+    })
   }
 
 
@@ -53,6 +94,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
       farmer:farmer.subtitle,
       name:item.value.item.crop.name,
     }
+    console.log(req)
     AuthenicationService.create_free_sample(req).then(x => {
       console.log(x)
       if(x.status){
@@ -94,10 +136,23 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         data={data}
         renderItem={(item) => {
           return (
-            <Pressable
+            <View style={{ flexDirection:'row', flex:1 }}>              
+              <Pressable style={{ flexDirection:'row', flex:1 }}
               onPress={() => { checkfarmer(item.item) }} >
               <Card item={item} />
             </Pressable>
+            {item.item.free_sample?( 
+            <Icon onPress={()=>{
+              OpenDropDown()
+
+            }} name={'chevron-down-outline'} 
+                size={30} 
+                style={{paddingTop:15,paddingRight:20,color:'green'}}
+            />
+            
+            ):(null)}
+
+              </View>
           )
         }} />
       {/* <Pressable onPress={() => { navigation.navigate('AddFarmer') }}>

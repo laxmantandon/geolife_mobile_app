@@ -446,7 +446,7 @@ function App({ navigation }) {
               <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} options={() => ({ headerTitle: "Sticker Pasting" })} />
               <Stack.Screen name='EventsScreen' component={EventsScreen} options={() => ({ headerTitle: "Events" })} />
               <Stack.Screen name='CreateEventScreen' component={CreateEventScreen} options={() => ({ headerTitle: "New Event" })} />
-              <Stack.Screen name='UploadPhotosScreen' component={UploadPhotosScreen} options={() => ({ headerTitle: "Upload File" })} />
+              <Stack.Screen name='UploadPhotosScreen' component={UploadPhotosScreen} options={() => ({ headerTitle: "Upload Photos" })} />
               <Stack.Screen name='PravaktaScreen' component={PravaktaScreen} options={() => ({ headerTitle: "Pravakta" })} />
               <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} options={() => ({ headerTitle: "Crop Alert" })} />
               <Stack.Screen name='WhatsappFarmerScreen' component={WhatsappFarmerScreen} options={() => ({ headerTitle: "Whatsapp" })} />
