@@ -296,9 +296,10 @@ const create_activity = async req => {
 
 const expenses_list = async req => {
   try {
-    let Response =  AuthRequest.get(
-      `${base_url}.expenses`,
-      {headers: headers}
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.expenses`,{headers:gettoken()}
+      
     );
     return Response?.data.message
   } catch (error) {
@@ -308,6 +309,7 @@ const expenses_list = async req => {
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
     return {status: false, message: 'Oops! Something went wrong '};
+
   }
 };
 
@@ -384,6 +386,26 @@ const activity_type = async req => {
   }
 };
 
+const expense_type = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.expense_type`,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
 
 const get_free_sample = async req => {
   try {
@@ -422,11 +444,10 @@ const create_free_sample = async req => {
 };
 
 const update_status_free_sample = async req => {
-  gettoken()
   try {
-    let Response = AuthRequest.get(
+    let Response = await AuthRequest.put(
       `${base_url}.free_sample_distribution`,
-      {headers: gettoken()}
+      req,{headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
@@ -511,5 +532,5 @@ const farmerCropData = async req => {
 export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
-  get_users_task, gettoken, farmerCropData, get_free_sample
+  get_users_task, gettoken, farmerCropData, get_free_sample, expense_type
 };

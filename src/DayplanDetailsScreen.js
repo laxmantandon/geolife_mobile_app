@@ -5,53 +5,21 @@ import mstyle from './mstyle';
 import Buttons from './components/Buttons';
 import { AuthenicationService } from './services';
 import submitReqData from './services/FormData';
-import { back } from 'react-native/Libraries/Animated/Easing';
 
 
-const ActivityDetailsScreen = ({ navigation, props,
+const DayplanDetailsScreen = ({ navigation, props,
   route: {
     params: { item },
   },
 }) => {
  
-  const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'select', },
-    { label: 'Name', placeholder: 'Enter Name', key: 'activity_name', value: '', type: 'text' },
-    { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
-    { label: 'My Image', value: [], type: 'image', key: 'image', },
+    { label: 'Sales in Lakhs', placeholder: '....................', key: 'sales_in_lakhs', value: '', type: 'numaric' },
+    { label: 'Collections in Lakhs', placeholder: '....................', key: 'collections_n_lakhs', value: '', type: 'text' },
+    { label: 'Number of Dealer Appointment', placeholder: '....................', key: 'num_dealer', value: '', type: 'text' },
   ])
   const [isLoading, setisLoading] = useState(false)
-  if (item) {
-    console.log(item)
-
-    for (let i in formdata) {
-      for (let n in item.item) {
-        console.log('item value', item.item[n])
-        if (formdata[i].key === n) {
-          formdata[i].value = item.item[n]
-        }
-      }
-    }
-  }
-
-  if (activity_type.length===0){
-    console.log(activity_type.length)
-    AuthenicationService.activity_type(req).then(res => {
-      // console.log(res.data)
-      if (res?.status == true) {
-        mapped_array=[]
-        res.data.forEach(a=> {
-          mapped_array.push( a.name)
-        })
-        formdata[0].options =mapped_array
-        setactivity_type(mapped_array)
-      } else {
-      }
-    })
-
-  }
-
+ 
 
   const submit = () => {
     // console.log(formdata)
@@ -148,4 +116,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 3
   },
 })
-export default ActivityDetailsScreen
+export default DayplanDetailsScreen

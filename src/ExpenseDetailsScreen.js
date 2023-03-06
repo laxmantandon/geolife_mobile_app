@@ -1,21 +1,22 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
 import Buttons from './components/Buttons';
 import { AuthenicationService } from './services';
+import submitReqData from './services/FormData';
 
 
-const ExpenseDetailsScreen = ({ props,
+const ExpenseDetailsScreen = ({ navigation,
   route: {
     params: { item },
   },
 }) => {
-  const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
+  const [expense_type, setexpense_type] = useState([])
   const [formdata, setformdata] = useState([
-    // { label: ' Select Expense Type', key: 'type', value: '', options: activity_type, type: 'select', },
+    { label: ' Select Expense Type', key: 'expense_type', value: '', options: expense_type, type: 'select', },
     { label: 'Amount Against Expense', placeholder: '00.00', key: 'amount', value: '',  keyboard: 'numeric' },
-    { label: 'Notes', placeholder: 'Enter Notes', key: 'note', value: '', type: 'textarea' },
+    { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
     { label: 'Image', value: [], type: 'image', key: 'image', },
   ])
   const [isLoading, setisLoading] = useState(false)
@@ -32,17 +33,50 @@ const ExpenseDetailsScreen = ({ props,
     }
   }
 
+  if (expense_type.length===0){
+    console.log(expense_type.length)
+    AuthenicationService.expense_type(req).then(res => {
+      // console.log(res.data)
+      if (res?.status == true) {
+        mapped_array=[]
+        res.data.forEach(a=> {
+          mapped_array.push( a.name)
+        })
+        formdata[0].options =mapped_array
+        setexpense_type(mapped_array)
+      } else {
+      }
+    })
+
+  }
+
 
   const submit =()=>{
-    console.log(formdata)
     let req = submitReqData(formdata);
       setisLoading(true);
+      // console.log(re/q)
+    if (req.expense_type=='' || req.expense_type==null){
+      Alert.alert('Please Select Expense type ')
+      setisLoading(false);
+      return
+    }
 
-    AuthenicationService.create_activity(req).then(response => {
+    if (req.amount=='' || req.amount==null){
+      setisLoading(false);
+
+      Alert.alert('Please Enter Amount')
+      return
+    }
+
+    AuthenicationService.create_expenses(req).then(response => {
       setisLoading(false);
       console.log(response)
       if (response?.status== true) {
       navigation.goBack()
+      ToastAndroid.showWithGravityAndOffset(
+        'Expense Successfully Added',
+        ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+      );
       }else{
         ToastAndroid.showWithGravityAndOffset(
       'Oops! Something went wrong check internet connection',

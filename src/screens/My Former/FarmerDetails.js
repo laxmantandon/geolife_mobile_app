@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, Linking } from 'react-native'
 import React, { useState } from 'react'
 import mstyle from '../../mstyle'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -51,15 +51,20 @@ const FarmerDetails = ({route: {
 
       <View style={{flexDirection:'row', paddingVertical:10,borderBottomWidth:1, borderBottomColor:'silver'}}>
         <View style={{width:'30%', marginLeft:'5%'}}>
-        <Icon name={'logo-whatsapp'} size={30} style={{paddingTop:2,color:'green', alignSelf:'center'}}/>
+        <Icon name={'logo-whatsapp'} 
+        onPress={()=>{Linking.openURL(`whatsapp://send?phone=91${item.item.subtitle}`)}}
+         size={30} style={{paddingTop:2,color:'green', alignSelf:'center'}}/>
         </View>
 
         <View style={{width:'30%'}}>
-        <Icon name={'ios-call'} size={30} style={{paddingTop:2,color:'silver', alignSelf:'center'}}/>
+        <Icon name={'ios-call'} onPress={() => {
+                Linking.openURL(`tel:${item.item.subtitle}`)
+              }}
+               size={30} style={{paddingTop:2,color:'black', alignSelf:'center'}}/>
         </View>
 
         <View style={{width:'30%', marginRight:'5%'}}>
-        <Icon name={'person-circle-outline'} size={30} style={{paddingTop:2,color:'silver', alignSelf:'center'}}/>
+        <Icon name={'refresh-circle-outline'} size={30} style={{paddingTop:2,color:'gray', alignSelf:'center'}}/>
         </View>
       
       </View>

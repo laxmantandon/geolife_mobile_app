@@ -93,7 +93,7 @@ const MyFarmerListScreen = ({ navigation }) => {
               </Pressable>
 
               <Icon  onPress={() => {
-                Linking.openURL(`whatsapp://send?phone=${item.item.subtitle}`)
+                Linking.openURL(`whatsapp://send?phone=91${item.item.subtitle}`)
               }} 
               name={'logo-whatsapp'} size={25} color='green' style={{paddingTop:15,paddingRight:10,color:'green'}}/>
 

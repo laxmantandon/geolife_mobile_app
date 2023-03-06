@@ -29,8 +29,8 @@ const ExpenseScreen = ({navigation}) => {
         total_expense=0
         response.data.forEach(a=> {
           let m ={
-            title:a.expense_name,
-            subtitle:a.amount,
+            title:a.expense_type,
+            subtitle:`Expense in Rs. ${a.amount}`,
             image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
           }
           total_expense = total_expense+a.amount
@@ -78,7 +78,10 @@ const ExpenseScreen = ({navigation}) => {
       />
 
 <View style={{bottom:25,left:15}}>
-            <Text>Total Expense of the day {expense}</Text>
+            <Text style={{fontSize:15,color:'black'}}>Total Expense of the day  
+            <Text style={{fontSize:18,color:'black', fontWeight:'700'}}>
+            {` Rs. ${expense} `}
+              </Text></Text>
             </View>
 
 <Pressable onPress={()=>{navigation.navigate('ExpenseDetails',{item:''})}}>

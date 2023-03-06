@@ -29,14 +29,14 @@ const PreActivityScreen = ({navigation ,  route: {
   
   useEffect(() => {
     
-    if(item) {
-      let mapped_array = []
-      item.value.forEach(i => {
-        // console.log('iiiiiiii', data)
-        mapped_array.push({"title": i.activity_name, "value": i.activity_status})
-      })
-      setdata1(mapped_array)
-    }
+    // if(item) {
+    //   let mapped_array = []
+    //   item.value.forEach(i => {
+    //     // console.log('iiiiiiii', data)
+    //     mapped_array.push({"value": i.activity_status})
+    //   })
+    //   setdata1(mapped_array)
+    // }
 
   }, [])
 

@@ -15,7 +15,7 @@ const SeminarEventDetailsScreen = ({navigation , props,
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item},
         // {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries', value:item},
         // {title:'Free Sample Distribution Calling', route:'FreeSampleBeneficiaries', value:item},
-        {title:'Free Sample Distribution Update Status', route:'FreeSampleBeneficiaries', value:item},
+        // {title:'Free Sample Distribution Update Status', route:'FreeSampleBeneficiaries', value:item},
         {title:'Raise Crop Alert', route:'RaiseCropAlertScreen', value:item},
       ])
     const [event, setevent] = useState([{title:'Event name', subtitle:'Event Activity', image:'smndbmns'}])
