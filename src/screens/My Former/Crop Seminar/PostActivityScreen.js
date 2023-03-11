@@ -19,6 +19,8 @@ const PostActivityScreen = ({navigation ,  route: {
     { title: 'CNP notifications whatssapp', value: false, key: "cnp_notifications_whatssapp" },
     { title: 'CNP  videos whatssapp', value: false, key: "cnp_videos_whatssapp" },
   ])
+  const [loading, setloading] = useState(false)
+
 
 
   useEffect(() => {
@@ -36,6 +38,14 @@ const PostActivityScreen = ({navigation ,  route: {
       // setdata(mapped_array)
     }
 }, [])
+
+const getData =()=>{
+  setTimeout(()=> {
+    setloading(false)
+    clearTimeout();
+  }, 500)
+  
+}
 
 const checkActivity = (activity)=>{
 // console.log(data[activity.index].value)
@@ -74,22 +84,30 @@ const updateActivity=()=>{
   return (
     <View style={mstyle.container1}>
       <FlatList
+         refreshing={loading}
+         onRefresh={()=>{
+           getData()
+         }}
+      
         data={data}
         keyExtractor={(item, index) => item.key}
         renderItem={(item,index) => {
           return (
             <Pressable style={{ flex: 1, flexDirection: 'row' }}
-            onPress={()=>{ item.item.value=true}}
+            onPress={()=>{ item.item.value===true?item.item.value=false:item.item.value=true 
+               setloading(true)
+               getData()
+                }}
            >
-              <Icon  name={item?.item.value===true ?'ios-checkmark-circle':'ios-checkmark-circle'}
-               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item?.item.value===true ? 'green' : 'silver' }} />
+              <Icon  name={item.item.value===true ?'ios-checkmark-circle':'ellipse-outline'}
+               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item.item.value===true ? 'green' : 'silver' }} />
               <Card item={item} />
             </Pressable>
 
           )
         }} />
         <Pressable onPress={()=>{updateActivity()}}>
-        <Buttons title={'Submit Activity'} />
+        <Buttons title={'Submit Post Activity'} />
 
 
         </Pressable>

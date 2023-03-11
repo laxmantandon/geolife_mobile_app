@@ -41,6 +41,8 @@ const CropSeminarScreen = ({navigation}) => {
         setcrop_data(r.data)
       }else{
       }
+    }).catch((e)=>{
+      setserachingData(false)
     })
   }
 

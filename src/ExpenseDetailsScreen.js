@@ -1,10 +1,11 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid, Alert } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid, Alert, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
 import Buttons from './components/Buttons';
 import { AuthenicationService } from './services';
 import submitReqData from './services/FormData';
+import Card from './components/Card';
 
 
 const ExpenseDetailsScreen = ({ navigation,
@@ -13,16 +14,22 @@ const ExpenseDetailsScreen = ({ navigation,
   },
 }) => {
   const [expense_type, setexpense_type] = useState([])
+  const [selected_type, setselected_type] = useState('')
   const [formdata, setformdata] = useState([
-    { label: ' Select Expense Type', key: 'expense_type', value: '', options: expense_type, type: 'select', },
+    // { label: ' Select Expense Type', key: 'expense_type', value: '', options: expense_type, type: 'select', },
     { label: 'Amount Against Expense', placeholder: '00.00', key: 'amount', value: '',  keyboard: 'numeric' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
     { label: 'Image', value: [], type: 'image', key: 'image', },
   ])
+  const [jsondata, setjsondata] = useState([])
+  const [type_data, settype_data] = useState([])
   const [isLoading, setisLoading] = useState(false)
+
+
+
+ 
   if (item) {
     console.log(item)
-
     for (let i in formdata) {
       for (let n in item.item) {
         console.log('item value', item.item[n])
@@ -36,13 +43,16 @@ const ExpenseDetailsScreen = ({ navigation,
   if (expense_type.length===0){
     console.log(expense_type.length)
     AuthenicationService.expense_type(req).then(res => {
-      // console.log(res.data)
+      // console.log(JSON.parse(res.data[0].json))
       if (res?.status == true) {
+        // setformdata(JSON.parse(res.data[0].json))
+        settype_data(res.data)
         mapped_array=[]
         res.data.forEach(a=> {
-          mapped_array.push( a.name)
+          mapped_array.push({ "title": `${a.name}`, "json": `${a.json}` })
         })
         formdata[0].options =mapped_array
+        console.log(mapped_array)
         setexpense_type(mapped_array)
       } else {
       }
@@ -50,9 +60,17 @@ const ExpenseDetailsScreen = ({ navigation,
 
   }
 
+  // useEffect(() => {
+  //     console.log('type', formdata[0].value)
+    
+   
+  // }, [])
+  
+
 
   const submit =()=>{
     let req = submitReqData(formdata);
+    req.expense_type=selected_type
       setisLoading(true);
       // console.log(re/q)
     if (req.expense_type=='' || req.expense_type==null){
@@ -96,14 +114,18 @@ const ExpenseDetailsScreen = ({ navigation,
 
   return (
     <View style={mstyle.container}>
-      <FlatList
+        <Text style={{fontSize:20,color:'black',
+        fontWeight:'bold',textAlign:"center", paddingBottom:25}}>
+          {selected_type?selected_type:'Please select type of'} expenses</Text>
+
+     {selected_type?(
+      <View>
+         <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <Pressable
-            >
+            <Pressable>
               <MYinputs item={item} />
-
             </Pressable>
           )
         }} />
@@ -113,6 +135,30 @@ const ExpenseDetailsScreen = ({ navigation,
       </Pressable>):(<Pressable onPress={()=>{submit()}}>
         <Buttons title={'Submit'}  loading={isLoading}/>
       </Pressable>)}
+        </View>
+     ):(
+
+      <FlatList
+      data={expense_type}
+      renderItem={(item) => {
+        return (
+          <Pressable onPress={()=>{
+            setselected_type(item.item.title)
+            let v =JSON.parse(item.item.json)
+            console.log(v)
+            if(v){
+              if(v.length){
+                setformdata(v)
+
+              }
+            }
+          }}>
+            <Card item={item} />
+          </Pressable>
+        )
+      }} />
+
+     )}
 
 
 

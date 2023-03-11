@@ -50,7 +50,7 @@ const DayplanScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          onPress={() => navigation.navigate('DayplanDetailsScreen',{item})}
+          // onPress={() => navigation.navigate('DayplanDetailsScreen',{item})}
           >
           <Card item={item} />
 
