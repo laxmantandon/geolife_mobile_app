@@ -58,7 +58,7 @@ const ExpenseScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          onPress={() => navigation.navigate('ExpenseDetails',{item})}
+          // onPress={() => navigation.navigate('ExpenseDetails',{item})}
           >
           <Card item={item} />
 

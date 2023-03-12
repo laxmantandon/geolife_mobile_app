@@ -168,10 +168,8 @@ const searchfarmerData = async req => {
 const searchdealerData = async req => {
   try {
     gettoken()
-    
     let Response = await AuthRequest.post(
       `${base_url}.search_farmer`, req, {headers:gettoken()}
-      
     );
     return Response?.data.message
   } catch (error) {
@@ -181,7 +179,24 @@ const searchdealerData = async req => {
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
     return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+  }
+};
 
+
+const searchProductData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.post(
+      `${base_url}.search_farmer`, req, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
   }
 };
 
@@ -553,5 +568,5 @@ const farmerCropData = async req => {
 export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
-  get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData
+  get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData
 };

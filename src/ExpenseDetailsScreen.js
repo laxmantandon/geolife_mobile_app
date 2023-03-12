@@ -19,7 +19,7 @@ const ExpenseDetailsScreen = ({ navigation,
     // { label: ' Select Expense Type', key: 'expense_type', value: '', options: expense_type, type: 'select', },
     { label: 'Amount Against Expense', placeholder: '00.00', key: 'amount', value: '', keyboard: 'numeric' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
-    { label: 'Image', value: [], type: 'image', key: 'image', },
+    { label: 'Image', value: [], type: 'image', key: 'odometer_start_image', },
   ])
   const [jsondata, setjsondata] = useState([])
   const [type_data, settype_data] = useState([])
@@ -81,13 +81,12 @@ const ExpenseDetailsScreen = ({ navigation,
       return
     }
 
-    if (req.amount == '' || req.amount == null) {
-      setisLoading(false);
-
-      Alert.alert('Please Enter Amount')
-      return
-    }
-
+    // if (req.amount == '' || req.amount == null) {
+    //   setisLoading(false);
+    //   Alert.alert('Please Enter Amount')
+    //   return
+    // }
+console.log(req)
     AuthenicationService.create_expenses(req).then(response => {
       setisLoading(false);
       console.log(response)

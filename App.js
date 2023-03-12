@@ -47,6 +47,8 @@ import { AuthContext } from './src/components/context';
 import FarmerDetails from './src/screens/My Former/FarmerDetails';
 import DayplanDetailsScreen from './src/DayplanDetailsScreen';
 import CustomerDetailsScreen from './src/CustomerDetailsScreen';
+import AddPaymentScreen from './src/AddPaymentScreen';
+import ProductScreen from './src/ProductScreen';
 
 // SplashScreen.hide();
 CameraPermission()
@@ -479,6 +481,8 @@ function App({ navigation }) {
               <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({ headerTitle: "Add Expenses" })} />
               <Stack.Screen name="Customer" component={CustomerScreen} options={() => ({ headerTitle: "Customer" })} />
               <Stack.Screen name="CustomerDetails" component={CustomerDetailsScreen} options={() => ({ headerTitle: "Customer Details" })} />
+              <Stack.Screen name="AddPayment" component={AddPaymentScreen} options={() => ({ headerTitle: "Add Payment Details" })} />
+              <Stack.Screen name="ProductScreen" component={ProductScreen} options={() => ({ headerTitle: "Products" })} />
               <Stack.Screen name="Dayplan" component={DayplanScreen} options={() => ({ headerTitle: "Day Plan" })} />
               <Stack.Screen name="DayplanDetailsScreen" component={DayplanDetailsScreen} options={() => ({ headerTitle: "Add Day Plan" })} />
 

@@ -14,8 +14,8 @@ const CustomerDetailsScreen = ({ navigation, props,
       <Text>Customer Mobile or id {item.item.subtitle}</Text>
 
 
-      <Button title='New Order Button' />
-      <Button title='Payment Entry button' />
+      <Button title='New Order Button' onPress={()=>{navigation.navigate('ProductScreen',{item})}} />
+      <Button title='Payment Entry button' onPress={()=>{navigation.navigate('AddPayment',{item})}} />
       <Button title='Return button' />
 
     </View>
