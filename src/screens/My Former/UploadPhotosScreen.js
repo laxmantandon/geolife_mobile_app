@@ -1,4 +1,4 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
@@ -20,7 +20,7 @@ const UploadPhotosScreen = ({navigation, route: {
   ])
   const [selectedItems, setselectedItems] = useState('')
   const [loading, setIsLoading] = useState(false)
-  // console.log('IIIIIIIIIII', item.value.item.crop.name)
+  console.log('IIIIIIIIIII', item.value.item.crop.name)
 
   
   useEffect(() => {
@@ -50,6 +50,16 @@ const UploadPhotosScreen = ({navigation, route: {
 
   const submit =()=>{
     let req = submitReqData(formdata)
+    if(!req.image[0]){
+      Alert.alert('Please add photos')
+      setIsLoading(false);
+      return
+    }
+    if(!selectedItems.id){
+      Alert.alert('Please select Farmer')
+      setIsLoading(false);
+      return
+    }
     req = {
       name: item.value.item.crop.name,
       is_upload_photos: "Yes",

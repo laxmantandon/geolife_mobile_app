@@ -474,9 +474,9 @@ function App({ navigation }) {
               {/* My day Screen */}
               <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Day" })} />
               <Stack.Screen name="Activity" component={ActivityScreen} options={() => ({ headerTitle: "Activity" })} />
-              <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} options={() => ({ headerTitle: "Activity Details" })} />
+              <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} options={() => ({ headerTitle: "Add Activity" })} />
               <Stack.Screen name="Expense" component={ExpenseScreen} options={() => ({ headerTitle: "Expenses" })} />
-              <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({ headerTitle: "Expenses Details" })} />
+              <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({ headerTitle: "Add Expenses" })} />
               <Stack.Screen name="Customer" component={CustomerScreen} options={() => ({ headerTitle: "Customer" })} />
               <Stack.Screen name="CustomerDetails" component={CustomerDetailsScreen} options={() => ({ headerTitle: "Customer Details" })} />
               <Stack.Screen name="Dayplan" component={DayplanScreen} options={() => ({ headerTitle: "Day Plan" })} />

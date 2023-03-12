@@ -28,7 +28,9 @@ const MYinputs = ({ item }) => {
     let options = {
       includeBase64: true,
       mediaType: 'photo',
-      saveToPhotos: true
+      saveToPhotos: true,
+      quality:0.3
+      
 
     };
 

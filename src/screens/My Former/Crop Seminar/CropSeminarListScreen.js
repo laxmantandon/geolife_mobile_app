@@ -42,6 +42,7 @@ const CropSeminarScreen = ({navigation}) => {
       }else{
       }
     }).catch((e)=>{
+      createIconSetFromFontello.log(e)
       setserachingData(false)
     })
   }

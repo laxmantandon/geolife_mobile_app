@@ -9,8 +9,8 @@ const SeminarEventDetailsScreen = ({navigation , props,
     params: { item },
   },}) => {
     const [data, setdata] = useState([
-        {title:'Pre Activities', route:'PreActivityScreen', value:item.item.crop.details.pre_activities},
-        {title:'Post Activities', route:'PostActivityScreen',value:item.item.crop.details.post_activities},
+        {title:'Pre Activities', route:'PreActivityScreen', value:item},
+        {title:'Post Activities', route:'PostActivityScreen',value:item},
         {title:'Upload Photos', route:'UploadPhotosScreen', value:item},
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item},
         // {title:'Free Sample Distribution WhatsApp', route:'FreeSampleBeneficiaries', value:item},
@@ -27,8 +27,8 @@ const SeminarEventDetailsScreen = ({navigation , props,
     event[0].image=item.item.image
     event[0].name=item.item.name
 
-    data[0].value = item.item.crop.details.pre_activities
-    data[1].value = item.item.crop.details.post_activities
+    data[0].value = item
+    data[1].value = item
    
    }
     

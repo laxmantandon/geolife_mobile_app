@@ -29,7 +29,7 @@ const ActivityScreen = ({navigation}) => {
           let m ={
             title:a.activity_name,
             subtitle:a.activity_type,
-            image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
+            image:a?.image?a.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
           }
           mapped_array.push(m)
         })
@@ -50,7 +50,7 @@ const ActivityScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          onPress={() => navigation.navigate('ActivityDetails',{item})}
+          // onPress={() => navigation.navigate('ActivityDetails',{item})}
           >
           <Card item={item} />
 
