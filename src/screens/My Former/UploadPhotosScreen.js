@@ -95,11 +95,6 @@ const UploadPhotosScreen = ({navigation, route: {
 
   }
 
-  const update =()=>{
-    // console.log(formdata)
-  }
-
-
 
   return (
     <View style={mstyle.container}>

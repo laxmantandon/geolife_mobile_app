@@ -169,7 +169,7 @@ const searchdealerData = async req => {
   try {
     gettoken()
     let Response = await AuthRequest.post(
-      `${base_url}.search_farmer`, req, {headers:gettoken()}
+      `${base_url}.search_dealer`, req, {headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
@@ -187,7 +187,7 @@ const searchProductData = async req => {
   try {
     gettoken()
     let Response = await AuthRequest.post(
-      `${base_url}.search_farmer`, req, {headers:gettoken()}
+      `${base_url}.search_product`, req, {headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
@@ -462,6 +462,57 @@ const get_free_sample = async req => {
   }
 };
 
+const checkoutProduct = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.create_sales_order`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
+const update_stock = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.update_dealer_stock`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
+const Add_payment_entry = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.add_dealer_payment`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
 const create_free_sample = async req => {
   try {
     let Response = await AuthRequest.post(
@@ -565,8 +616,24 @@ const farmerCropData = async req => {
 };
 
 
+
+const get_stock = async req => {
+  try {         
+        let Response = await AuthRequest.post(
+          `${base_url}.get_stock`,req,{headers:gettoken()}
+          
+        );
+        return Response?.data.message
+  } catch (error) {
+    console.log('API ERROR ', error.response.data);
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
 export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
-  get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData
+  get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
+  checkoutProduct, update_stock, get_stock, Add_payment_entry
 };

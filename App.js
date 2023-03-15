@@ -49,6 +49,8 @@ import DayplanDetailsScreen from './src/DayplanDetailsScreen';
 import CustomerDetailsScreen from './src/CustomerDetailsScreen';
 import AddPaymentScreen from './src/AddPaymentScreen';
 import ProductScreen from './src/ProductScreen';
+import StartSession from './src/StartSession';
+import ReturnOrderScreen from './src/ReturnOrderScreen';
 
 // SplashScreen.hide();
 CameraPermission()
@@ -383,6 +385,7 @@ function App({ navigation }) {
 
           <Stack.Navigator   >
             <>
+              <Stack.Screen name="SessionScreen" component={StartSession} options={() => ({ headerShown: false })} />
               <Stack.Screen name="Home" component={HomeScreen}
                 // options={() => ({
                 //   headerShown: true,
@@ -485,6 +488,7 @@ function App({ navigation }) {
               <Stack.Screen name="ProductScreen" component={ProductScreen} options={() => ({ headerTitle: "Products" })} />
               <Stack.Screen name="Dayplan" component={DayplanScreen} options={() => ({ headerTitle: "Day Plan" })} />
               <Stack.Screen name="DayplanDetailsScreen" component={DayplanDetailsScreen} options={() => ({ headerTitle: "Add Day Plan" })} />
+              <Stack.Screen name="ReturnOrder" component={ReturnOrderScreen} options={() => ({ headerTitle: "Return Sales order" })} />
 
             </>
           </Stack.Navigator>

@@ -16,6 +16,7 @@ const ActivityDetailsScreen = ({ navigation, props,
  
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
+    { label: 'Please Select Type', key: 'type', value: '', options: ["Farmer","Retailer","Dealer","Other"], type: 'select', },
     { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'select', },
     { label: 'Name', placeholder: 'Enter Name', key: 'activity_name', value: '', type: 'text' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
@@ -44,7 +45,7 @@ const ActivityDetailsScreen = ({ navigation, props,
         res.data.forEach(a=> {
           mapped_array.push( a.name)
         })
-        formdata[0].options =mapped_array
+        formdata[1].options =mapped_array
         setactivity_type(mapped_array)
       } else {
       }

@@ -22,10 +22,11 @@ const CustomerScreen = ({ navigation }) => {
     AuthenicationService.searchdealerData(req)
       .then(x => {
         setserachingData(false)
+        console.log(x)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+            mapped_array.push({ "title": `${a.dealer_name}`, "subtitle": a.mobile_number })
           })
           setdata(mapped_array)
         } else {
@@ -39,22 +40,6 @@ const CustomerScreen = ({ navigation }) => {
     searchFilterFunction("")    
   }, [])
  
-  // const getData = ()=>{
-  //   req=null
-  //   AuthenicationService.farmerData(req).then(x => {
-  //     x.text().then(m => {
-  //       let y = JSON.parse(m)
-  //       if (y.success == true) {
-  //           let mapped_array = []
-  //           y.data.forEach(a=> {
-  //             mapped_array.push({"title": a.fullName, "subtitle": a.mobileNumber})
-  //           })
-  //           setdata(mapped_array)
-  //       } else {
-  //       }
-  //     })
-  //   })
-  // }
 
   return (
     <View style={mstyle.container1}>

@@ -1,10 +1,22 @@
 import { StyleSheet, StatusBar, Text, View, Image } from 'react-native';
 import React, { Component } from 'react'
 import { Colors, Fonts } from '../contants';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Card = ({ item }) => {
   // console.log(item.item)
   const data = item.item
+  // console.log('type',parseInt(data.subtitle))
+  const [sub_title, setsub_title] = useState(0)
+
+  useEffect(() => {
+    if(parseInt(data.subtitle)){
+      setsub_title(parseInt(data.subtitle))
+    }
+  
+  }, [])
+  
   return (
     <View
       style={styles.ListContainer} >
@@ -18,7 +30,7 @@ const Card = ({ item }) => {
             {data?.title}
           </Text>
           {data?.subtitle ? (<Text style={{ color: 'gray',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
- }} numberOfLines={2}> {data?.subtitle}</Text>) : ('')}
+ }} numberOfLines={2}> {sub_title?`*****${data.subtitle.substring(0, 5)}`: data.subtitle}</Text>) : ('')}
         </View>
       </View>
     </View>
