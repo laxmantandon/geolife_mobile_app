@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useEffect } from 'react';
-import { View, Image, Text, Button, TextInput, FlatList, StatusBar, ScrollView, TouchableOpacity, ToastAndroid, BackHandler, Alert, ActivityIndicator } from 'react-native';
+import { View, Image, Text, Button, TextInput, FlatList, StatusBar, ScrollView, TouchableOpacity, ToastAndroid, BackHandler, Alert, ActivityIndicator, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MydayScreen from './src/MydayScreen';
@@ -51,6 +51,7 @@ import AddPaymentScreen from './src/AddPaymentScreen';
 import ProductScreen from './src/ProductScreen';
 import StartSession from './src/StartSession';
 import ReturnOrderScreen from './src/ReturnOrderScreen';
+import FramerProductKitScreen from './src/screens/My Former/FramerProductKitScreen';
 
 // SplashScreen.hide();
 CameraPermission()
@@ -118,6 +119,8 @@ function HomeScreen({ navigation }) {
   }, [])
 
   const [loading, setloading] = React.useState(true)
+  const image = { uri: 'https://media.istockphoto.com/id/1284379612/photo/indian-farmer-spreading-fertilizer-in-the-green-banana-field.jpg'}
+
   getTask = async () => {
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
@@ -146,6 +149,39 @@ function HomeScreen({ navigation }) {
         backgroundColor={Colors.SECONDARY_WHITE}
         translucent
       />
+{/* 
+<FlatList
+        horizontal={true}
+        data={data}
+        style={{height:100}}
+        renderItem={(item) => {
+          return (
+            <Pressable style={{ flex: 1,height:200 }} onPress={() => { navigation.navigate(item.item.route) }}>
+                  <ImageBackground 
+                          source={require('./src/assets/images/01.jpg')}
+                          resizeMode="cover" style={{flex: 1,
+                            justifyContent: 'center',
+                            marginHorizontal:5, borderRadius:8,}}>
+                        <View style={{height:200,width:150, 
+                          marginHorizontal:5,  borderRadius:8,
+                          }} >
+                          <View style={{paddingTop:100}}>
+                          <Icon name={item.item.icon} size={22} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
+
+                            <View style={mstyle.titleContainer}>
+                              <Text style={mstyle.listListTitle} numberOfLines={1}>
+                                {item.item.title}
+                              </Text>
+
+                            </View>
+
+                          </View>
+                        </View>
+                  </ImageBackground>
+            </Pressable>
+          )
+        }}
+        /> */}
 
       <View>
         <FlatList
@@ -449,6 +485,7 @@ function App({ navigation }) {
               <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({ headerTitle: "New Farmer" })} />
               <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} options={() => ({ headerTitle: "Farmer List" })} />
               <Stack.Screen name='FarmerDetails' component={FarmerDetails} options={() => ({ headerTitle: "Farmer Details" })} />
+              <Stack.Screen name='FarmerProductKit' component={FramerProductKitScreen} options={() => ({ headerTitle: "Farmer Product Kit" })} />
               <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} options={() => ({ headerTitle: "Door To Door Visit" })} />
               <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} options={() => ({ headerTitle: "Sticker Pasting" })} />
               <Stack.Screen name='EventsScreen' component={EventsScreen} options={() => ({ headerTitle: "Events" })} />

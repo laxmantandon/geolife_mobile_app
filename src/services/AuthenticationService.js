@@ -165,6 +165,27 @@ const searchfarmerData = async req => {
 };
 
 
+const searchCropData = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.post(
+      `${base_url}.search_crops`, req, {headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
+
 const searchdealerData = async req => {
   try {
     gettoken()
@@ -188,6 +209,23 @@ const searchProductData = async req => {
     gettoken()
     let Response = await AuthRequest.post(
       `${base_url}.search_product`, req, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+  }
+};
+
+const searchProductKitData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.post(
+      `${base_url}.search_product_kit`, req, {headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
@@ -479,6 +517,24 @@ const checkoutProduct = async req => {
   }
 };
 
+
+const checkoutProductKit = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.create_Advance_booking_order`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
 const update_stock = async req => {
   try {
     let Response = await AuthRequest.post(
@@ -605,10 +661,14 @@ const get_users_task = async req => {
 const farmerCropData = async req => {
   try {         
         let Response = await AuthRequest.get(
-          `${base_url}.farmerCropData`,{headers:gettoken()}
+          `https://api3.thefarmpeople.in/api/v1/cropSchedule/erp/${req.mobile_no}`
+          ,{headers: { 
+            'Authorization': 'Bearer GEOLIFE.S1zRI1gprVmgYct9iqF9MfAvkeCS1YRYk9Ztgfzelop6eJgwaA1tJrJu'
+          }
+          }
           
         );
-        return Response?.data.message
+        return Response?.data
   } catch (error) {
     console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
@@ -635,5 +695,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
-  checkoutProduct, update_stock, get_stock, Add_payment_entry
+  checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit
 };

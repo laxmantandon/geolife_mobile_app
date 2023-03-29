@@ -1,12 +1,12 @@
-import { View, Text, Image, FlatList, Linking } from 'react-native'
+import { View, Text, Image, FlatList, Linking, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import mstyle from '../../mstyle'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useEffect } from 'react';
 import { AuthenicationService } from '../../services'
+import moment from 'moment';
 
-
-const FarmerDetails = ({route: {
+const FarmerDetails = ({navigation,route: {
     params: { item },
   } }) => {
 
@@ -17,30 +17,23 @@ const FarmerDetails = ({route: {
     const getData = () => {
       setloading(true)
       let req = {
-        "farmer": item.item.subtitle
+        "mobile_no": item.item.subtitle
       }
-
       AuthenicationService.farmerCropData(req)
         .then(x => {
+          // console.log(x.data[0])
           setloading(false)
-  
-          if (x.status == true) {
-            let mapped_array = []
-            x.data.forEach(a => {
-              mapped_array.push({ "title": `${a.Crop} `, "subtitle": a.schedule })
-            })
-            setdata(mapped_array)
+          if (x.mobileNumber == item.item.subtitle) {
+            setdata(x.data)
           } else {
           }
         })
     }
   
-  
     useEffect(() => {
       getData()
     }, [])
    
-
 
   return (
     <View style={mstyle.container1}>
@@ -64,7 +57,10 @@ const FarmerDetails = ({route: {
         </View>
 
         <View style={{width:'30%', marginRight:'5%'}}>
-        <Icon name={'refresh-circle-outline'} size={30} style={{paddingTop:2,color:'gray', alignSelf:'center'}}/>
+        <Icon name={'refresh-circle-outline'}
+        onPress={()=>{
+          navigation.navigate('FarmerProductKit',item)
+        }} size={30} style={{paddingTop:2,color:'gray', alignSelf:'center'}}/>
         </View>
       
       </View>
@@ -83,13 +79,42 @@ const FarmerDetails = ({route: {
             </View>
           )
         }}
-        renderItem={(item) => {
+        renderItem={({item}) => {
           return (
             <View style={{flex:1,  flexDirection:'row'}}>
             <Pressable onPress={() => {
               }}
               style={{flex:1,  flexDirection:'row'}}>
-              <Card item={item} />
+
+                <View
+                style={[mstyle.ListContainer, { width: '100%' }]} >
+
+                <View style={[mstyle.detailContainer, { width: '90%' }]}>
+                  <View style={mstyle.titleContainer}>
+                    <Text style={mstyle.listListTitle} numberOfLines={1}>
+                        {item.cropName}
+                    </Text>
+                    <Text>{`${item.startDate} To ${moment(item.endDate).format('MM/DD/YYYY')}`}</Text>
+                    <Text>{item.status}</Text>
+                    <Text>{item.stageName}</Text>
+                    <Text>{item.cropName}</Text>
+
+
+
+
+                   
+                  </View>
+
+                  <View style={{ width: '15%' }}>
+                    
+                    
+
+
+                  </View>
+
+                </View>
+              </View>
+              
             
               </Pressable>
             </View>

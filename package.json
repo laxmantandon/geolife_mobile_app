@@ -17,6 +17,8 @@
     "axios": "^1.2.2",
     "install": "^0.13.0",
     "lottie-react-native": "^5.1.4",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.42",
     "npm": "^9.3.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
