@@ -17,6 +17,10 @@ const StartSession = ({ navigation }) => {
   const [loading, setloading] = useState(false)
 
   useEffect(() => {
+    AuthenicationService.get_users_task(null).then(r => {
+    }).catch(e => {
+    })
+
     AsyncStorage.getItem("user_info").then((value) => {
       console.log(value)
       const usrd = JSON.parse(value)
@@ -66,7 +70,13 @@ const StartSession = ({ navigation }) => {
             console.log(JSON.parse(s))
             setsession_started(true)
           })
-          navigation.navigate('Home')
+          if(r.video){
+            navigation.navigate('VideoScreen', {video:r.video})
+
+          }else{
+            navigation.navigate('VideoScreen', {video:'8T3unrIDfYA'})
+
+          }
           ToastAndroid.showWithGravityAndOffset(
             'Your session started',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -117,7 +127,7 @@ const end =moment().format('LT');
       <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
         {session_started ? `Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}` : 'Start Your Session'}
 
-        {/* {moment.duration(end.diff(session))} */}
+        {/* {moment(session).format('LTS')} */}
       </Text>
       <Pressable onPress={() => {
         if (session_started == true) {
@@ -131,10 +141,10 @@ const end =moment().format('LT');
       {session_started == true ? (
         <Pressable onPress={() => {
           if (session_started == true) {
-            navigation.navigate("Home")
+            navigation.navigate('Home')
           }
         }}>
-          <Buttons title={"Go To Home"} loading={loading} />
+          <Buttons title={"Go To Home"} loading={loading} bgcolor={'green'}/>
         </Pressable>
       ) : null}
 
@@ -143,7 +153,7 @@ const end =moment().format('LT');
         AsyncStorage.clear()
         navigation.navigate('Login')
       }}>
-        <Buttons title={'Logout'} />
+        <Buttons title={'Logout'}  bgcolor={'red'}/>
       </Pressable>
 
     </View>

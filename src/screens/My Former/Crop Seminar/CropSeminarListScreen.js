@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Button } from 'react-native'
+import { View, Text, FlatList, Pressable, Button, BackHandler } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
 import mstyle from '../../../mstyle'
@@ -16,7 +16,20 @@ const CropSeminarScreen = ({navigation}) => {
   const [serachingData, setserachingData] = useState(true)
 
   useEffect(() => {
-    getData()    
+    const backAction = () => {
+      navigation.goBack()
+      return true;
+
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    getData() 
+
+    return () => backHandler.remove();
+     
   }, [])
  
   const getData = ()=>{

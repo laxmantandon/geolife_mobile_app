@@ -4,11 +4,11 @@ import { Colors, Fonts, Images } from '../contants'
 import LottieView from 'lottie-react-native';
 import { Display } from '../utils';
 
-const Buttons = ({title,loading}) => {
+const Buttons = ({title,loading,bgcolor}) => {
     const [isLoading, setisLoading] = useState(false)
   return (
     <View
-          style={styles.Button}
+          style={[styles.Button,{backgroundColor: bgcolor?bgcolor:Colors.DARK_ONE}]}
           activeOpacity={0.8}>
           {loading ? (
             <LottieView source={Images.LOADING} autoPlay />

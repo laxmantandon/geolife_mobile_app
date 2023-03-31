@@ -1,16 +1,33 @@
-import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Pressable, StyleSheet, BackHandler } from 'react-native'
 import React, { useState } from 'react'
 import Card from './components/Card'
 import mstyle from './mstyle'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Fonts } from './contants';
 import { Display } from './utils';
+import { useEffect } from 'react';
 
 const MydayScreen = ({navigation}) => {
 
   const [data, setdata] = useState([
     {title:'Activity', route:'Activity'},{title:'Expense', route:'Expense'},{title:'Customer', route:'Customer'},{title:'Day Plan', route:'Dayplan'}
   ])
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true;
+
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [])
+  
 
   return (
     <View style={mstyle.container1}>

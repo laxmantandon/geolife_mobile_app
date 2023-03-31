@@ -52,6 +52,7 @@ import ProductScreen from './src/ProductScreen';
 import StartSession from './src/StartSession';
 import ReturnOrderScreen from './src/ReturnOrderScreen';
 import FramerProductKitScreen from './src/screens/My Former/FramerProductKitScreen';
+import VideoScreen from './src/VideoScreen';
 
 // SplashScreen.hide();
 CameraPermission()
@@ -421,7 +422,8 @@ function App({ navigation }) {
 
           <Stack.Navigator   >
             <>
-              <Stack.Screen name="SessionScreen" component={StartSession} options={() => ({ headerShown: false })} />
+            <Stack.Screen name="SessionScreen" component={StartSession} options={() => ({ headerShown: false })} />
+            <Stack.Screen name="VideoScreen" component={VideoScreen} options={() => ({ headerShown: false })} />
               <Stack.Screen name="Home" component={HomeScreen}
                 // options={() => ({
                 //   headerShown: true,
