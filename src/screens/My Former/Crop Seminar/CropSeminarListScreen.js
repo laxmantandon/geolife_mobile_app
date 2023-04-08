@@ -44,7 +44,10 @@ const CropSeminarScreen = ({navigation}) => {
           let m ={
             title:`At ${a.village}, ${a.venue}`,
             subtitle:`${a.seminar_date} - ${a.seminar_time}`,
-            image:a?.image,
+            date:`${a.seminar_date}`,
+            large_image:a?.image,
+            status:'Active',
+            percent:'10%',
             crop:a
           }
        

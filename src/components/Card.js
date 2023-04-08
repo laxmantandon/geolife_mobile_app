@@ -3,6 +3,12 @@ import React, { Component } from 'react'
 import { Colors, Fonts } from '../contants';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Separator from './Separator';
+import Icon from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
+import { Linking } from 'react-native';
+
+
 
 const Card = ({ item }) => {
   // console.log(item.item)
@@ -11,29 +17,111 @@ const Card = ({ item }) => {
   const [sub_title, setsub_title] = useState(0)
 
   useEffect(() => {
-    if(parseInt(data.subtitle)){
+
+    if (parseInt(data.subtitle)) {
       setsub_title(parseInt(data.subtitle))
     }
-  
-  }, [])
-  
-  return (
-    <View
-      style={styles.ListContainer} >
-      {data?.image ? (<Image style={{ margin: "auto", backgroundColor: Colors.LIGHT_GREY, height: 60, width: 60,
-     borderRadius: 4, }} source={{ uri: data?.image }} />) : ('')}
-      {data?.avatar ? (<Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} source={{ uri: data?.avatar }} />) : ('')}
 
-      <View style={styles.detailContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.listListTitle} numberOfLines={2}>
-            {data?.title}
-          </Text>
-          {data?.subtitle ? (<Text style={{ color: 'gray',fontSize:12,fontWeight:'600', fontFamily: Fonts.POPPINS_MEDIUM,
- }} numberOfLines={2}> {sub_title?`*****${data.subtitle.substring(0, 5)}`: data.subtitle}</Text>) : ('')}
+  }, [])
+
+  return (
+    <View style={{ flex: 1, marginTop: item.index == 0 ? 7 : 1 }}>
+
+      <View style={styles.ListContainer}>
+
+        {data?.large_image ? (<Image style={{
+          backgroundColor: 'silver', height: 170, width: '100%',
+          borderTopLeftRadius: 8, borderTopRightRadius: 8
+        }} source={{ uri: data?.large_image }} />) : ('')}
+
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          {data?.checkbox ?
+            <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+              <Icon name={item.item.value === true ? 'ios-checkmark-circle' : 'ios-ellipse-outline'}
+                size={25} style={{ padding: 15, color: item.item.value === true ? 'green' : 'gray' }} />
+            </View> : ''}
+
+
+          {data?.date ?
+            <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{moment(data.date).format('Do')}</Text>
+                <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>{moment(data.date).format('MMM-YY')}</Text>
+              </View>
+            </View> : ''}
+
+          {data?.time ?
+            <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{moment().format('h:mm')}</Text>
+                <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>{moment().format('a')}</Text>
+              </View>
+            </View> : ''}
+
+
+
+
+
+          {data?.image ? (<Image style={{
+            margin: "auto", backgroundColor: 'white', height: 60, width: 60,
+            borderRadius: 4,
+          }} source={{ uri: data?.image }} />) : ('')}
+          {data?.avatar ? (<View style={{ margin: "auto", marginLeft: 4, alignSelf: 'center', backgroundColor: 'silver', height: 55, width: 55, borderRadius: 50 }} >
+            {/* <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
+      source={{ uri: data?.avatar }} /> */}
+            <Text style={{ fontSize: 30, paddingVertical: 6, fontWeight: 'bold', textAlign: 'center', textAlignVertical: 'center' }}>{data.title[0]}{data.title[1]}</Text>
+          </View>
+          ) : ('')}
+
+          <View style={styles.detailContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.listListTitle} numberOfLines={2}>
+                {data?.title}
+              </Text>
+              {data?.subtitle ? (<Text style={{
+                color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
+              }} numberOfLines={2}> {sub_title ? `*****${data.subtitle.substring(0, 5)}` : data.subtitle}</Text>) : ('')}
+            </View>
+          </View>
+          {data?.status ?
+            <View style={{ backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto' }} >
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{data.percent}</Text>
+                <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>{data.status}</Text>
+              </View>
+            </View> : ''}
+
+
+
+          {data?.whatsapp ? <View style={{
+            backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto',
+            padding: 10, flexDirection: 'row'
+          }}>
+            <Icon onPress={() => {
+              Linking.openURL(`whatsapp://send?phone=91${data.whatsapp}`)
+            }}
+              name={'logo-whatsapp'} size={25} color='green' style={{ paddingTop: 8, color: 'green' }} />
+
+            <Icon onPress={() => {
+              Linking.openURL(`tel:${data.call}`)
+            }}
+              name={'ios-call'} size={25} color='black' style={{ padding: 8, color: 'black' }} />
+          </View>
+            : ''}
+
+          {/* {data?.call ?    
+          <View style={{ backgroundColor:'#f0f8fe',borderTopRightRadius:8, borderBottomRightRadius:8,  marginLeft:'auto'}} >
+          <View style={{padding:10}}>
+          
+         
+           </View>
+         </View>:''} */}
+
         </View>
       </View>
+      <Separator height={5} />
     </View>
+
   )
 
 }
@@ -50,18 +138,18 @@ const styles = StyleSheet.create({
   ListContainer: {
     flex: 1,
     backgroundColor: 'white',
-    // borderColor: 'silver',
-    // borderWidth: 1,
-    borderBottomColor: Colors.LIGHT_GREY2,
-    borderBottomWidth:1,
-    paddingHorizontal: 7,
-    paddingVertical:4,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    // borderBottomColor: Colors.LIGHT_GREY2,
+    // borderBottomWidth:1,
+    // paddingHorizontal: 1,
+    // paddingVertical:1,
     borderRadius: 8,
-    flexDirection: 'row',
-    marginHorizontal: 7,
-    marginVertical: 2,
-    // elevation:2
-   
+    // flexDirection: 'row',
+    marginHorizontal: 10,
+    marginVertical: 1,
+    elevation: 2
+
 
   },
   detailContainer: {
@@ -70,6 +158,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 10,
     alignItems: 'center',
+    paddingVertical: 7,
+    paddingHorizontal: 4
+
     // width: '55%',
   },
 

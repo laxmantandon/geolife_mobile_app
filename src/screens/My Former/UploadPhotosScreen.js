@@ -13,10 +13,10 @@ const UploadPhotosScreen = ({navigation, route: {
 },}) => {
   const [data, setdata] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
-    { label: 'Note', placeholder:'Note :Note', key: 'note', value:'',
-     type: 'textarea', },
-      { label: 'My Image', value: [], type: 'image', key: 'image', },
+    // { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
+    // { label: 'Note', placeholder:'Note :Note', key: 'note', value:'',
+    //  type: 'textarea', },
+      { label: 'Crop Seminar Images', value: [], type: 'image', key: 'image', },
   ])
   const [selectedItems, setselectedItems] = useState('')
   const [loading, setIsLoading] = useState(false)
@@ -28,24 +28,24 @@ const UploadPhotosScreen = ({navigation, route: {
   }, [])
  
   const getData = (text)=>{
-    let req = {
-      "text": text
-    }
-    // console.log(text)
-    AuthenicationService.searchfarmerData(req)
-      .then(x => {
-        // console.log('MMMMMM', x.data)
-        // if (x.status == true) {
-        //   let mapped_array = []
-        //   x.data.forEach(a => {
-        //     mapped_array.push({ "id": a.first_name, "name": a.mobile_number })
-        //   })
-        //   setdata(mapped_array)
-        // } else {
-        // }
-      }).catch(e => {
-        console.log(e)
-      })
+    // let req = {
+    //   "text": text
+    // }
+    // // console.log(text)
+    // AuthenicationService.searchfarmerData(req)
+    //   .then(x => {
+    //     // console.log('MMMMMM', x.data)
+    //     // if (x.status == true) {
+    //     //   let mapped_array = []
+    //     //   x.data.forEach(a => {
+    //     //     mapped_array.push({ "id": a.first_name, "name": a.mobile_number })
+    //     //   })
+    //     //   setdata(mapped_array)
+    //     // } else {
+    //     // }
+    //   }).catch(e => {
+    //     console.log(e)
+    //   })
   }
 
   const submit =()=>{
@@ -55,17 +55,17 @@ const UploadPhotosScreen = ({navigation, route: {
       setIsLoading(false);
       return
     }
-    if(!selectedItems.id){
-      Alert.alert('Please select Farmer')
-      setIsLoading(false);
-      return
-    }
+    // if(!selectedItems.id){
+    //   Alert.alert('Please select Farmer')
+    //   setIsLoading(false);
+    //   return
+    // }
     req = {
       name: item.value.item.crop.name,
       is_upload_photos: "Yes",
-      image: req.image[0],
-      note: req.note,
-      farmer_name:selectedItems.id
+      image: req.image,
+      // note: req.note,
+      // farmer_name:selectedItems.id
     }
 
     console.log('REQ', req)
@@ -99,7 +99,7 @@ const UploadPhotosScreen = ({navigation, route: {
   return (
     <View style={mstyle.container}>
       
-      <SearchableDropDown
+      {/* <SearchableDropDown
             onItemSelect={(item) => {
               formdata[0].value = item.name
               console.log(formdata[0].value)
@@ -164,7 +164,7 @@ const UploadPhotosScreen = ({navigation, route: {
                 nestedScrollEnabled: true,
               }
             }
-        />
+        /> */}
       
 
       <FlatList

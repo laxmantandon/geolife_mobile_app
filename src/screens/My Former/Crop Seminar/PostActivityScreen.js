@@ -14,11 +14,11 @@ const PostActivityScreen = ({navigation ,  route: {
   params: { item },
 },})  => {
   const [data, setdata] = useState([
-    { title: 'Adding crop to app', value: false, key: "adding_crop_to_app"},
-    { title: 'Auto ivr tts trig', value: false, key: "auto_ivr_tts_trig"},
-    { title: 'Auto whatsapp message trigger', value: false, key: "auto_whatsapp_message_trigger" },
-    { title: 'CNP notifications whatssapp', value: false, key: "cnp_notifications_whatssapp" },
-    { title: 'CNP  videos whatssapp', value: false, key: "cnp_videos_whatssapp" },
+    { title: 'Adding crop to app',"checkbox": true , value: false, key: "adding_crop_to_app"},
+    { title: 'Auto ivr tts trig',"checkbox": true , value: false, key: "auto_ivr_tts_trig"},
+    { title: 'Auto whatsapp message trigger',"checkbox": true , value: false, key: "auto_whatsapp_message_trigger" },
+    { title: 'CNP notifications whatssapp',"checkbox": true , value: false, key: "cnp_notifications_whatssapp" },
+    { title: 'CNP  videos whatssapp',"checkbox": true , value: false, key: "cnp_videos_whatssapp" },
   ])
   const [loading, setloading] = useState(false)
   const [IsLoading, setIsLoading] = useState(false)
@@ -122,8 +122,8 @@ const updateActivity=()=>{
                getData()
                 }}
            >
-              <Icon  name={item.item.value===true ?'ios-checkmark-circle':'ellipse-outline'}
-               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item.item.value===true ? 'green' : 'silver' }} />
+              {/* <Icon  name={item.item.value===true ?'ios-checkmark-circle':'ellipse-outline'}
+               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item.item.value===true ? 'green' : 'silver' }} /> */}
               <Card item={item} />
             </Pressable>
 

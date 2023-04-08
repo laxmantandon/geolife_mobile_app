@@ -14,18 +14,18 @@ const PreActivityScreen = ({navigation ,  route: {
   params: { item },
 },})  => {
   const [data, setdata] = useState([
-    { title: 'Auto ivr tts trigger', value:false, key: "auto_ivr_tts_trigger"},
-    { title: 'Auto whatsapp message tr', value:false, key: "auto_whatsapp_message_tr"},
-    { title: 'Bannerscnp hanging product wise', value:false, key: "bannerscnp_hanging_product_wise" },
-    { title: 'Crop leaflet', value:false, key: "crop_leaflet" },
-    { title: 'Coordination with bk didi  ', value:false, key: "coordination_with_bk_didi" },
-    { title: 'Coordination with bk didi  ', value:false, key: "pol_stickers" },
-    { title: 'Pol stickers  ', value:false, key: "pop_material" },
-    { title: 'Product leaflet  ', value:false, key: "product_leaflet" },
-    { title: 'Seminar event script', value:false, key: "seminar_event_script" },
-    { title: 'Stickers', value:false, key: "stickers" },
-    { title: 'Demo Board', value:false, key: "demo_board" },
-    { title: 'Book Dholvala', value:false, key: "book_dholvala" },
+    { title: 'Auto ivr tts trigger', value:false,"checkbox": true , key: "auto_ivr_tts_trigger"},
+    { title: 'Auto whatsapp message tr', value:false,"checkbox": true , key: "auto_whatsapp_message_tr"},
+    { title: 'Bannerscnp hanging product wise', value:false,"checkbox": true , key: "bannerscnp_hanging_product_wise" },
+    { title: 'Crop leaflet', value:false,"checkbox": true , key: "crop_leaflet" },
+    { title: 'Coordination with bk didi  ', value:false,"checkbox": true , key: "coordination_with_bk_didi" },
+    { title: 'Coordination with bk didi  ', value:false,"checkbox": true , key: "pol_stickers" },
+    { title: 'Pol stickers  ', value:false,"checkbox": true , key: "pop_material" },
+    { title: 'Product leaflet  ', value:false,"checkbox": true , key: "product_leaflet" },
+    { title: 'Seminar event script', value:false,"checkbox": true , key: "seminar_event_script" },
+    { title: 'Stickers', value:false,"checkbox": true , key: "stickers" },
+    { title: 'Demo Board', value:false, "checkbox": true ,key: "demo_board" },
+    { title: 'Book Dholvala', value:false,"checkbox": true , key: "book_dholvala" },
   ])
   const [loading, setloading] = useState(false)
   const [IsLoading, setIsLoading] = useState(false)
@@ -129,8 +129,8 @@ const updateActivity=()=>{
                getData()
                 }}
            >
-              <Icon  name={item.item.value===true ?'ios-checkmark-circle':'ellipse-outline'}
-               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item.item.value===true ? 'green' : 'silver' }} />
+              {/* <Icon  name={item.item.value===true ?'ios-checkmark-circle':'ellipse-outline'}
+               size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item.item.value===true ? 'green' : 'silver' }} /> */}
               <Card item={item} />
             </Pressable>
 

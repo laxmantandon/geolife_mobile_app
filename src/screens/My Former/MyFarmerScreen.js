@@ -5,6 +5,9 @@ import mstyle from '../../mstyle'
 import { useEffect } from 'react'
 
 const MyFarmerScreen = ({navigation}) => {
+  const item={
+    item:0
+  }
     const [data, setdata] = useState([
         {title:'My Farmer List', route:'Myfarmerlist'},
         {title:'Door to Door Visit for App Download ', route:'DoortoDoor'},
@@ -13,6 +16,8 @@ const MyFarmerScreen = ({navigation}) => {
         // {title:'Call to Farmer', route:'CallFarmerScreen'},
         {title:'Crop Seminar', route:'CropSeminar'},
         {title:'Pravakta Kisan', route:'PravaktaScreen'},
+        {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item},
+        {title:'Advance Booking Product kit', route:'FarmerProductKit',  value:item},
         {title:'Raise Crop Alert', route:'RaiseCropAlertScreen'},
       ])
 
@@ -40,7 +45,7 @@ const MyFarmerScreen = ({navigation}) => {
             return (
               <Pressable
                  onPress={() => {
-                   navigation.navigate(item.item.route)
+                   navigation.navigate(item.item.route, {item:''})
                  }} 
                  >
               <Card item={item} />

@@ -7,11 +7,13 @@ import CameraPermission from '../services/permissionservices'
 import { launchCamera } from 'react-native-image-picker'
 import ImageView from "react-native-image-viewing";
 import SelectDropdown from 'react-native-select-dropdown'
-import Feather from 'react-native-vector-icons/Feather';
+// import Feather from 'react-native-vector-icons/Feather';
+
 import { Display } from '../utils'
 import Icon from 'react-native-vector-icons/Ionicons'
 import DatePicker from 'react-native-date-picker'
 import Card from './Card'
+import moment from 'moment'
 
 
 
@@ -98,7 +100,7 @@ const MYinputs = ({ item }) => {
                       <Pressable style={{ margin: 2 }}
                         onPress={() => { setIsVisible(true) }}
                       >
-                        <Image style={{ width: 80, height: 80, backgroundColor: 'silver' }} source={{ uri: item.value[index] }} />
+                        <Image style={{ width: 80, height: 100, backgroundColor: 'silver' }} source={{ uri: item.value[index] }} />
 
                       </Pressable>
                     )
@@ -117,7 +119,7 @@ const MYinputs = ({ item }) => {
 
               <Separator width={10} />
 
-              <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50 }} >
+              <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50, marginTop:10}} >
                 <Icon name='camera' size={30} style={{ backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 10 }} />
                 {/* <Image style={{ width: 50, height: 50 }}
               source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
@@ -137,12 +139,12 @@ const MYinputs = ({ item }) => {
                         defaultValue={item?.value}
                         defaultButtonText={item?.label}
                         buttonStyle={{
-                          backgroundColor: Colors.LIGHT_GREY,
+                          backgroundColor: Colors.DEFAULT_WHITE,
                           width: '100%', height: Display.setHeight(6)
                         }}
                         buttonTextStyle={{ fontSize: 14 }}
                         dropdownStyle={[mstyle.inputContainer]}
-                        selectedRowStyle={{ backgroundColor: Colors.LIGHT_GREY }}
+                        selectedRowStyle={{ backgroundColor: Colors.DEFAULT_WHITE }}
                         rowTextStyle={{ fontSize: 14 }}
 
                         onSelect={(selectedItem, index) => {
@@ -190,18 +192,20 @@ const MYinputs = ({ item }) => {
                             }}
                           />
 
-                          <Feather
+                          <Icon
                             onPress={() => setOpen(true)}
-                            name={item?.type == 'date' ? "calendar" : "clock"}
+                            name={item?.type == 'date' ? "calendar-outline" : "alarm-outline"}
                             size={30}
-                            color={Colors.DEFAULT_GREY}
+                            color={Colors.DEFAULT_GREEN}
                             style={{ paddingTop: 5, paddingRight: 8 }}
                           />
 
                           {item?.type == 'time' ? (
-                            <Text style={mstyle.inputText}>{item.value.toTimeString().slice(0, 5)}</Text>
+                            <Text                             onPress={() => setOpen(true)}
+                            style={mstyle.inputText}>{moment(item.value).format('hh:mm a')}</Text>
                           ) : (
-                            <Text style={mstyle.inputText}>{item.value.toISOString().split('T')[0]}</Text>
+                            <Text                             onPress={() => setOpen(true)}
+                             style={mstyle.inputText}>{moment(item.value).format('Do MMM-YYYY')}</Text>
                           )}
 
                         </View>
@@ -209,8 +213,9 @@ const MYinputs = ({ item }) => {
                         <View>
 
                           <TextInput
-                            placeholder={item.placeholder} keyboardType={item?.keyboard ? item?.keyboard : ''}
-                            placeholderTextColor={Colors.DEFAULT_GREY}
+                            placeholder={`${item.placeholder}                                                         `} 
+                            keyboardType={item?.keyboard ? item?.keyboard : ''}
+                            placeholderTextColor={'gray'}
                             selectionColor={Colors.DEFAULT_GREY}
                             style={mstyle.inputText}
                             // maxLength={10}

@@ -57,10 +57,10 @@ const FarmerDetails = ({navigation,route: {
         </View>
 
         <View style={{width:'30%', marginRight:'5%'}}>
-        <Icon name={'cart-circle-outline'}
+        <Icon name={'cart'}
         onPress={()=>{
           navigation.navigate('FarmerProductKit',item)
-        }} size={30} style={{paddingTop:2,color:'gray', alignSelf:'center'}}/>
+        }} size={30} style={{paddingTop:2,color:'black', alignSelf:'center'}}/>
         </View>
       
       </View>

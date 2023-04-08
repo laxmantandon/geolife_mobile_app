@@ -6,6 +6,8 @@ import { Colors } from '../../../contants'
 import { useEffect } from 'react'
 import { AuthenicationService } from '../../../services'
 import Icon from 'react-native-vector-icons/Ionicons';
+import CameraPermission from '../../../services/permissionservices'
+import { launchCamera } from 'react-native-image-picker'
 
 
 const FreeSampleBeneficiariesScreen = ({ navigation, route: {
@@ -13,6 +15,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
 }, }) => {
 
   const [data, setdata] = useState([])
+  const [captureimage, setsetcaptureimage] = useState("")
 
   const searchFilterFunction = (text) => {
     let req = {
@@ -24,7 +27,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name,"subtitle": a.mobile_number,"free_sample":a.free_sample })
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name,"subtitle": a.mobile_number,"free_sample":a.free_sample, "status":a.free_sample })
           })
           setdata(mapped_array)
         } else {
@@ -42,16 +45,51 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     console.log(farmer)
     let msg = `Are you sure you add ${farmer.title} for free sample ?`
     let msg1 = ` ${farmer.title} Alredy have a free sample product `
-
-
     Alert.alert('Confirmation!', `${farmer.free_sample?msg1:msg}`, [
       {
         text: 'Cancel',
         onPress: () => null,
         style: 'cancel',
       },
-      { text: 'YES', onPress: () => submit(farmer) },
+      { text: 'YES', onPress: () => farmer.free_sample?OpenDropDown(farmer):startCamera(farmer) },
     ]);
+  }
+
+  const startCamera = (farmer) => {
+
+CameraPermission()
+    let options = {
+      includeBase64: true,
+      mediaType: 'photo',
+      saveToPhotos: true,
+      quality:0.3
+      
+
+    };
+
+    launchCamera(options, (response) => {
+      // console.log(response.assets);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        // const source = { uri: response.uri };
+        // console.log('response', JSON.stringify(response.assets[0].base64));
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+        // setcaptureimage("")
+        // setcaptureimage(basse64image)
+
+        submit(farmer,basse64image)
+
+
+      }
+    });
+
   }
 
 
@@ -87,8 +125,10 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     req={
       farmer:farmer.subtitle,
       status :farmer.status,
-      crop_seminar_name:item.value.item.crop.name,
       fsd_name : farmer.name
+    }
+    if(item){
+      req.crop_seminar_name=item.value.item.crop.name
     }
     console.log(req)
     AuthenicationService.update_status_free_sample(req).then(x => {
@@ -111,9 +151,10 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
   }
 
 
-  const submit = (farmer)=>{
+  const submit = (farmer,image)=>{
     req={
       farmer:farmer.subtitle,
+      image:image,
       name:item.value.item.crop.name,
     }
     console.log(req)
@@ -164,7 +205,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
               onPress={() => { checkfarmer(item.item) }} >
               <Card item={item} />
             </Pressable>
-            {item.item.free_sample?( 
+            {/* {item.item.free_sample?( 
             <View>
               <Icon onPress={()=>{
               OpenDropDown(item.item)
@@ -178,7 +219,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
             </Text>
               </View>
             
-            ):(null)}
+            ):(null)} */}
 
               </View>
           )

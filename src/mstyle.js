@@ -5,14 +5,14 @@ import { Display } from "./utils";
 
 export default mstyle = StyleSheet.create({
   container: {
-    paddingTop:15,
+      paddingTop:15,
       flex: 1,
-      backgroundColor: Colors.DEFAULT_WHITE,
+      backgroundColor: 'white',
     },
     container1: {
-      paddingTop:7,
+        paddingTop:7,
         flex: 1,
-        backgroundColor: Colors.DEFAULT_WHITE,
+        backgroundColor: '#f0f8fe',
       },
       headerContainer: {
         flexDirection: 'row',
@@ -46,19 +46,30 @@ export default mstyle = StyleSheet.create({
     fontSize: 14,
     fontWeight:'semibold',
     fontFamily: Fonts.POPPINS_MEDIUM,
-    color:'gray',
-    // marginTop: 5,
-    marginBottom: 7,
-    marginHorizontal: 20,
+    color:'black',
+    // marginTop: 7,
+    marginBottom: 5,
+    marginHorizontal: 15,
   },
   inputContainer: {
-    backgroundColor: Colors.LIGHT_GREY,
+    backgroundColor: Colors.DEFAULT_WHITE,
     paddingHorizontal: 7,
     marginHorizontal: 10,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: Colors.LIGHT_GREY2,
+    borderColor: 'gray',
     justifyContent: 'center',
+  },
+  inputContainer1: {
+    backgroundColor: Colors.DEFAULT_WHITE,
+    paddingHorizontal: 7,
+    marginHorizontal: 10,
+    borderRadius: 4,
+    // borderWidth: 0.5,
+    // borderColor: 'gray',
+    padding:10,
+    justifyContent: 'center',
+    elevation:8
   },
   inputSubContainer: {
     flexDirection: 'row',
@@ -68,6 +79,7 @@ export default mstyle = StyleSheet.create({
     fontSize: 14,
     textAlignVertical: 'center',
     paddingVertical:10,
+    width:'100%',
     // height: Display.setHeight(6),
     color: Colors.DEFAULT_BLACK,
     flex: 1,

@@ -53,7 +53,7 @@ import StartSession from './src/StartSession';
 import ReturnOrderScreen from './src/ReturnOrderScreen';
 import FramerProductKitScreen from './src/screens/My Former/FramerProductKitScreen';
 import VideoScreen from './src/VideoScreen';
-
+import { BarChart, LineChart } from "react-native-gifted-charts";
 // SplashScreen.hide();
 CameraPermission()
 
@@ -142,14 +142,28 @@ function HomeScreen({ navigation }) {
     })
 
   }
-
+  const chart_data=[ {value:4.50,label: 'Sun',frontColor: 'green'},
+  {value:8.0,label: 'Mon',},
+  {value:9.0,label: 'Tue',},
+  {value:7.0,label: 'Wed',},
+  {value:8.0,label: 'Thu',},
+  {value:9.0,label: 'Fri',},
+  {value:7.0,label: 'Sat',} ,
+  {value:8.0,label: 'Mon',},
+  {value:9.0,label: 'Tue',},
+  {value:7.0,label: 'Wed',},
+  {value:8.0,label: 'Thu',},
+  {value:9.0,label: 'Fri',},
+  {value:7.0,label: 'Sat',} 
+]
   return (
     <View style={mstyle.container1}>
       <StatusBar
         barStyle="dark-content"
-        backgroundColor={Colors.SECONDARY_WHITE}
+        backgroundColor={'white'}
         translucent
       />
+      <ScrollView>
 {/* 
 <FlatList
         horizontal={true}
@@ -185,19 +199,14 @@ function HomeScreen({ navigation }) {
         /> */}
 
       <View>
-        <FlatList
-          data={data}
-          numColumns={2}
-          ListHeaderComponent={() => {
-            return (
-              <View
-                style={[mstyle.ListContainer, { width: '100%' }]} >
+      <View
+                style={[mstyle.ListContainer]} >
 
                 {/* <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
                   source={{ uri: '' }} /> */}
 
-                <View style={[mstyle.detailContainer, { width: '90%' }]}>
-                  <View style={mstyle.titleContainer}>
+                <View style={[mstyle.detailContainer]}>
+                  <View style={[mstyle.titleContainer,{width:'85%'}]}>
                     <Text style={mstyle.listListTitle} numberOfLines={1}>
                       {user.first_name} {user.last_name}
                     </Text>
@@ -225,10 +234,40 @@ function HomeScreen({ navigation }) {
 
                   </View>
 
-                </View>
+                </View>                
               </View>
-            )
-          }}
+
+
+              <View style={mstyle.ListContainer}> 
+                  <BarChart data={chart_data} 
+                  frontColor="#177AD5"
+                  barBorderRadius={4}
+                  barWidth={24}
+                  noOfSections={3}
+                  yAxisThickness={0}
+                  xAxisThickness={0}
+                  labelWidth={18}
+                  labelsExtraHeight={15}
+                  spacing={20}
+                  
+                  
+                  />
+                  {/* <BarChart
+                barWidth={22}
+                noOfSections={3}
+                barBorderRadius={4}
+                frontColor="lightgray"
+                data={barData}
+                yAxisThickness={0}
+                xAxisThickness={0}
+            /> */}
+              {/* <LineChart data={chart_data} areaChart  /> */}
+
+              </View>
+        <FlatList
+          data={data}
+          numColumns={2}
+         
           renderItem={(item) => {
             return (
               <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
@@ -305,7 +344,7 @@ function HomeScreen({ navigation }) {
 
 
 
-
+      </ScrollView>
     </View>
   );
 }
@@ -442,6 +481,9 @@ function App({ navigation }) {
                     height: 45,
                     elevation: 5,
                     shadowOpacity: 100,
+                    backgroundColor:'white'
+
+                    // backgroundColor:'#f0f8fe'
                   },
                   headerTitleAlign: 'left',
                   headerLeft: () => (
@@ -516,7 +558,7 @@ function App({ navigation }) {
               <Stack.Screen name='Mydealers' component={MyDealersScreen} options={() => ({ headerTitle: "My Dealers" })} />
 
               {/* My day Screen */}
-              <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Day" })} />
+              <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Day"  })} />
               <Stack.Screen name="Activity" component={ActivityScreen} options={() => ({ headerTitle: "Activity" })} />
               <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} options={() => ({ headerTitle: "Add Activity" })} />
               <Stack.Screen name="Expense" component={ExpenseScreen} options={() => ({ headerTitle: "Expenses" })} />
