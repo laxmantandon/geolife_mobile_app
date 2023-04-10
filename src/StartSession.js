@@ -7,8 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import SplashScreen from 'react-native-splash-screen'
 import { AuthenicationService } from './services'
 import moment from 'moment';
+import { useIsFocused } from '@react-navigation/native'
+import mstyle from './mstyle'
+import { StatusBar } from 'react-native'
 
-const StartSession = ({ navigation }) => {
+const StartSession = ({props, navigation }) => {
   SplashScreen.hide();
 
   const [user, setuser] = useState([])
@@ -30,7 +33,7 @@ const StartSession = ({ navigation }) => {
         navigation.navigate('Login')
       }
     })
-
+    getcurrentTime()
     AsyncStorage.getItem("user_session").then((value) => {
       console.log('session', value)
       const a_session = JSON.parse(value)
@@ -42,7 +45,19 @@ const StartSession = ({ navigation }) => {
 
       }
     })
-  }, [])
+  }, [props, useIsFocused])
+
+  const [sessionTime, setsessionTime] = useState(0)
+ 
+  
+  const getcurrentTime=()=>{
+   setTimeout(() => {
+    let duration = moment.duration(moment(new Date()).diff(moment(session).add(1, 'second')))
+    setsessionTime(duration.asHours())
+    getcurrentTime()
+   }, 1000);
+    
+  }
 
   const startSession = () => {
     if (!loading) {
@@ -112,8 +127,23 @@ const StartSession = ({ navigation }) => {
 
   }
 const end =moment().format('LT');
+
+const logOut=()=>{
+  endSession()
+
+  setTimeout(() => {
+    AsyncStorage.clear()
+    navigation.navigate('Login')
+
+  }, 1000);
+}
   return (
-    <View>
+    <View style={mstyle.container}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={'white'}
+        translucent
+      />
       <View style={{
         justifyContent: 'center',
         alignItems: 'center', marginTop: 100
@@ -124,11 +154,16 @@ const end =moment().format('LT');
           resizeMode="contain" />
       </View>
       <Text style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name}`}</Text>
-      <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
-        {session_started ? `Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}` : 'Start Your Session'}
-
+      <Text style={{ fontSize: 14, color: 'balck', fontWeight: '600', textAlign: 'center' }}>
+        {session_started ? (`Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}`) : 'Start Your Session'}
         {/* {moment(session).format('LTS')} */}
       </Text>
+
+      <Text style={{ fontSize: 14, color: 'balck', fontWeight: '600', textAlign: 'center' }}>
+        {session_started ? `Working Time ${(Math.round(sessionTime * 100) / 100).toFixed(2)} hours` : 'Start Your Session'}
+        {/* {moment(session).format('LTS')} */}
+      </Text>
+      
       <Pressable onPress={() => {
         if (session_started == true) {
           endSession()
@@ -150,8 +185,8 @@ const end =moment().format('LT');
 
 
       <Pressable onPress={()=>{
-        AsyncStorage.clear()
-        navigation.navigate('Login')
+        logOut()
+        
       }}>
         <Buttons title={'Logout'}  bgcolor={'red'}/>
       </Pressable>

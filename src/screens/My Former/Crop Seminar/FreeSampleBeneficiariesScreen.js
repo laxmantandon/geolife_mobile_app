@@ -27,7 +27,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name,"subtitle": a.mobile_number,"free_sample":a.free_sample, "status":a.free_sample })
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name,"subtitle": a.mobile_number,"free_sample":a.free_sample, "status":a.free_sample?a.free_sample:'Add Sample' })
           })
           setdata(mapped_array)
         } else {
@@ -155,7 +155,9 @@ CameraPermission()
     req={
       farmer:farmer.subtitle,
       image:image,
-      name:item.value.item.crop.name,
+    }
+    if (item){
+      req.name = item.value.item.crop.name
     }
     console.log(req)
     AuthenicationService.create_free_sample(req).then(x => {
@@ -201,10 +203,10 @@ CameraPermission()
         renderItem={(item) => {
           return (
             <View style={{ flexDirection:'row', flex:1 }}>              
-              <Pressable style={{ flexDirection:'row', flex:1 }}
-              onPress={() => { checkfarmer(item.item) }} >
-              <Card item={item} />
-            </Pressable>
+              <Pressable style={{ flexDirection: 'row', flex: 1 }}
+                onPress={() => { checkfarmer(item.item) }} >
+                <Card item={item} />
+              </Pressable>
             {/* {item.item.free_sample?( 
             <View>
               <Icon onPress={()=>{

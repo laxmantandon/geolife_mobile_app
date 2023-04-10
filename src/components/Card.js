@@ -34,7 +34,18 @@ const Card = ({ item }) => {
           borderTopLeftRadius: 8, borderTopRightRadius: 8
         }} source={{ uri: data?.large_image }} />) : ('')}
 
+
+{/* {data?.icon ? (<View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+              <Icon name={'ios-checkmark-circle'}
+                size={25} style={{ padding: 15, color:  'green'  }} />
+            </View>) : ('')} */}
+
         <View style={{ flex: 1, flexDirection: 'row' }}>
+        {data?.icon ? (<View style={{  borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+              <Icon name={data.icon }
+                size={25} style={{ padding: 10,paddingRight:1, color: data.icon_color?data.icon_color:'black'  }} />
+            </View>) : ('')}
+
           {data?.checkbox ?
             <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
               <Icon name={item.item.value === true ? 'ios-checkmark-circle' : 'ios-ellipse-outline'}

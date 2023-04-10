@@ -54,13 +54,15 @@ import ReturnOrderScreen from './src/ReturnOrderScreen';
 import FramerProductKitScreen from './src/screens/My Former/FramerProductKitScreen';
 import VideoScreen from './src/VideoScreen';
 import { BarChart, LineChart } from "react-native-gifted-charts";
+import moment from 'moment';
+import { useState } from 'react';
 // SplashScreen.hide();
 CameraPermission()
 
 
 function HomeScreen({ navigation }) {
   SplashScreen.hide();
-  console.log(AuthenicationService.gettoken())
+  // console.log(AuthenicationService.gettoken())
 
   const [data, setdata] = React.useState([
     { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
@@ -73,7 +75,7 @@ function HomeScreen({ navigation }) {
   const [user, setuser] = React.useState([])
   if (loggedIn == false) {
     AsyncStorage.getItem("user_info").then((value) => {
-      console.log(value)
+      // console.log(value)
       setloggedIn(true)
       const usrd = JSON.parse(value)
       if (usrd) {
@@ -100,6 +102,29 @@ function HomeScreen({ navigation }) {
     ]);
   }
 
+  const [session, setsession] = useState()
+  const [sessionTime, setsessionTime] = useState(0)
+ 
+  
+  const getcurrentTime=()=>{
+    setTimeout(async () => {
+      AsyncStorage.getItem("user_session").then((value) => {
+        // setsession(JSON.parse(value))
+        let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
+        setsessionTime(duration.asHours())
+      })
+      getcurrentTime()
+       // console.log('session', value)
+        // let mn = JSON.parse(value)
+        // mn++
+        // setsession(mn)
+        // setsessionTime(mn)
+      
+    }, 1000);
+    
+  //  return  duration.asMinutes()
+  }
+
   useEffect(() => {
     navigation.getState().routes[0].name
     const backAction = () => {
@@ -107,6 +132,8 @@ function HomeScreen({ navigation }) {
       return true;
 
     };
+
+    getcurrentTime()
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -125,7 +152,7 @@ function HomeScreen({ navigation }) {
   getTask = async () => {
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      console.log('RRRRR', r)
+      // console.log('RRRRR', r)
       setloading(false)
 
       let my_tasks = []
@@ -138,7 +165,7 @@ function HomeScreen({ navigation }) {
 
       }
     }).catch(e => {
-      console.log(e);
+      // console.log(e);
     })
 
   }
@@ -213,14 +240,16 @@ function HomeScreen({ navigation }) {
                     <Text style={{
                       color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
                     }} numberOfLines={2}>{user.mobile_no}</Text>
-                    <Text style={{
-                      color: 'green', fontSize: 25, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
-                    }} numberOfLines={2}>Working time ......</Text>
+                    <Text onPress={()=>{getcurrentTime()}} style={{
+                      color: 'green', fontSize: 15, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
+                    }} numberOfLines={2}>Working time <Text style={{fontSize:25, fontWeight:'bold'}}> { (Math.round(sessionTime * 100) / 100).toFixed(2) } </Text> Hours
+                    
+                    </Text>
                   </View>
                   <View style={{ width: '15%' }}>
                     <Pressable title='Check Out' onPress={() => {
-                      AsyncStorage.clear()
-                      navigation.navigate('Login')
+                      // AsyncStorage.clear()
+                      navigation.navigate('SessionScreen')
                     }} >
 
                       <Icon name='power' size={25}
@@ -402,7 +431,7 @@ function App({ navigation }) {
 
   const authContext = React.useMemo(() => ({
     sign_In: async (userdata) => {
-      console.log('from app ', userdata)
+      // console.log('from app ', userdata)
       // setUserToken('fgkj');
       // setIsLoading(false);
       const userToken = String(`token ${userdata.api_key}:${userdata.secret}`);
@@ -413,9 +442,9 @@ function App({ navigation }) {
 
         // await AsyncStorage.setItem('user_info', userToken);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
-      // console.log('user token: ', userToken);
+      // // console.log('user token: ', userToken);
       dispatch({ type: 'LOGIN', id: userName, token: userToken });
     },
     signOut: async () => {
@@ -424,7 +453,7 @@ function App({ navigation }) {
       try {
         await AsyncStorage.removeItem('user_info');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       dispatch({ type: 'LOGOUT' });
     },
@@ -439,9 +468,9 @@ function App({ navigation }) {
       try {
         userToken = await AsyncStorage.getItem('user_info');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
-      console.log('user token: ', userToken);
+      // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 1000);
   }, []);

@@ -7,13 +7,14 @@ import submitReqData from '../../services/FormData';
 import { AuthenicationService } from '../../services';
 
 
-const RaiseCropAlertScreen = () => {
+const RaiseCropAlertScreen = ({navigation}) => {
   const [activity_type, setactivity_type] = useState(["Option 01", "Option 02", "Option 03", "Option 04"])
   const [formdata, setformdata] = useState([
-    { label: 'Alert msg', placeholder:'Note : About Alert', key: 'message', value:'',
+    { label: 'Alert msg', placeholder:'Note : About Alert', key: 'notes', value:'',
      type: 'textarea', },
       { label: 'My Image', value: [], type: 'image', key: 'image', },
   ])
+  const [isloading, setisloading] = useState(false)
   // if (item) {
   //   console.log(item)
 
@@ -29,12 +30,16 @@ const RaiseCropAlertScreen = () => {
 
 
   const submit =()=>{
+    let req = submitReqData(formdata);
+if (!req.notes){
+  alert('Please add notes or image')
+}
+    if(!isloading){
+      setisloading(true)
     console.log(formdata)
     let req = submitReqData(formdata);
-      // setIsLoading(true);
-
     AuthenicationService.crop_alert(req).then(response => {
-      // setIsLoading(false);
+      setisloading(false);
       console.log(response)
       if (response?.status== true) {
       navigation.goBack()
@@ -46,6 +51,7 @@ const RaiseCropAlertScreen = () => {
        
       }
     })
+  }
 
   }
 
@@ -70,7 +76,7 @@ const RaiseCropAlertScreen = () => {
         ListFooterComponent={()=>{
           return(
             <Pressable onPress={()=>{submit()}}>
-            <Buttons title={'Submit'}  loading={false}/>
+            <Buttons title={'Submit'}  loading={isloading}/>
           </Pressable>
           )
         }}
