@@ -77,7 +77,7 @@ Share.open(options)
 
 
   return (
-    <View style={mstyle.container}>
+    <View style={mstyle.container1}>
 
       <FlatList
         data={formdata}
@@ -91,19 +91,20 @@ Share.open(options)
 
         ListFooterComponent={() => {
           return (
-            <View>
-            <Image style={{ width: '100%',minHeight:150, maxHeight:250, backgroundColor:'silver' }} 
+            <View style={[mstyle.inputContainer1,{marginTop:8}]}>
+            <Image style={{ width: '100%',minHeight:150, maxHeight:250, backgroundColor:'silver',borderRadius:8 }} 
             source={{ uri: mimage }} />
 
-            <Pressable onPress={() => { submit() }}>
-              <Buttons title={'Share'}  loading={false} />
-            </Pressable>
+          
 
             </View>
           )
         }}
 
       />
+        <Pressable onPress={() => { submit() }}>
+              <Buttons title={'Share'}  loading={false} />
+            </Pressable>
     </View>
   )
 }

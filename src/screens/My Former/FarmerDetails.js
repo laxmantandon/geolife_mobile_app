@@ -5,84 +5,95 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useEffect } from 'react';
 import { AuthenicationService } from '../../services'
 import moment from 'moment';
+import Card from '../../components/Card';
+import { Colors } from '../../contants';
 
-const FarmerDetails = ({navigation,route: {
-    params: { item },
-  } }) => {
+const FarmerDetails = ({ navigation, route: {
+  params: { item },
+} }) => {
 
 
-    const [data, setdata] = useState([])
-    const [loading, setloading] = useState(true)
-  
-    const getData = () => {
-      setloading(true)
-      let req = {
-        "mobile_no": item.item.subtitle
-      }
-      AuthenicationService.farmerCropData(req)
-        .then(x => {
-          // console.log(x.data[0])
-          setloading(false)
-          if (x.mobileNumber == item.item.subtitle) {
-            setdata(x.data)
-          } else {
-          }
-        })
+  const [data, setdata] = useState([])
+  const [loading, setloading] = useState(true)
+
+  const getData = () => {
+    setloading(true)
+    let req = {
+      "mobile_no": item.item.subtitle
     }
-  
-    useEffect(() => {
-      getData()
-    }, [])
-   
+    AuthenicationService.farmerCropData(req)
+      .then(x => {
+        console.log(x.data[0])
+        setloading(false)
+        if (x.mobileNumber == item.item.subtitle) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({
+              "title": `${a.cropName}`, "subtitle": `Stage :- ${a.stageName}`, "date": a.endDate, "status": a.status,
+              "details": { 'unit': a.cropFarmSizeUnit, 'size': a.cropFarmSize, 'startDate': a.startDate }, "footer_details": true
+            })
+          })
+          setdata(mapped_array)
+        } else {
+        }
+      })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
 
   return (
     <View style={mstyle.container1}>
-      <Icon name={'person-circle-outline'} size={80} 
-      style={{paddingTop:2,color:'silver', alignSelf:'center'}}/>
-      <Text style={{fontSize:18, color:'black', textAlign:'center'}}>{item.item.title}</Text>
-      <Text style={{fontSize:13, color:'gray', textAlign:'center'}}>{item.item.subtitle}</Text>
+      <Icon name={'person-circle-outline'} size={80}
+        style={{ paddingTop: 2, color: Colors.LIGHT_GREEN, alignSelf: 'center' }} />
+      <Text style={{ fontSize: 22,fontWeight:'bold', color: 'black', textAlign: 'center' }}>{item.item.title}</Text>
+      <Text style={{ fontSize: 14,fontWeight:'bold', color: 'gray', textAlign: 'center' }}>{item.item.subtitle}</Text>
 
-      <View style={{flexDirection:'row', paddingVertical:10,borderBottomWidth:1, borderBottomColor:'silver'}}>
-        <View style={{width:'30%', marginLeft:'5%'}}>
-        <Icon name={'logo-whatsapp'} 
-        onPress={()=>{Linking.openURL(`whatsapp://send?phone=91${item.item.subtitle}`)}}
-         size={30} style={{paddingTop:2,color:'green', alignSelf:'center'}}/>
+      <View style={{ flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'silver' }}>
+        <View style={{ width: '30%', marginLeft: '5%' }}>
+          <Icon name={'logo-whatsapp'}
+            onPress={() => { Linking.openURL(`whatsapp://send?phone=91${item.item.subtitle}`) }}
+            size={30} style={{ paddingTop: 2, color: 'green', alignSelf: 'center' }} />
         </View>
 
-        <View style={{width:'30%'}}>
-        <Icon name={'ios-call'} onPress={() => {
-                Linking.openURL(`tel:${item.item.subtitle}`)
-              }}
-               size={30} style={{paddingTop:2,color:'black', alignSelf:'center'}}/>
+        <View style={{ width: '30%' }}>
+          <Icon name={'ios-call'} onPress={() => {
+            Linking.openURL(`tel:${item.item.subtitle}`)
+          }}
+            size={30} style={{ paddingTop: 2, color: Colors.GOOGLE_BLUE, alignSelf: 'center' }} />
         </View>
 
-        <View style={{width:'30%', marginRight:'5%'}}>
-        <Icon name={'cart'}
-        onPress={()=>{
-          navigation.navigate('FarmerProductKit',item)
-        }} size={30} style={{paddingTop:2,color:'black', alignSelf:'center'}}/>
+        <View style={{ width: '30%', marginRight: '5%' }}>
+          <Icon name={'cart'}
+            onPress={() => {
+              navigation.navigate('FarmerProductKit', item)
+            }} size={30} style={{ paddingTop: 2, color:Colors.DEFAULT_GREEN , alignSelf: 'center' }} />
         </View>
-      
+
       </View>
 
       <FlatList
-       refreshing={loading}
-       onRefresh={()=>{
-         getData()
-       }}
+        refreshing={loading}
+        onRefresh={() => {
+          getData()
+        }}
         data={data}
-        ListEmptyComponent ={()=>{
+        ListEmptyComponent={() => {
           return (
-            <View style={{flex:1,  flexDirection:'row'}}>
-              <Text style={{textAlign:'center'}}> Former data not available</Text>
-            
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={{ textAlign: 'center' }}> Former data not available</Text>
+
             </View>
           )
         }}
-        renderItem={({item}) => {
+        renderItem={(item) => {
           return (
-            <View style={{flex:1,  flexDirection:'row'}}>
-            <Pressable onPress={() => {
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Card item={item} />
+
+              {/* <Pressable onPress={() => {
               }}
               style={{flex:1,  flexDirection:'row'}}>
 
@@ -116,7 +127,7 @@ const FarmerDetails = ({navigation,route: {
               </View>
               
             
-              </Pressable>
+              </Pressable> */}
             </View>
           )
         }} />

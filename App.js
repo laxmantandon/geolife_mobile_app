@@ -56,6 +56,7 @@ import VideoScreen from './src/VideoScreen';
 import { BarChart, LineChart } from "react-native-gifted-charts";
 import moment from 'moment';
 import { useState } from 'react';
+import QuizScreen from './src/QuizScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -158,7 +159,7 @@ function HomeScreen({ navigation }) {
       let my_tasks = []
       if (r.status == true) {
         r.data.forEach(d => {
-          my_tasks.push({ 'subtitle': d.priority, 'title': d.description })
+          my_tasks.push({ 'subtitle': d.priority, 'title': d.description, 'icon': 'chevron-forward-outline', 'icon_color':d.status=='Open'?Colors.DEFAULT_RED :Colors.SECONDARY_GREEN })
         })
         settask(my_tasks)
       } else {
@@ -241,8 +242,8 @@ function HomeScreen({ navigation }) {
                       color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
                     }} numberOfLines={2}>{user.mobile_no}</Text>
                     <Text onPress={()=>{getcurrentTime()}} style={{
-                      color: 'green', fontSize: 15, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
-                    }} numberOfLines={2}>Working time <Text style={{fontSize:25, fontWeight:'bold'}}> { (Math.round(sessionTime * 100) / 100).toFixed(2) } </Text> Hours
+                      color: 'green', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
+                    }} numberOfLines={1}>Working time <Text style={{fontSize:25, fontWeight:'bold'}}> { (Math.round(sessionTime * 100) / 100).toFixed(2) } </Text> Hours
                     
                     </Text>
                   </View>
@@ -281,17 +282,7 @@ function HomeScreen({ navigation }) {
                   
                   
                   />
-                  {/* <BarChart
-                barWidth={22}
-                noOfSections={3}
-                barBorderRadius={4}
-                frontColor="lightgray"
-                data={barData}
-                yAxisThickness={0}
-                xAxisThickness={0}
-            /> */}
-              {/* <LineChart data={chart_data} areaChart  /> */}
-
+                
               </View>
         <FlatList
           data={data}
@@ -321,7 +312,7 @@ function HomeScreen({ navigation }) {
 
           ListFooterComponent={() => {
             return (
-              <View>
+              <View  style={{backgroundColor:'white', borderRadius:4, margin:8, elevation:5, paddingBottom:10}} >
                 <Text style={mstyle.title}>Current Task</Text>
                 <FlatList
                   refreshing={loading}
@@ -332,7 +323,7 @@ function HomeScreen({ navigation }) {
                       <Pressable style={{ flex: 1, flexDirection: 'row' }}
                       //  onPress={() => { navigation.navigate(item.route) }}
                       >
-                        <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} />
+                        {/* <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} /> */}
                         <Card item={item} />
                       </Pressable>
 
@@ -492,6 +483,7 @@ function App({ navigation }) {
             <>
             <Stack.Screen name="SessionScreen" component={StartSession} options={() => ({ headerShown: false })} />
             <Stack.Screen name="VideoScreen" component={VideoScreen} options={() => ({ headerShown: false })} />
+            <Stack.Screen name="QuizScreen" component={QuizScreen} options={() => ({ headerShown: false })} />
               <Stack.Screen name="Home" component={HomeScreen}
                 // options={() => ({
                 //   headerShown: true,

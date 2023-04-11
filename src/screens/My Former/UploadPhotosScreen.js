@@ -97,7 +97,7 @@ const UploadPhotosScreen = ({navigation, route: {
 
 
   return (
-    <View style={mstyle.container}>
+    <View style={mstyle.container1}>
       
       {/* <SearchableDropDown
             onItemSelect={(item) => {

@@ -697,9 +697,10 @@ const getSelectedproducts=()=>{
           /> */}
         </View>
       </View>
-      <View style={[mstyle.inputContainer1,{marginTop:8}]}>
+      <View >
         <MYinputs item={delivery_date} />
-      </View><View style={[mstyle.inputContainer1,{marginTop:8}]}>
+      </View>
+      <View >
         <MYinputs item={payment_method} />
       </View>
      

@@ -7,10 +7,10 @@ export default mstyle = StyleSheet.create({
   container: {
       paddingTop:15,
       flex: 1,
-      backgroundColor: 'white',
+      backgroundColor: '#f0f8fe',
     },
     container1: {
-        paddingTop:7,
+        paddingTop:4,
         flex: 1,
         backgroundColor: '#f0f8fe',
       },
@@ -48,13 +48,13 @@ export default mstyle = StyleSheet.create({
     fontFamily: Fonts.POPPINS_MEDIUM,
     color:'black',
     // marginTop: 7,
-    marginBottom: 5,
-    marginHorizontal: 15,
+    marginBottom: 3,
+    marginHorizontal: 4,
   },
   inputContainer: {
     backgroundColor: Colors.DEFAULT_WHITE,
-    paddingHorizontal: 7,
-    marginHorizontal: 10,
+    paddingHorizontal: 5,
+    marginHorizontal: 8,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: 'gray',
@@ -69,6 +69,18 @@ export default mstyle = StyleSheet.create({
     // borderColor: 'gray',
     padding:10,
     justifyContent: 'center',
+    elevation:8
+  },
+
+  inputContainer2: {
+    backgroundColor: Colors.DEFAULT_WHITE,
+    // paddingHorizontal: 7,
+    // marginHorizontal: 10,
+    borderRadius: 4,
+    // borderWidth: 0.5,
+    // borderColor: 'gray',
+    // padding:10,
+    // justifyContent: 'center',
     elevation:8
   },
   inputSubContainer: {

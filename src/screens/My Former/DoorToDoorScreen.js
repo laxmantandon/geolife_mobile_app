@@ -95,7 +95,7 @@ const DoorToDoorScreen = ({navigation}) => {
 
 
   return (
-    <View style={mstyle.container}>
+    <View style={mstyle.container1}>
        <SearchableDropDown
             onItemSelect={(item) => {
               formdata[0].value = item.name
@@ -105,7 +105,7 @@ const DoorToDoorScreen = ({navigation}) => {
               setselectedItems(item)
               // this.setState({ selectedItems: items });
             }}
-            containerStyle={{ padding: 5 }}
+            containerStyle={mstyle.inputContainer1}
             onRemoveItem={(item, index) => {
               const items = selectedItems.filter((sitem) => sitem.id !== item.id);
               setselectedItems(items)

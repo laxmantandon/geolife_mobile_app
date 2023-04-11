@@ -11,12 +11,11 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const VideoScreen = ({navigation,
     route: {
-      params: {video},
+      params: {item},
     },
   }) => {
     const playerRef = useRef();//yotube player ka hai
     const [loading, setloading] = useState(true)
-    // const [video, setvideo]=useState([])
 
     useEffect(() => {
       
@@ -27,8 +26,7 @@ const VideoScreen = ({navigation,
         console.log("this a state", state);
     
         if (state === "ended") {
-          console.log('endedeeddd')
-          navigation.navigate('Home')
+          navigation.navigate('QuizScreen', {item:item})
           ToastAndroid.showWithGravityAndOffset(
             'Your session started',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -54,7 +52,7 @@ const VideoScreen = ({navigation,
              <YoutubePlayer
                 ref={playerRef}
                 play={true}
-                videoId={video}
+                videoId={item.youtube_video}
                 onChangeState={onStateChange}
                 height={SCREEN_HEIGHT}
                 initialPlayerParams={{'controls':false, 'rel':0}}

@@ -142,8 +142,8 @@ console.log(req)
 
 
       ) : (
-
-        <FlatList
+        <View style={{paddingBottom:50}}>
+          <FlatList
           refreshing={Loading}
           onRefresh={() => {
             getData()
@@ -173,7 +173,7 @@ console.log(req)
               </Pressable>
             )
           }} />
-
+        </View>
       )}
 
 

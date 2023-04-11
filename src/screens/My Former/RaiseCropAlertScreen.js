@@ -62,7 +62,7 @@ if (!req.notes){
 
 
   return (
-    <View style={mstyle.container}>
+    <View style={mstyle.container1}>
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {

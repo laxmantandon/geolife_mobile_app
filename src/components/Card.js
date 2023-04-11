@@ -35,16 +35,16 @@ const Card = ({ item }) => {
         }} source={{ uri: data?.large_image }} />) : ('')}
 
 
-{/* {data?.icon ? (<View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+        {/* {data?.icon ? (<View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
               <Icon name={'ios-checkmark-circle'}
                 size={25} style={{ padding: 15, color:  'green'  }} />
             </View>) : ('')} */}
 
         <View style={{ flex: 1, flexDirection: 'row' }}>
-        {data?.icon ? (<View style={{  borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
-              <Icon name={data.icon }
-                size={25} style={{ padding: 10,paddingRight:1, color: data.icon_color?data.icon_color:'black'  }} />
-            </View>) : ('')}
+          {data?.icon ? (<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8,alignSelf:'center' }} >
+            <Icon name={data.icon}
+              size={25} style={{ padding: 10, paddingRight: 1, color: data.icon_color ? data.icon_color : 'black' }} />
+          </View>) : ('')}
 
           {data?.checkbox ?
             <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
@@ -69,13 +69,9 @@ const Card = ({ item }) => {
               </View>
             </View> : ''}
 
-
-
-
-
           {data?.image ? (<Image style={{
-            margin: "auto", backgroundColor: 'white', height: 60, width: 60,
-            borderRadius: 4,
+            margin: "auto", backgroundColor: 'white', height: 65, width: 65,borderTopLeftRadius: 8, borderBottomLeftRadius: 8 ,
+            alignSelf:'center'
           }} source={{ uri: data?.image }} />) : ('')}
           {data?.avatar ? (<View style={{ margin: "auto", marginLeft: 4, alignSelf: 'center', backgroundColor: 'silver', height: 55, width: 55, borderRadius: 50 }} >
             {/* <Image style={{ margin: "auto", backgroundColor: 'silver', height: 60, width: 60, borderRadius: 50 }} 
@@ -90,8 +86,8 @@ const Card = ({ item }) => {
                 {data?.title}
               </Text>
               {data?.subtitle ? (<Text style={{
-                color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
-              }} numberOfLines={2}> {sub_title ? `*****${data.subtitle.substring(0, 5)}` : data.subtitle}</Text>) : ('')}
+                color: 'gray', fontSize: 13, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
+              }} numberOfLines={2}>{sub_title ? `*****${data.subtitle.substring(0, 5)}` : data.subtitle}</Text>) : ('')}
             </View>
           </View>
           {data?.status ?
@@ -129,6 +125,19 @@ const Card = ({ item }) => {
          </View>:''} */}
 
         </View>
+        {data?.footer_details ? (<View style={{ backgroundColor: 'white',  width: '100%', borderTopColor:Colors.SECONDARY_GREEN, borderTopWidth:2, 
+        borderBottomLeftRadius: 8, borderBottomRightRadius: 8 , paddingVertical:10, paddingHorizontal:8}}>
+
+<Text style={{fontSize:13,  color:'black'}}> Start Date : - <Text style={{fontWeight:'600'}}>{moment(data.details.startDate).format('Do MMM-YY')}</Text> </Text>
+<Text style={{fontSize:13,  color:'black'}}> End Date : - <Text style={{fontWeight:'600'}}>{moment(data.date).format('Do MMM-YY')}</Text> </Text>
+<Text style={{fontSize:13,  color:'black'}}> Crop Farm Size : - <Text style={{fontWeight:'600'}}>{data.details.size}</Text> </Text>
+<Text style={{fontSize:13,  color:'black'}}> Crop Farm Unit : - <Text style={{fontWeight:'600'}}>{data.details.unit}</Text> </Text>
+          
+          </View>
+          ) : ('')}
+
+
+
       </View>
       <Separator height={5} />
     </View>
