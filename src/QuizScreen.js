@@ -4,11 +4,10 @@ import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
 import Buttons from './components/Buttons';
 import { AuthenicationService } from './services';
-import submitReqData from './services/FormData';
-import { back } from 'react-native/Libraries/Animated/Easing';
 import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Fonts } from './contants';
+import MultiSelect from 'react-native-checkbox-selection';
 
 
 const QuizScreen = ({ navigation, props,
@@ -16,104 +15,97 @@ const QuizScreen = ({ navigation, props,
     params: { item },
   },
 }) => {
- 
+
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([])
   const [isLoading, setisLoading] = useState(false)
 
   useEffect(() => {
     if (item) {
-        console.log(item)
-        let reqw =[]
-        item.faq.forEach(e => {
-            let ree ={value: '',type: 'select',}
-            ree.key = e.name
-            ree.label = e.qua
-            ree.options = e.qua_options.split(/\s*,\s*/)
-          
+      console.log(item)
+      let reqw = []
+      count = 0
+      item.faq.forEach(e => {
+        count += 1
+        reqw.push({
+          "label": `${count}. ${e.qua}`, "title": e.qua, "key": e.name, "options": e.qua_options.split(/\s*,\s*/)
+          , value: '', type: 'select', "ans": e.ans
+        })
+        console.log(reqw[0].options)
+        // reqw.push(ree)
+        // console.log(e)
+      });
+      setformdata(reqw)
+    }
 
-          console.log(ree.options)
-            reqw.push(ree)
-            // console.log(e)
-    });
-    setformdata(reqw)
-      }
-    
   }, [])
-  
+
 
 
   const submit = () => {
     // console.log(formdata)
-    let req = submitReqData(formdata);
-    setisLoading(true);
+    if (!isLoading) {
+      let points = 0
+      formdata.forEach(e => {
+        if (e.ans == "") {
+          alert(`Please choose ${e.label} `)
+          return
+        }
+        if (e.ans == e.value) {
+          points += 10/formdata.length
+        }
+        console.log(points)
+      });
+      req = {
+        "points": points
+      }
+      setisLoading(true);
 
-    if (req.activity_type=='' || req.activity_type==null){
-      Alert.alert('Please Select Activity type ')
-      setisLoading(false);
-      return
-    }
-
-    if (req.activity_name=='' || req.activity_name==null){
-      setisLoading(false);
-      Alert.alert('Please Enter Activity Name')
-      return
-    }
-
-    AuthenicationService.create_activity(req).then(response => {
-      setisLoading(false);
-      console.log(response)
-      if (response?.status == true) {
+      AuthenicationService.submit_quiz(req).then(response => {
+        setisLoading(false);
+        console.log(response)
+        if (response?.status == true) {
           navigation.navigate('Home')
           ToastAndroid.showWithGravityAndOffset(
-            'Your session started',
+            response.message,
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
-      } else {
-        ToastAndroid.showWithGravityAndOffset(
-          response?.message,
-          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
-        );
+        } else {
+          ToastAndroid.showWithGravityAndOffset(
+            response?.message,
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
 
-      }
-    }).catch(e=>{
-      console.log(e)
-    })
+        }
+      }).catch(e => {
+        console.log(e)
+      })
 
+    }
   }
 
   return (
-    <View style={[mstyle.container,{paddingTop:100}]}>
+    <View style={[mstyle.container, { paddingTop: 30 }]}>
+      <Text style={{
+        color: 'gray',
+        textAlign: "center",
+        fontSize: 25,
+        borderBottomColor: 'gray',
+        borderBottomWidth: .5,
+        fontFamily: Fonts.POPPINS_MEDIUM,
+        fontWeight: "bold",
+        marginTop: 10,
+        color: 'black',
+        marginHorizontal: 10,
+        paddingBottom: 5
+      }}>Daily Session Quiz</Text>
+
       <FlatList
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <View style={[mstyle.inputContainer1,{marginTop:10}]}>
-                <Text style={{  color: 'gray',
-        // textAlign: "center",
-        fontSize: 16,
-        borderBottomColor:'black',
-        borderBottomWidth:1,
-        fontFamily: Fonts.POPPINS_MEDIUM,
-        fontWeight: "bold",
-        lineHeight: 16 * 1.4,
-        marginTop: 10,
-        color:'black',
-        marginHorizontal: 10,
-        paddingBottom:5
-        }}>{index+1}. {item.label}</Text>
-              
-             <FlatList 
-             data={item.options}
-             renderItem={({item,index}) =>{
-                <View>
-                  <Pressable style={[mstyle.ListContainer,{marginTop:10}]}>
-                      <Icon name={'ios-checkmark-circle' } size={22}/>
-                      <Text style={mstyle.content}> {index}</Text>
-                  </Pressable>
-                </View>
-             }}
-             
-             />
+            <View >
+
+              <MYinputs item={item} />
 
             </View>
           )

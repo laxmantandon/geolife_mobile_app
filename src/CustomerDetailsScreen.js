@@ -10,6 +10,7 @@ import Buttons from './components/Buttons'
 import activitysubmitReqData from './services/activityFromData'
 import Geolocation from '@react-native-community/geolocation'
 import { useEffect } from 'react'
+import { Colors } from './contants'
 
 
 const CustomerDetailsScreen = ({ navigation, props,
@@ -40,12 +41,14 @@ const CustomerDetailsScreen = ({ navigation, props,
     for (let p of cart) {
       if (p.title === product.title) {
         p.quantity += 1;
+        p.percent +=1
         added = true;
         break;
       }
     }
     if (!added) {
       product.quantity = 1;
+      product.percent = 1
       ToastAndroid.showWithGravityAndOffset(
         'Product Added',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -67,6 +70,7 @@ const CustomerDetailsScreen = ({ navigation, props,
     for (let [index, p] of cart.entries()) {
       if (p.title === product.title) {
         p.quantity -= 1;
+        p.percent-=1;
         if (p.quantity < 1) {
           ToastAndroid.showWithGravityAndOffset(
             'Product Quantity Removed',
@@ -89,12 +93,14 @@ const CustomerDetailsScreen = ({ navigation, props,
     for (let p of cart) {
       if (p.title === product.title) {
         p.quantity += 1;
+        p.percent +=1
         added = true;
         break;
       }
     }
     if (!added) {
       product.quantity = 1;
+      product.percent = 1
       ToastAndroid.showWithGravityAndOffset(
         'Product Added',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -116,6 +122,7 @@ const CustomerDetailsScreen = ({ navigation, props,
     for (let [index, p] of cart.entries()) {
       if (p.title === product.title) {
         p.quantity -= 1;
+        p.percent -=1;
         if (p.quantity < 1) {
           ToastAndroid.showWithGravityAndOffset(
             'Product Quantity Removed',
@@ -221,7 +228,7 @@ const getStock= ()=>{
     if(r.status==true){
          let mapped_array = []
          r.data[0].details.stock.forEach(a => {
-            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product })
+            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product,"status": 'Add to Cart', "percent": 0, })
           })
           setstock(mapped_array)
     }else{
@@ -235,8 +242,8 @@ const getStock= ()=>{
 }
 
   return (
-    <ScrollView style={mstyle.container}>
-      <View style={{paddingHorizontal:10}}>
+    <ScrollView style={mstyle.container1}>
+      <View style={[mstyle.inputContainer,{paddingVertical:10, elevation:8}]}>
         <Text style={{color:'gray', fontSize:15,}} >
            Customer name :-
            <Text style={{color:'gray', fontSize:15, fontWeight:'bold'}}> {item.item.title} </Text> </Text>
@@ -246,6 +253,7 @@ const getStock= ()=>{
       </View>
 
 
+      <View style={[mstyle.inputContainer,{marginTop:5,paddingHorizontal:1, paddingBottom:10, elevation:8}]}>
       <Text style={mstyle.title}>Dealer Stock Details:-</Text>
       <FlatList
         refreshing={loading}
@@ -255,34 +263,23 @@ const getStock= ()=>{
         data={stock}
         renderItem={(item) => {
           return (
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Pressable onPress={() => {
-                // navigation.navigate('ProductDetails',{item})
-              }}
-                style={{ flex: 1, flexDirection: 'row' }}>
-                <Card item={item} />
-              </Pressable>
+              <View style={{ flex: 1, }}>
+                  <Pressable onPress={() => { addProductTostock(item.item) }}
+                    style={{ flex: 1, flexDirection: 'row' }}>
+                    <Card item={item} />
+                  </Pressable>
 
-             <View>
-            <View style={{flexDirection:'row'}}>
-            <Icon onPress={() => { removeProductTostock(item.item) }}
-                name={'remove-circle'} size={25} style={{ paddingTop: 5, paddingRight: 5, color: 'red' }} />
-              <Text style={{ paddingTop: 5, paddingRight: 5, color: 'black' }}> {item.item.quantity} </Text>
-              {/* <TextInput 
-              keyboardType='numaric'
-              onChangeText={(t)=>{
-                console.log(t)
-                setloading(true)
-                getData()
-                item.item.quantity= parseInt(t)
-              }}
-              value={item.item.quantity} /> */}
-              <Icon onPress={() => { addProductTostock(item.item) }}
-                name={'add-circle'} size={25} style={{ paddingTop: 5, paddingRight: 10, color: 'green' }} />
-              </View>
-
-            </View>
-            </View>
+                  {item.item.quantity > 0 ? (
+                    <Pressable style={{ flexDirection: 'row', alignSelf: 'center', marginBottom: 15 }}
+                      onPress={() => { removeProductTostock(item.item) }}
+                    >
+                      <Icon
+                        name={'remove-circle'} size={23} style={{ paddingRight: 5, color: 'red' }} />
+                      <Text style={{ paddingTop: 2, color: 'red', fontWeight: 'bold' }}>Remove product from cart</Text>
+                    </Pressable>
+                  ) : ''}
+                 
+                </View>
           )
         }}
 
@@ -318,11 +315,11 @@ const getStock= ()=>{
             </View>
           )
         }}
-       
       />
+      </View>
 
 {selectedProducts?(
-<View>
+<View style={[mstyle.inputContainer,{marginTop:10, paddingBottom:10,elevation:8}]}>
       <Text style={mstyle.title}>New Order Details:-</Text>
       <FlatList
         refreshing={loading}
@@ -333,34 +330,26 @@ const getStock= ()=>{
         renderItem={(item) => {
           return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Pressable onPress={() => {
-                // navigation.navigate('ProductDetails',{item})
-              }}
-                style={{ flex: 1, flexDirection: 'row' }}>
-                <Card item={item} />
-              </Pressable>
+              <View style={{ flex: 1, }}>
+                  <Pressable onPress={() => { addProductTocart(item.item) }}
+                    style={{ flex: 1, flexDirection: 'row' }}>
+                    <Card item={item} />
+                  </Pressable>
 
-             <View>
-            <View style={{flexDirection:'row'}}>
-            <Icon onPress={() => { removeProductTocart(item.item) }}
-                name={'remove-circle'} size={25} style={{ paddingTop: 5, paddingRight: 5, color: 'red' }} />
-              <Text style={{ paddingTop: 5, paddingRight: 5, color: 'black' }}> {item.item.quantity} </Text>
-              {/* <TextInput 
-              keyboardType='numaric'
-              onChangeText={(t)=>{
-                console.log(t)
-                setloading(true)
-                getData()
-                item.item.quantity= parseInt(t)
-              }}
-              value={item.item.quantity} /> */}
-              <Icon onPress={() => { addProductTocart(item.item) }}
-                name={'add-circle'} size={25} style={{ paddingTop: 5, paddingRight: 10, color: 'green' }} />
-              </View>
-              <Text>Total : <Text style={{textAlign:'right'}}>{item.item.quantity * item.item.rate }</Text> </Text>
-
+                  {item.item.quantity > 0 ? (
+                    <Pressable style={{ flexDirection: 'row', alignSelf: 'center', marginBottom: 15 }}
+                      onPress={() => { removeProductTocart(item.item) }}
+                    >
+                      <Icon
+                        name={'remove-circle'} size={23} style={{ paddingRight: 5, color: 'red' }} />
+                      <Text style={{ paddingTop: 2, color: 'red', fontWeight: 'bold' }}>Remove product from cart</Text>
+                    </Pressable>
+                  ) : ''}
+                 
+                </View>
+             
             </View>
-            </View>
+            
           )
         }}
         ListFooterComponent={() => {
@@ -381,23 +370,25 @@ const getStock= ()=>{
      </View>
       ):(null)}
 
-      <View style={{flexDirection:'row', paddingTop:105, paddingHorizontal:10}}>
+      <View style={{flexDirection:'row', paddingTop:10, paddingHorizontal:10}}>
         <Pressable
-        style={{borderColor:'silver', width:'33%', borderWidth:1, borderRadius:5, paddingHorizontal:10, paddingVertical:10}}
+        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+        width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}}
          onPress={() => { navigation.navigate('ProductScreen', { item }) }}>
-          <Text style={{color:'gray'}}>New Order</Text>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>New Order</Text>
         </Pressable>
 
         <Pressable
-        style={{borderColor:'silver', width:'33%', borderWidth:1, borderRadius:5, paddingHorizontal:10, paddingVertical:10, marginHorizontal:5}}
-        onPress={() => { navigation.navigate('AddPayment', { item }) }}>
-          <Text>Payment Entry</Text>
+        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+          width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}}
+           onPress={() => { navigation.navigate('AddPayment', { item }) }}>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>Payment Entry</Text>
         </Pressable>
 
         <Pressable
-        style={{borderColor:'silver', width:'30%', borderWidth:1, borderRadius:5, paddingHorizontal:10, paddingVertical:10, marginHorizontal:5}}
-        onPress={() => { navigation.navigate('ReturnOrder', { item }) }}>
-          <Text>Return order</Text>
+        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+          width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}} onPress={() => { navigation.navigate('ReturnOrder', { item }) }}>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>Return order</Text>
         </Pressable>
       
       </View>

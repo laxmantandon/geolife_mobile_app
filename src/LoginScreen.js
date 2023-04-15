@@ -23,6 +23,12 @@ import { AuthenicationService } from './services';
 import OTPInput from './components/OTPInput';
 import CountDown from 'react-native-countdown-component';
 import RNRestart from 'react-native-restart';
+import {
+  getHash,
+  removeListener,
+  startOtpListener,
+  useOtpVerify,
+} from 'react-native-otp-verify';
 
 
 const LoginScreen = ({ navigation, setToken }) => {
@@ -34,13 +40,14 @@ const LoginScreen = ({ navigation, setToken }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [otp, setotp] = useState(false)
+  const { hash, motp, message, timeoutError, stopListener, startListener } = useOtpVerify({numberOfDigits: 4});
 
   const [otpCode, setOTPCode] = useState("");
   const [isPinReady, setIsPinReady] = useState(false);
   const maximumCodeLength = 4;
 
   useEffect(() => {
-    if (isMounted) {
+       if (isMounted) {
       SplashScreen.hide();
       AsyncStorage.getItem('user_info', (err, result) => {
         setUserdata(JSON.parse(result))
@@ -66,7 +73,7 @@ const LoginScreen = ({ navigation, setToken }) => {
       backAction,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler.remove()
 
   })
 
@@ -84,12 +91,18 @@ const LoginScreen = ({ navigation, setToken }) => {
       };
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
-        // console.log(user)
+        console.log(user)
         console.log(response)
         // setToken(response?.data);
         if (response?.status == true) {
           setotp(true)
           setIsLoading(false)
+          startOtpListener(message => {
+            console.log(message)
+            const motp = /(\d{4})/g.exec(message)[1];
+            console.log(motp)
+            setOTPCode(motp);
+          });
           // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
           // navigation.navigate('Home')
         } else {
@@ -229,11 +242,12 @@ const LoginScreen = ({ navigation, setToken }) => {
 
         <View  >
           <Text style={[styles.title, { marginTop: 50 }]}>Verify OTP</Text>
-          <Text style={styles.content}>
+          <Text style={[styles.content,{fontWeight:'bold',color:'gray'}]}>
             OTP successfully sent to your mobile number <Text style={{color:'green'}}>{username}</Text>
           </Text>
           <OTPInput
             code={otpCode}
+            autoPlay={true}
             setCode={setOTPCode}
             maximumLength={maximumCodeLength}
             setIsPinReady={setIsPinReady}
@@ -252,11 +266,12 @@ const LoginScreen = ({ navigation, setToken }) => {
 
 
           <View style={{flexDirection:'row'}}>
-          <Text style={[styles.content,{paddingTop:12,paddingHorizontal:10,}]}>
+          <Text style={[styles.content,{paddingTop:12,paddingHorizontal:10,fontWeight:'bold',}]}>
             Your are able to resend otp in
-            <TouchableOpacity  onPress={()=>{setotp(false)}}>
+            <TouchableOpacity  onPress={()=>{setotp(false)
+            setOTPCode()}}>
             <View>
-              <Text style={{paddingHorizontal:10, color:'green'}}>Resend OTP</Text>
+              <Text style={{paddingHorizontal:10, fontWeight:'bold', color:'green'}}>Resend OTP</Text>
             </View>
           </TouchableOpacity>
           </Text>

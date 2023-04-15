@@ -49,7 +49,7 @@ const FarmerDetails = ({ navigation, route: {
       <Icon name={'person-circle-outline'} size={80}
         style={{ paddingTop: 2, color: Colors.LIGHT_GREEN, alignSelf: 'center' }} />
       <Text style={{ fontSize: 22,fontWeight:'bold', color: 'black', textAlign: 'center' }}>{item.item.title}</Text>
-      <Text style={{ fontSize: 14,fontWeight:'bold', color: 'gray', textAlign: 'center' }}>{item.item.subtitle}</Text>
+      {/* <Text style={{ fontSize: 14,fontWeight:'bold', color: 'gray', textAlign: 'center' }}>{item.item.subtitle}</Text> */}
 
       <View style={{ flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: 'silver' }}>
         <View style={{ width: '30%', marginLeft: '5%' }}>

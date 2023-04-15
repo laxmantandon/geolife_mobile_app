@@ -133,7 +133,7 @@ const MYinputs = ({ item }) => {
             ) : (
               <View>
                 <View style={mstyle.inputContainer}>
-                  <View >
+                  <View style={mstyle.inputSubContainer}>
 
                     {item?.type === 'select' ? (
                       <View style={{ flex: 1, flexDirection: 'row' }}>

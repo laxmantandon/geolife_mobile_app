@@ -1,5 +1,3 @@
-// In App.js in a new project
-
 import * as React from 'react';
 import { useEffect } from 'react';
 import { View, Image, Text, Button, TextInput, FlatList, StatusBar, ScrollView, TouchableOpacity, ToastAndroid, BackHandler, Alert, ActivityIndicator, ImageBackground } from 'react-native';
@@ -53,24 +51,84 @@ import StartSession from './src/StartSession';
 import ReturnOrderScreen from './src/ReturnOrderScreen';
 import FramerProductKitScreen from './src/screens/My Former/FramerProductKitScreen';
 import VideoScreen from './src/VideoScreen';
-import { BarChart, LineChart } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
 import moment from 'moment';
 import { useState } from 'react';
 import QuizScreen from './src/QuizScreen';
+import 'react-native-gesture-handler';
+import { DrawerToggleButton, createDrawerNavigator } from '@react-navigation/drawer';
+import { DrawerContent } from './src/DrawerScreen';
+import FarmerOrdersScreen from './src/screens/My Former/FarmerOrdersScreen';
+import OrderDetailsScreen from './src/screens/My Former/OrderDetailsScreen';
 // SplashScreen.hide();
 CameraPermission()
 
+const Drawer = createDrawerNavigator();
 
+function MyDGODrawer() {
+  return (
+    <Drawer.Navigator initialRouteName='Home1' drawerContent={props => {<DrawerContent {...props} />}}>
+      <Drawer.Screen name="Home1" component={HomeScreen} options={({navigation}) => ({
+                  headerStyle: {
+                    height: 80,
+                    elevation: 5,
+                    shadowOpacity: 100,
+                    backgroundColor:'white',
+                  },
+                  headerTitleAlign: 'left',
+                  headerLeft: () => (
+
+                   <View style={{flexDirection:'row'}}>
+                     {/* <TouchableOpacity onPress={() => {navigation.openDrawer() }}>
+                      <Icon name='menu-outline' size={30} style={{color:'black', paddingLeft:10, paddingTop:8}} />
+                    </TouchableOpacity>
+                     */}
+                    <Image
+                      source={require('./src/assets/images/logo.png')}
+                      style={{ width: 105, height: 45, }}
+                      resizeMode="contain"
+                    />
+                   </View>
+                  ),
+                  headerRight: () => (
+                    <View style={{ flexDirection: 'row' }}>
+                      <TouchableOpacity>
+                        <Icon name="notifications-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                          onPress={() => navigation.navigate('Notifications')} />
+                      </TouchableOpacity>
+                      <TouchableOpacity>
+                        <Icon name="headset" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                          onPress={() => navigation.navigate('Help')} />
+                      </TouchableOpacity>
+                      <TouchableOpacity>
+                        <Icon name="ios-person-circle-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                          onPress={() => navigation.navigate('Help')} />
+                      </TouchableOpacity>
+                    </View>
+
+
+                  ),
+                  headerTitle: () => null
+                  // (
+                  //   // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
+                  //   <Image
+                  //     source={require('./src/assets/images/logo.png')}
+                  //     style={{width: 105,height:45,}}
+                  //     resizeMode="contain"
+                  //   />
+                  // ),
+                })} />
+    </Drawer.Navigator>
+  );
+}
 function HomeScreen({ navigation }) {
   SplashScreen.hide();
-  // console.log(AuthenicationService.gettoken())
-
   const [data, setdata] = React.useState([
-    { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    { title: 'My day', route: 'Myday', icon: 'ios-sunny-outline', color: 'gold' },
+    // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
+    // { title: 'My day', route: 'Myday', icon: 'ios-sunny-outline', color: 'gold' },
     { title: 'My farmer', route: 'Myfarmer', icon: 'ios-person-outline', color: 'black' },
     { title: 'Crop Seminar', route: 'CropSeminar', icon: 'ios-list', color: 'green' },
-    { title: 'My dealers', route: 'Mydealers', icon: 'ios-list', color: 'blue' }
+    // { title: 'My dealers', route: 'Mydealers', icon: 'ios-list', color: 'blue' }
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
   const [user, setuser] = React.useState([])
@@ -272,15 +330,13 @@ function HomeScreen({ navigation }) {
                   <BarChart data={chart_data} 
                   frontColor="#177AD5"
                   barBorderRadius={4}
-                  barWidth={24}
-                  noOfSections={3}
+                  barWidth={22}
+                  noOfSections={5}
                   yAxisThickness={0}
                   xAxisThickness={0}
                   labelWidth={18}
                   labelsExtraHeight={15}
                   spacing={20}
-                  
-                  
                   />
                 
               </View>
@@ -435,7 +491,7 @@ function App({ navigation }) {
       } catch (e) {
         // console.log(e);
       }
-      // // console.log('user token: ', userToken);
+      // console.log('user token: ', userToken);
       dispatch({ type: 'LOGIN', id: userName, token: userToken });
     },
     signOut: async () => {
@@ -484,65 +540,7 @@ function App({ navigation }) {
             <Stack.Screen name="SessionScreen" component={StartSession} options={() => ({ headerShown: false })} />
             <Stack.Screen name="VideoScreen" component={VideoScreen} options={() => ({ headerShown: false })} />
             <Stack.Screen name="QuizScreen" component={QuizScreen} options={() => ({ headerShown: false })} />
-              <Stack.Screen name="Home" component={HomeScreen}
-                // options={() => ({
-                //   headerShown: true,
-                //   headerLeft: () => (
-                //     <View style={{ flexDirection: 'row' }}>
-                //       <Pressable
-                //         onPress={() => { }}>
-                //         {/* <Icon name="arrow-back" color="#212121" size={25} /> */}
-                //       </Pressable>
-                //     </View>
-                //   ),
-                //   headerTitle: "Dashboard"
-                // })}
-                options={(navigation) => ({
-                  headerStyle: {
-                    height: 45,
-                    elevation: 5,
-                    shadowOpacity: 100,
-                    backgroundColor:'white'
-
-                    // backgroundColor:'#f0f8fe'
-                  },
-                  headerTitleAlign: 'left',
-                  headerLeft: () => (
-                    <Image
-                      source={require('./src/assets/images/logo.png')}
-                      style={{ width: 105, height: 45, }}
-                      resizeMode="contain"
-                    />
-                  ),
-                  headerRight: () => (
-                    <View style={{ flexDirection: 'row' }}>
-                      <TouchableOpacity>
-                        <Icon name="notifications-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                          onPress={() => navigation.navigate('Notifications')} />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Icon name="headset" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                          onPress={() => navigation.navigate('Help')} />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Icon name="ios-person-circle-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                          onPress={() => navigation.navigate('Help')} />
-                      </TouchableOpacity>
-                    </View>
-
-
-                  ),
-                  headerTitle: () => null
-                  // (
-                  //   // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
-                  //   <Image
-                  //     source={require('./src/assets/images/logo.png')}
-                  //     style={{width: 105,height:45,}}
-                  //     resizeMode="contain"
-                  //   />
-                  // ),
-                })}
-              />
+              <Stack.Screen name="Home" component={MyDGODrawer} options={() => ({ headerShown: false })} />
               <Stack.Screen name="Login" component={LoginScreen} options={() => ({ headerShown: false })} />
 
               {/* My farmer screen */}
@@ -550,6 +548,8 @@ function App({ navigation }) {
               <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({ headerTitle: "New Farmer" })} />
               <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} options={() => ({ headerTitle: "Farmer List" })} />
               <Stack.Screen name='FarmerDetails' component={FarmerDetails} options={() => ({ headerTitle: "Farmer Details" })} />
+              <Stack.Screen name='FarmerOrdersScreen' component={FarmerOrdersScreen} options={() => ({ headerTitle: "Farmer Advance Booking Orders", })} />
+              <Stack.Screen name='OrderDetails' component={OrderDetailsScreen} options={() => ({ headerTitle: "Farmer Orders Details", })} />
               <Stack.Screen name='FarmerProductKit' component={FramerProductKitScreen} options={() => ({ headerTitle: "Farmer Product Kit" })} />
               <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} options={() => ({ headerTitle: "Door To Door Visit" })} />
               <Stack.Screen name='StickerPastingScreen' component={StickerPastingScreen} options={() => ({ headerTitle: "Sticker Pasting" })} />
@@ -597,65 +597,8 @@ function App({ navigation }) {
 
         ) : (
           <Stack.Navigator>
-
             <Stack.Screen name="Login" component={LoginScreen} options={() => ({ headerShown: false })} />
-            <Stack.Screen name="Home" component={HomeScreen}
-              // options={() => ({
-              //   headerShown: true,
-              //   headerLeft: () => (
-              //     <View style={{ flexDirection: 'row' }}>
-              //       <Pressable
-              //         onPress={() => { }}>
-              //         {/* <Icon name="arrow-back" color="#212121" size={25} /> */}
-              //       </Pressable>
-              //     </View>
-              //   ),
-              //   headerTitle: "Dashboard"
-              // })}
-              options={(navigation) => ({
-                headerStyle: {
-                  height: 45,
-                  elevation: 5,
-                  shadowOpacity: 100,
-                },
-                headerTitleAlign: 'left',
-                headerLeft: () => (
-                  <Image
-                    source={require('./src/assets/images/logo.png')}
-                    style={{ width: 105, height: 45, }}
-                    resizeMode="contain"
-                  />
-                ),
-                headerRight: () => (
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity>
-                      <Icon name="notifications-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                        onPress={() => navigation.navigate('Notifications')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Icon name="headset" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                        onPress={() => navigation.navigate('Help')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Icon name="ios-person-circle-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
-                        onPress={() => navigation.navigate('Help')} />
-                    </TouchableOpacity>
-                  </View>
-
-
-                ),
-                headerTitle: () => null
-                // (
-                //   // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
-                //   <Image
-                //     source={require('./src/assets/images/logo.png')}
-                //     style={{width: 105,height:45,}}
-                //     resizeMode="contain"
-                //   />
-                // ),
-              })}
-            />
-
+            <Stack.Screen name="Home" component={MyDGODrawer} options={() => ({ headerShown: false })} />
           </Stack.Navigator>
 
         )

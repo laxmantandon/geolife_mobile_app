@@ -40,17 +40,36 @@ const CropSeminarScreen = ({navigation}) => {
       // console.log(r)
       if (r?.status== true) {
         let mapped_array=[]
+             
         r.data.forEach(a=> {
+          let v =0
+          a.details.post_activities.forEach(b=>{
+            if (b.activity_status){
+              v += 1
+              console.log('Persent',b)
+            }
+          })
+          a.details.pre_activities.forEach(b=>{
+            if (b.activity_status){
+              v += 1
+              console.log('Persent',b)
+            }
+          })
           let m ={
             title:`At ${a.village}, ${a.venue}`,
             subtitle:`${a.seminar_date} - ${a.seminar_time}`,
             date:`${a.seminar_date}`,
             large_image:a?.image,
             status:'Active',
-            percent:'10%',
+            percent: `${(Math.round((v/17)*100 * 100) / 100).toFixed(2)}%`,
             crop:a
           }
-       
+          
+
+          // search(a.details.post_activities)
+          // search(a.details.pre_activities)
+          // console.log(a.details.post_activities.length + a.details.pre_activities.length)
+          // console.log(a.details.pre_activities.length)
           mapped_array.push(m)
         })
         setdata(mapped_array)
@@ -62,6 +81,14 @@ const CropSeminarScreen = ({navigation}) => {
       setserachingData(false)
     })
   }
+
+  const search= ( myArray)=>{
+    for (let i=0; i < myArray.length; i++) {
+        if (myArray[i].activity_status === 1) {
+            return myArray[i];
+        }
+    }
+}
 
   return (
     <View style={mstyle.container1}>
