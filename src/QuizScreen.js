@@ -8,6 +8,7 @@ import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Fonts } from './contants';
 import MultiSelect from 'react-native-checkbox-selection';
+import { TouchableOpacity } from 'react-native';
 
 
 const QuizScreen = ({ navigation, props,
@@ -19,6 +20,7 @@ const QuizScreen = ({ navigation, props,
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([])
   const [isLoading, setisLoading] = useState(false)
+  const [Loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (item) {
@@ -83,6 +85,14 @@ const QuizScreen = ({ navigation, props,
     }
   }
 
+  getRefreshData =()=>{
+    setTimeout(() => {
+      console.log('refresshing')
+      setLoading(false)
+      
+    }, 1000);
+  }
+
   return (
     <View style={[mstyle.container, { paddingTop: 30 }]}>
       <Text style={{
@@ -100,14 +110,21 @@ const QuizScreen = ({ navigation, props,
       }}>Daily Session Quiz</Text>
 
       <FlatList
+      onRefresh={()=>{getRefreshData()}}
+      refreshing={Loading}
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <View >
+            <TouchableOpacity onPress={()=>{
 
+            }}>
               <MYinputs item={item} />
-
-            </View>
+              {/* {item.value===''?(<Text>{item.value}</Text>):(
+                <View>
+                  <Text>{item.ans}</Text>
+                </View>
+              )} */}
+            </TouchableOpacity>
           )
         }} />
 

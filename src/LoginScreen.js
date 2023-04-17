@@ -23,9 +23,14 @@ import { AuthenicationService } from './services';
 import OTPInput from './components/OTPInput';
 import CountDown from 'react-native-countdown-component';
 import RNRestart from 'react-native-restart';
+// import {
+//   getHash,
+//   removeListener,
+//   startOtpListener,
+//   useOtpVerify,
+// } from 'react-native-otp-verify';
 import {
   getHash,
-  removeListener,
   startOtpListener,
   useOtpVerify,
 } from 'react-native-otp-verify';
@@ -47,6 +52,15 @@ const LoginScreen = ({ navigation, setToken }) => {
   const maximumCodeLength = 4;
 
   useEffect(() => {
+    // RNOtpVerify.getHash().then(console.log).catch(console.log)
+    // RNOtpVerify.getOtp().then(p=>RNOtpVerify.addListener(otpHandler)).catch(p=>{
+    //   console.log(p)
+    // })
+
+    getHash().then(hash => {
+      console.log(hash)
+    }).catch(console.log);   
+
        if (isMounted) {
       SplashScreen.hide();
       AsyncStorage.getItem('user_info', (err, result) => {
@@ -77,6 +91,15 @@ const LoginScreen = ({ navigation, setToken }) => {
 
   })
 
+  // const startOtpListener=(message => {
+  //     // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
+  //     const mxotp = /(\d{4})/g.exec(message)[1];
+  //     console.log(message)
+  //     // setOtp(otp);
+  //   });
+  
+
+
   const sendOTP = async () => {
     setIsLoading(true)
     if (username === '' || username.length != 10) {
@@ -97,12 +120,18 @@ const LoginScreen = ({ navigation, setToken }) => {
         if (response?.status == true) {
           setotp(true)
           setIsLoading(false)
-          startOtpListener(message => {
+           startOtpListener(message => {
+            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
             console.log(message)
-            const motp = /(\d{4})/g.exec(message)[1];
-            console.log(motp)
-            setOTPCode(motp);
+            const otpmCode = /(\d{4})/g.exec(message)[1];
+            console.log(otpmCode)
           });
+          // startOtpListener(message => {
+          //   console.log(message)
+          //   const motp = /(\d{4})/g.exec(message)[1];
+          //   console.log(motp)
+          //   setOTPCode(motp);
+          // });
           // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
           // navigation.navigate('Home')
         } else {
