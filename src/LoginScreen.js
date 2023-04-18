@@ -57,11 +57,21 @@ const LoginScreen = ({ navigation, setToken }) => {
     //   console.log(p)
     // })
 
+
     getHash().then(hash => {
       console.log(hash)
-    }).catch(console.log);   
+    }).catch(console.log);
 
-       if (isMounted) {
+    // startOtpListener(message => {
+    //   // console.log(message)
+    //   // const otpCode = /(\d{4})/g.exec(message)[1];
+    //   if(message){
+    //     setOTPCode(/(\d{4})/g.exec(message)[1])
+    //     signIn()
+    //   }
+    // }); 
+
+    if (isMounted) {
       SplashScreen.hide();
       AsyncStorage.getItem('user_info', (err, result) => {
         setUserdata(JSON.parse(result))
@@ -120,12 +130,14 @@ const LoginScreen = ({ navigation, setToken }) => {
         if (response?.status == true) {
           setotp(true)
           setIsLoading(false)
-           startOtpListener(message => {
-            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-            console.log(message)
-            const otpmCode = /(\d{4})/g.exec(message)[1];
-            console.log(otpmCode)
-          });
+          startOtpListener(message => {
+            // console.log(message)
+            // const otpCode = /(\d{4})/g.exec(message)[1];
+            if(message){
+              setOTPCode(/(\d{4})/g.exec(message)[1])
+              signIn()
+            }
+          }); 
           // startOtpListener(message => {
           //   console.log(message)
           //   const motp = /(\d{4})/g.exec(message)[1];

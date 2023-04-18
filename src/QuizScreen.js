@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, FlatList, ScrollView, ToastAndroid, Alert } from 'react-native'
+import { View, StyleSheet, Pressable, FlatList, ScrollView, ToastAndroid, Alert, Modal, Animated } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
@@ -9,6 +9,46 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Fonts } from './contants';
 import MultiSelect from 'react-native-checkbox-selection';
 import { TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-paper';
+
+
+
+const ModalPoup = ({ visible, children }) => {
+  const [showModal, setShowModal] = React.useState(visible);
+  const scaleValue = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    toggleModal();
+  }, [visible]);
+  const toggleModal = () => {
+    if (visible) {
+      setShowModal(true);
+      Animated.spring(scaleValue, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      setTimeout(() => setShowModal(false), 200);
+      Animated.timing(scaleValue, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+  return (
+    <Modal transparent visible={showModal}>
+      <View style={styles.modalBackGround}>
+        <Animated.View
+          style={[styles.modalContainer, { transform: [{ scale: scaleValue }] }]}>
+          {children}
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+};
+
+
 
 
 const QuizScreen = ({ navigation, props,
@@ -45,7 +85,7 @@ const QuizScreen = ({ navigation, props,
 
 
   const submit = () => {
-    // console.log(formdata)
+    setformAns(formdata)
     if (!isLoading) {
       let points = 0
       formdata.forEach(e => {
@@ -67,7 +107,8 @@ const QuizScreen = ({ navigation, props,
         setisLoading(false);
         console.log(response)
         if (response?.status == true) {
-          navigation.navigate('Home')
+          setvisible(true)
+
           ToastAndroid.showWithGravityAndOffset(
             response.message,
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -92,9 +133,51 @@ const QuizScreen = ({ navigation, props,
       
     }, 1000);
   }
+  const [visible, setvisible] = useState(false)
+  const [formAns, setformAns] = useState([])
 
   return (
     <View style={[mstyle.container, { paddingTop: 30 }]}>
+      <ModalPoup visible={visible}>
+        <View style={{  }}>
+        <Text style={{color:'black',fontWeight:"bold", fontSize:25,textAlign:'center'}}>Quiz Answer's</Text>
+
+          {/* <View style={styles.header}>
+            <TouchableOpacity onPress={() => {
+              setvisible(false)
+              navigation.navigate('Home')
+            }}>
+              <Icon name='close-circle-outline' style={{ color: 'red', fontWeight: 'bold' }} size={25} />
+            </TouchableOpacity>
+          </View> */}
+        </View>
+
+        <View style={{marginVertical:20}}>
+        <FlatList
+      onRefresh={()=>{getRefreshData()}}
+      refreshing={Loading}
+        data={formAns}
+        renderItem={({ item, index }) => {
+          return (
+            <View style={[mstyle.inputContainer1,{marginBottom:8}]}>
+              <Text style={{color:'black',fontWeight:"600", fontSize:15}}>{item.label} </Text>
+              {item.value==item.ans?(<Text style={{color:'green', fontSize:14, fontWeight:"600"}}> Your Answer is Right :- {item.ans} </Text>):(
+              <Text style={{color:'green', fontSize:14, fontWeight:"600"}}><Text style={{color:'red'}}>*</Text> Right Answer is :- {item.ans} </Text>
+              )}      
+            </View>
+          )
+        }} />
+        </View>
+       
+        <TouchableOpacity onPress={() => {
+              setvisible(false)
+              navigation.navigate('Home')
+            }}>
+        <Buttons title="Go To Home" />
+            </TouchableOpacity>
+      </ModalPoup>
+
+
       <Text style={{
         color: 'gray',
         textAlign: "center",
@@ -162,5 +245,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 3
   },
+  modalBackGround: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '90%',
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 8,
+    elevation: 20,
+  },
+  header: {
+    // width: '100%',
+    height: 30,
+    marginLeft:'auto',
+    justifyContent: 'center',
+  },
+
 })
+
 export default QuizScreen
