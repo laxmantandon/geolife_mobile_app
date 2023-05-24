@@ -11,9 +11,9 @@ import { Linking } from 'react-native';
 
 
 const Card = ({ item }) => {
-  // console.log(item.item)
+  // // console.log(item.item)
   const data = item.item
-  // console.log('type',parseInt(data.subtitle))
+  // // console.log('type',parseInt(data.subtitle))
   const [sub_title, setsub_title] = useState(0)
 
   useEffect(() => {
@@ -128,8 +128,9 @@ const Card = ({ item }) => {
         {data?.footer_details ? (<View style={{ backgroundColor: 'white',  width: '100%', borderTopColor:Colors.SECONDARY_GREEN, borderTopWidth:2, 
         borderBottomLeftRadius: 8, borderBottomRightRadius: 8 , paddingVertical:10, paddingHorizontal:8}}>
 
+<Text style={{fontSize:13,  color:'black'}}> Stage : - <Text style={{fontWeight:'600'}}>{data.subtitle}</Text> </Text>
 <Text style={{fontSize:13,  color:'black'}}> Start Date : - <Text style={{fontWeight:'600'}}>{moment(data.details.startDate).format('Do MMM-YY')}</Text> </Text>
-<Text style={{fontSize:13,  color:'black'}}> End Date : - <Text style={{fontWeight:'600'}}>{moment(data.date).format('Do MMM-YY')}</Text> </Text>
+<Text style={{fontSize:13,  color:'black'}}> End Date : - <Text style={{fontWeight:'600'}}>{moment(data.enddate).format('Do MMM-YY')}</Text> </Text>
 <Text style={{fontSize:13,  color:'black'}}> Crop Farm Size : - <Text style={{fontWeight:'600'}}>{data.details.size}</Text> </Text>
 <Text style={{fontSize:13,  color:'black'}}> Crop Farm Unit : - <Text style={{fontWeight:'600'}}>{data.details.unit}</Text> </Text>
           

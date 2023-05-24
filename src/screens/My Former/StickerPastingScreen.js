@@ -21,11 +21,11 @@ const StickerPastingScreen = ({navigation}) => {
   const [selectedItems, setselectedItems] = useState('')
   const [loading, setIsLoading] = useState(false)
   // if (item) {
-  //   console.log(item)
+  //   // console.log(item)
 
   //   for (let i in formdata) {
   //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
+  //       // console.log('item value', item.item[n])
   //       if (formdata[i].key === n) {
   //         formdata[i].value = item.item[n]
   //       }
@@ -41,10 +41,10 @@ const StickerPastingScreen = ({navigation}) => {
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
-        // console.log('MMMMMM', x.data)
+        // // console.log('MMMMMM', x.data)
         // if (x.status == true) {
         //   let mapped_array = []
         //   x.data.forEach(a => {
@@ -54,22 +54,22 @@ const StickerPastingScreen = ({navigation}) => {
         // } else {
         // }
       }).catch(e => {
-        console.log(e)
+        // console.log(e)
       })
   } 
   
 
 
   const submit =()=>{
-    // console.log(formdata)
+    // // console.log(formdata)
     let req = submitReqData(formdata);
       setIsLoading(true);
       req.farmer_name=selectedItems.id
-      console.log(req)
+      // console.log(req)
     AuthenicationService.sticker_pasting(req).then(r => {
-      console.log('EEEEE', r)
+      // console.log('EEEEE', r)
       setIsLoading(false);
-      // console.log(response)
+      // // console.log(response)
       if (r?.status== true) {
       navigation.goBack()
       ToastAndroid.showWithGravityAndOffset(
@@ -85,13 +85,13 @@ const StickerPastingScreen = ({navigation}) => {
       }
     }).catch(e => {
       setIsLoading(false);
-      console.log(e)
+      // console.log(e)
     })
 
   }
 
   const update =()=>{
-    // console.log(formdata)
+    // // console.log(formdata)
   }
 
 
@@ -102,7 +102,7 @@ const StickerPastingScreen = ({navigation}) => {
           <SearchableDropDown
             onItemSelect={(item) => {
               formdata[0].value = item.name
-              console.log(formdata[0].value)
+              // console.log(formdata[0].value)
               // const items = this.state.selectedItems;
               // items.push(item)
               setselectedItems(item)
@@ -154,7 +154,7 @@ const StickerPastingScreen = ({navigation}) => {
                         }
                       })
                       .catch(error => {
-                        console.log(error)
+                        // console.log(error)
                       })
                 }
               }

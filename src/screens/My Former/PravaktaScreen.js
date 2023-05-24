@@ -14,7 +14,7 @@ const PravaktaScreen = ({ navigation }) => {
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
         if (x.status == true) {

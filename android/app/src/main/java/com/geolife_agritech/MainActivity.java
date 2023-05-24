@@ -1,4 +1,4 @@
-package com.geolife;
+package com.erpgeolife;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

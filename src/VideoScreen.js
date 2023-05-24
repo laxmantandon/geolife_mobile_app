@@ -24,7 +24,7 @@ const VideoScreen = ({navigation,
     
 
     const onStateChange = useCallback((state) => {
-        console.log("this a state", state);
+        // console.log("this a state", state);
     
         if (state === "ended") {
           navigation.navigate('QuizScreen', {item:item})

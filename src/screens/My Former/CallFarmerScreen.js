@@ -18,7 +18,7 @@ const CallFarmerScreen = ({ navigation }) => {
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
         setserachingData(false)

@@ -1,4 +1,4 @@
-package com.geolife.newarchitecture.components;
+package com.erpgeolife.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

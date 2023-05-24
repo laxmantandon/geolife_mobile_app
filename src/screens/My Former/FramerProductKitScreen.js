@@ -54,7 +54,7 @@ const ModalPoup = ({ visible, children }) => {
 
 const FramerProductKitScreen = ({ navigation, props,
   route: {
-    params: { item },
+    params: { farmerData },
   },
 }) => {
 
@@ -69,20 +69,52 @@ const FramerProductKitScreen = ({ navigation, props,
   const [selectedDelers, setselectedDelers] = useState()
   const [selectedFarmer, setselectedFarmer] = useState('')
   const [iscartloading, setiscartloading] = useState(false)
+  const [delivery_date, setdelivery_date] = useState({ label: 'Expected Delivery Date', value: new Date(), type: 'date', key: 'expected_date' })
+  const [kit_type, setkit_type] = useState({ label: 'Product Kit Type', value: new Date(), type: 'select',value: '', options: ["Standard CNP", "Premium CNP"], key: 'kit_type' })
+  const [payment_method, setpayment_method] = useState({ label: 'Payment Method', value: '', options: ["Cash", "UPI"], type: 'select', })
+  const [amount, setamount] = useState(0)
+  const [visible, setVisible] = React.useState(false);
+
+  const [crop_bundle_list, setcrop_bundle_list] = useState([{title:'Builb Crops', large_image:'https://crop.erpgeolife.com/files/bulb crops.jpg'},
+  {title:'Leafy Vegetables', large_image:'https://crop.erpgeolife.com/files/Leafy veg.jpg'},
+  {title:'PADDY', large_image:'https://crop.erpgeolife.com/files/paddy.....jpg'},
+  {title:'Vegetable', large_image:'https://crop.erpgeolife.com/files/veg.jpg'}])
+  const [crop_bundle, setcrop_bundle] = useState('')
+  const [CNP_kit_type, setCNP_kit_type] = useState([
+  {title:'With Soil Application', large_image:'https://crop.erpgeolife.com/files/with_soil.jpg'},
+  {title:'Without Soil Application', 
+  large_image:'https://crop.erpgeolife.com/files/without_soil.jpg'}
+])
+const [cnp_type, setcnp_type] = useState('')
 
   const searchFilterFunction = (text) => {
-    if (selectedCrops?.id) {
+    // if (selectedCrops?.id) {
+    if (crop_bundle) {
       setloading(true)
       setserachingData(true)
       let req = {
         "text": text
       }
-      if (text == '') {
-        req.text = selectedCrops?.id
-      }
-      // console.log(text)
+      
+        // req.text = selectedCrops?.id
+        req.text = crop_bundle
+        req.cnp_type= cnp_type
+        req.kit_type=kit_type.value
+        req.dealer = selectedDelers.id
+        if(!kit_type.value){
+          alert('Please Select Product Kit Type')
+          return
+        }
+
+        if(!req.dealer){
+          alert('Please Select Dealer')
+          return
+        }
+      
+      console.log(req)
       AuthenicationService.searchProductKitData(req)
         .then(x => {
+          console.log(x)
           setserachingData(false)
           setloading(false)
 
@@ -110,7 +142,7 @@ const FramerProductKitScreen = ({ navigation, props,
     if (text == '') {
       req.text = false
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
         // setserachingData(false)
@@ -150,7 +182,7 @@ const FramerProductKitScreen = ({ navigation, props,
       // setselectedProducts(cart)
     }
 
-    console.log(data)
+    // console.log(data)
     // setloading(false)
     getData()
     getSelectedproducts()
@@ -195,14 +227,14 @@ const FramerProductKitScreen = ({ navigation, props,
   }
 
   useEffect(() => {
-    if (item) {
-      setselectedFarmer(item.subtitle)
+    if (farmerData) {
+      // console.log(farmerData)
+      setselectedFarmer(farmerData)
     }
     searchFilterFunctionFarmer('')
     getDealers()
     getCrops()
     getData()
-    // searchFilterFunction("")
   }, [])
 
 
@@ -212,7 +244,7 @@ const FramerProductKitScreen = ({ navigation, props,
     }
     AuthenicationService.searchCropData(req)
       .then(x => {
-        console.log(x.data)
+        // console.log(x.data)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -223,7 +255,7 @@ const FramerProductKitScreen = ({ navigation, props,
         }
       })
       .catch(error => {
-        console.log(error)
+        // console.log(error)
       })
   }
 
@@ -233,7 +265,7 @@ const FramerProductKitScreen = ({ navigation, props,
     }
     AuthenicationService.searchdealerData(req)
       .then(x => {
-        console.log(x.data)
+        // console.log(x.data)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -244,7 +276,7 @@ const FramerProductKitScreen = ({ navigation, props,
         }
       })
       .catch(error => {
-        console.log(error)
+        // console.log(error)
       })
   }
   const getSelectedproducts = () => {
@@ -266,11 +298,12 @@ const FramerProductKitScreen = ({ navigation, props,
     //   }
     // }
     // setselectedProducts(s_item)
-    console.log(selectedProducts)
-    if (!selectedCrops?.name) {
-      alert('Please select crop')
-      return
-    }
+    // console.log(selectedProducts)
+
+    // if (!selectedCrops?.name) {
+    //   alert('Please select crop')
+    //   return
+    // }
 
     if (!selectedFarmer?.id) {
       alert('Please select farmer')
@@ -315,9 +348,9 @@ const FramerProductKitScreen = ({ navigation, props,
     //   alert('Please Enter Valid Amount')
     //   return
     // }
-    console.log(req)
+    // console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
-      console.log(r)
+      // console.log(r)
       setiscartloading(false)
       if (r.status == true) {
         setselectedProducts([])
@@ -340,13 +373,10 @@ const FramerProductKitScreen = ({ navigation, props,
     //     ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
     // })
   }
-  const [delivery_date, setdelivery_date] = useState({ label: 'Expected Delivery Date', value: new Date(), type: 'date', key: 'expected_date' })
-  const [payment_method, setpayment_method] = useState({ label: 'Payment Method', value: '', options: ["Cash", "UPI"], type: 'select', })
-  const [amount, setamount] = useState(0)
-  const [visible, setVisible] = React.useState(false);
 
   return (
     <SafeAreaView style={mstyle.container1}>
+      
       <ModalPoup visible={visible}>
         <View style={{ alignItems: 'center' }}>
           <View style={styles.header}>
@@ -402,7 +432,10 @@ const FramerProductKitScreen = ({ navigation, props,
               return (
                 <View>
                   <View style={{ marginVertical: 10, marginTop: 1 }}>
-                    <Text style={{ color: 'black', fontSize: 15, textAlign: 'center', }}> Select <Text style={{ fontWeight: 'bold' }}>{selectedCrops?.name}</Text> Product Kit</Text>
+                    <Text style={{ color: 'black', fontSize: 15, textAlign: 'center', }}>
+                       {/* Select <Text style={{ fontWeight: 'bold' }}>{selectedCrops?.name}</Text> Product Kit</Text> */}
+                       Select <Text style={{ fontWeight: 'bold' }}>{crop_bundle}</Text> Product Kit</Text>
+
                   </View>
                 </View>
               )
@@ -470,254 +503,357 @@ const FramerProductKitScreen = ({ navigation, props,
           </Pressable>
         </View>
       ) : (
+
         <View>
-          <View style={[mstyle.inputContainer1, {
-            backgroundColor: 'white',
-
-          }]}>
-            <Text style={{ color: 'black' }}> Select Famer</Text>
-
-            <View style={mstyle.inputSubContainer}>
-              {selectedFarmer ? (
-                <View style={{
-                  padding: 8, marginTop: 2, flexDirection: 'row',
-                  backgroundColor: 'white', borderColor: 'silver',
-                  borderWidth: 1, borderRadius: 5, width: '100%'
-                }}>
-
-                  <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedFarmer.name}</Text>
-                  <Icon onPress={() => { setselectedFarmer() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
-
-                </View>
-              ) : (
-                <SearchableDropDown
-                  onItemSelect={(item) => {
-                    // const items = selectedCrops;
-                    // items.push(item)
-                    setselectedFarmer(item)
-
-                    console.log(selectedFarmer)
-                  }}
-                  containerStyle={{ padding: 1, width: '100%' }}
-                  onRemoveItem={(item, index) => {
-                    // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
-                    // setselectedCrops(items)
-                  }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: 'white',
-                    borderColor: 'silver',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                  }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemsContainerStyle={{ maxHeight: 140 }}
-                  items={farmers}
-                  defaultIndex={2}
-                  resetValue={false}
-                  textInputProps={
-                    {
-                      placeholder: "Search Farmer",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                        padding: 8,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        color: "black"
-                      },
-                      onTextChange: text => {
-                        searchFilterFunctionFarmer(text)
-                      }
+          {crop_bundle =='' ? (
+          <View>
+            <Text style={{textAlign:'center', color:'black', fontSize:22,fontWeight:'bold', paddingVertical:5}}> CROP TYPE </Text>
 
 
-                    }
-                  }
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
-                />
-              )}
-
-
-            </View>
-          </View>
-
-          <View style={[mstyle.inputContainer1, {
-            backgroundColor: 'white',
-            marginTop: 7,
-          }]}>
-            <Text style={{ color: 'black' }}> Select Crop</Text>
-
-            <View style={mstyle.inputSubContainer}>
-              {selectedCrops ? (
-                <View style={{
-                  padding: 8, marginTop: 2, flexDirection: 'row',
-                  backgroundColor: 'white', borderColor: 'silver',
-                  borderWidth: 1, borderRadius: 5, width: '100%'
-                }}>
-
-                  <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedCrops.name}</Text>
-                  <Icon onPress={() => { setselectedCrops() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
-
-                </View>
-              ) : (
-                <SearchableDropDown
-                  onItemSelect={(item) => {
-                    // const items = selectedCrops;
-                    // items.push(item)
-                    setselectedCrops(item)
-                    // searchFilterFunction(item.name)
-
-                    console.log(selectedCrops)
-                  }}
-                  containerStyle={{ padding: 3, width: '100%' }}
-                  onRemoveItem={(item, index) => {
-                    // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
-                    // setselectedCrops(items)
-                  }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: 'white',
-                    borderColor: 'silver',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                  }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemsContainerStyle={{ maxHeight: 140 }}
-                  items={crops}
-                  defaultIndex={2}
-                  resetValue={false}
-                  textInputProps={
-                    {
-                      placeholder: "Search Crops",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                        padding: 8,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        color: "black"
-                      },
-                      onTextChange: text => {
-                        //getsearchData(text)
-                      }
-                    }
-                  }
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
-                />
-              )}
-
-
-            </View>
-          </View>
-
-          <View style={[mstyle.inputContainer1, {
-            backgroundColor: 'white', marginTop: 7,
-
-          }]}>
-            <Text style={{ color: 'black' }}> Select Dealer</Text>
-            <View style={mstyle.inputSubContainer}>
-              {selectedDelers ? (
-                <View style={{
-                  padding: 8, marginTop: 2, flexDirection: 'row',
-                  backgroundColor: 'white', borderColor: 'silver',
-                  borderWidth: 1, borderRadius: 5, width: '100%'
-                }}>
-
-                  <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedDelers.name}</Text>
-                  <Icon onPress={() => { setselectedDelers() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
-
-                </View>
-              ) : (
-                <SearchableDropDown
-                  onItemSelect={(item) => {
-                    // const items = selectedCrops;
-                    // items.push(item)
-                    setselectedDelers(item)
-                    console.log(selectedDelers)
-                  }}
-                  containerStyle={{ padding: 3, width: '100%' }}
-                  onRemoveItem={(item, index) => {
-                    // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
-                    // setselectedDelers(items)
-                  }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: 'white',
-                    borderColor: 'silver',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                  }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemsContainerStyle={{ maxHeight: 140 }}
-                  items={dealers}
-                  defaultIndex={2}
-                  resetValue={false}
-                  textInputProps={
-                    {
-                      placeholder: "Search Dealer",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                        padding: 8,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                        color: "black"
-                      },
-                      onTextChange: text => {
-
-                      }
-                    }
-                  }
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
-                />
-              )}
-
-              {/* <TextInput
-            placeholder={'Type something'}
-            placeholderTextColor={Colors.DEFAULT_GREY}
-            selectionColor={Colors.DEFAULT_GREY}
-            style={mstyle.inputText}
-            onChangeText={text => {
-              searchFilterFunction(text)
+            <FlatList
+            data={crop_bundle_list}
+            numColumns={2}
+            style={{padding:5,elevation:8,marginBottom:2}}
+            renderItem={(item)=>{
+              return(
+                <Pressable onPress={()=>{setcrop_bundle(item.item.title)}} 
+                style={{flex:1,backgroundColor:'white',marginHorizontal:5, marginVertical:10,
+                padding:1,borderColor:'black',borderWidth:.5,borderRadius:8}}>
+                  {/* <Text>{item.item.title}</Text> */}
+                  {/* <Card item={item} /> */}
+                 <View style={{margin:1}}>
+                 <Image source={{uri:item.item.large_image}} 
+                 resizeMode={'contain'}
+                              style={{width:'100%', height:200,borderRadius:8}}  />
+                
+                  </View>
+                  </Pressable>
+              )
             }}
-          /> */}
+            />
+
+          </View>
+          ):(
+          <View>
+            {cnp_type =='' ?(
+            <View>
+              <View>
+                <Text style={{textAlign:'center', color:'black', fontSize:22,fontWeight:'bold', paddingVertical:5}}> CNP KIT TYPE </Text>
+                </View>
+                      <FlatList
+                        data={CNP_kit_type}
+                        // numColumns={2}
+                        renderItem={(item) => {
+                          return (
+                            <Pressable onPress={()=>{setcnp_type(item.item.title)}}>
+                              <Card item={item} />
+                              {/* <Text>{item.name}</Text>
+                              <Image source={require('../../../src/assets/images/w11.jpg')} 
+                              style={{width:'100%', height:250}}  resizeMode="contain"/> */}
+                            </Pressable>
+                          )
+                        }}
+                      />
+
+
             </View>
-          </View>
-          <View >
-            <MYinputs item={delivery_date} />
-          </View>
-          <View >
-            <MYinputs item={payment_method} />
-          </View>
+              ):(
+              <View>
+                      <View>
+                  <View style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white',
+
+                  }]}>
+                    <Text style={{ color: 'black' }}> Select Famer</Text>
+
+                    <View style={mstyle.inputSubContainer}>
+                      {selectedFarmer ? (
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedFarmer.name}</Text>
+                          <Icon onPress={() => { setselectedFarmer() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+
+                        </View>
+                      ) : (
+                        <SearchableDropDown
+                          onItemSelect={(item) => {
+                            // const items = selectedCrops;
+                            // items.push(item)
+                            setselectedFarmer(item)
+
+                            console.log(selectedFarmer)
+                          }}
+                          containerStyle={{ padding: 1, width: '100%' }}
+                          onRemoveItem={(item, index) => {
+                            // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
+                            // setselectedCrops(items)
+                          }}
+                          itemStyle={{
+                            padding: 10,
+                            marginTop: 2,
+                            backgroundColor: 'white',
+                            borderColor: 'silver',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                          }}
+                          itemTextStyle={{ color: '#222' }}
+                          itemsContainerStyle={{ maxHeight: 140 }}
+                          items={farmers}
+                          defaultIndex={2}
+                          resetValue={false}
+                          textInputProps={
+                            {
+                              placeholder: "Search Farmer",
+                              underlineColorAndroid: "transparent",
+                              style: {
+                                padding: 8,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                borderRadius: 5,
+                                color: "black"
+                              },
+                              onTextChange: text => {
+                                searchFilterFunctionFarmer(text)
+                              }
 
 
-          <Pressable onPress={() => {
-            searchFilterFunction(selectedCrops?.id)
-          }}>
-            <Buttons title={'Get Crop Product Kit Now'} loading={iscartloading} />
+                            }
+                          }
+                          listProps={
+                            {
+                              nestedScrollEnabled: true,
+                            }
+                          }
+                        />
+                      )}
 
-          </Pressable>
+
+                    </View>
+                  </View>
+
+                  {/* <View style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }]}>
+                    <Text style={{ color: 'black' }}> Select Crop</Text>
+
+                    <View style={mstyle.inputSubContainer}>
+                      {selectedCrops ? (
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedCrops.name}</Text>
+                          <Icon onPress={() => { setselectedCrops() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+
+                        </View>
+                      ) : (
+                        <SearchableDropDown
+                          onItemSelect={(item) => {
+                            // const items = selectedCrops;
+                            // items.push(item)
+                            setselectedCrops(item)
+                            // searchFilterFunction(item.name)
+
+                            // console.log(selectedCrops)
+                          }}
+                          containerStyle={{ padding: 3, width: '100%' }}
+                          onRemoveItem={(item, index) => {
+                            // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
+                            // setselectedCrops(items)
+                          }}
+                          itemStyle={{
+                            padding: 10,
+                            marginTop: 2,
+                            backgroundColor: 'white',
+                            borderColor: 'silver',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                          }}
+                          itemTextStyle={{ color: '#222' }}
+                          itemsContainerStyle={{ maxHeight: 140 }}
+                          items={crops}
+                          defaultIndex={2}
+                          resetValue={false}
+                          textInputProps={
+                            {
+                              placeholder: "Search Crops",
+                              underlineColorAndroid: "transparent",
+                              style: {
+                                padding: 8,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                borderRadius: 5,
+                                color: "black"
+                              },
+                              onTextChange: text => {
+                                //getsearchData(text)
+                              }
+                            }
+                          }
+                          listProps={
+                            {
+                              nestedScrollEnabled: true,
+                            }
+                          }
+                        />
+                      )}
+
+
+                    </View>
+                  </View> */}
+
+                  <View style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }]}>
+                    <Text style={{ color: 'black' }}> Selected Crop Bundle</Text>
+
+                    <View style={mstyle.inputSubContainer}>
+                      
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}>
+                            {crop_bundle?crop_bundle:'not selected'}</Text>
+                        </View>
+                    </View>
+                  </View>
+
+                  <View style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white',
+                    marginTop: 7,
+                  }]}>
+                    <Text style={{ color: 'black' }}> Selected Crop CNP Kit Type</Text>
+                    <View style={mstyle.inputSubContainer}>
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}>
+                            {cnp_type}</Text>
+                        </View>
+                    </View>
+                  </View>
+                  
+                  <View style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white', marginTop: 7,
+
+                  }]}>
+                    <Text style={{ color: 'black' }}> Select Dealer</Text>
+                    <View style={mstyle.inputSubContainer}>
+                      {selectedDelers ? (
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedDelers.name}</Text>
+                          <Icon onPress={() => { setselectedDelers() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+
+                        </View>
+                      ) : (
+                        <SearchableDropDown
+                          onItemSelect={(item) => {
+                            // const items = selectedCrops;
+                            // items.push(item)
+                            setselectedDelers(item)
+                            // console.log(selectedDelers)
+                          }}
+                          containerStyle={{ padding: 3, width: '100%' }}
+                          onRemoveItem={(item, index) => {
+                            // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
+                            // setselectedDelers(items)
+                          }}
+                          itemStyle={{
+                            padding: 10,
+                            marginTop: 2,
+                            backgroundColor: 'white',
+                            borderColor: 'silver',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                          }}
+                          itemTextStyle={{ color: '#222' }}
+                          itemsContainerStyle={{ maxHeight: 140 }}
+                          items={dealers}
+                          defaultIndex={2}
+                          resetValue={false}
+                          textInputProps={
+                            {
+                              placeholder: "Search Dealer",
+                              underlineColorAndroid: "transparent",
+                              style: {
+                                padding: 8,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                borderRadius: 5,
+                                color: "black"
+                              },
+                              onTextChange: text => {
+
+                              }
+                            }
+                          }
+                          listProps={
+                            {
+                              nestedScrollEnabled: true,
+                            }
+                          }
+                        />
+                      )}
+
+                      {/* <TextInput
+                    placeholder={'Type something'}
+                    placeholderTextColor={Colors.DEFAULT_GREY}
+                    selectionColor={Colors.DEFAULT_GREY}
+                    style={mstyle.inputText}
+                    onChangeText={text => {
+                      searchFilterFunction(text)
+                    }}
+                  /> */}
+                    </View>
+                  </View>
+                  <View >
+                  <View >
+                    <MYinputs item={kit_type} />
+                  </View>
+                    <MYinputs item={delivery_date} />
+                  </View>
+                  <View >
+                  <MYinputs item={payment_method} />
+                  </View>
+
+
+                  <Pressable onPress={() => {
+                    searchFilterFunction(selectedCrops?.id)
+                  }} style={{paddingBottom:50}}>
+                    <Buttons title={'Get Crop Product Kit Now'} loading={iscartloading} />
+
+                  </Pressable>
+                      </View>
+              </View>)}
+
+          </View>
+          
+          )}
+
+
         </View>
       )}
 
 
 
-
+ 
 
     </SafeAreaView>
   )

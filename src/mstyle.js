@@ -38,7 +38,7 @@ export default mstyle = StyleSheet.create({
         lineHeight: 16 * 1.4,
         marginTop: 20,
         // marginBottom: 10,
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         paddingBottom:5
       },
     content: {

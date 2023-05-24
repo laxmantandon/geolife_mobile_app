@@ -20,7 +20,7 @@ const UploadPhotosScreen = ({navigation, route: {
   ])
   const [selectedItems, setselectedItems] = useState('')
   const [loading, setIsLoading] = useState(false)
-  console.log('IIIIIIIIIII', item.value.item.crop.name)
+  // console.log('IIIIIIIIIII', item.value.item.crop.name)
 
   
   useEffect(() => {
@@ -31,10 +31,10 @@ const UploadPhotosScreen = ({navigation, route: {
     // let req = {
     //   "text": text
     // }
-    // // console.log(text)
+    // // // console.log(text)
     // AuthenicationService.searchfarmerData(req)
     //   .then(x => {
-    //     // console.log('MMMMMM', x.data)
+    //     // // console.log('MMMMMM', x.data)
     //     // if (x.status == true) {
     //     //   let mapped_array = []
     //     //   x.data.forEach(a => {
@@ -44,7 +44,7 @@ const UploadPhotosScreen = ({navigation, route: {
     //     // } else {
     //     // }
     //   }).catch(e => {
-    //     console.log(e)
+    //     // console.log(e)
     //   })
   }
 
@@ -68,13 +68,13 @@ const UploadPhotosScreen = ({navigation, route: {
       // farmer_name:selectedItems.id
     }
 
-    console.log('REQ', req)
+    // console.log('REQ', req)
       setIsLoading(true);
-      // console.log(req)
+      // // console.log(req)
     AuthenicationService.update_crop_seminar(req).then(r => {
-      // console.log('EEEEE', r)
+      // // console.log('EEEEE', r)
       setIsLoading(false);
-      // console.log(response)
+      // // console.log(response)
       if (r?.status== true) {
       navigation.goBack()
       ToastAndroid.showWithGravityAndOffset(
@@ -90,7 +90,7 @@ const UploadPhotosScreen = ({navigation, route: {
       }
     }).catch(e => {
       setIsLoading(false);
-      console.log(e)
+      // console.log(e)
     })
 
   }
@@ -102,7 +102,7 @@ const UploadPhotosScreen = ({navigation, route: {
       {/* <SearchableDropDown
             onItemSelect={(item) => {
               formdata[0].value = item.name
-              console.log(formdata[0].value)
+              // console.log(formdata[0].value)
               // const items = this.state.selectedItems;
               // items.push(item)
               setselectedItems(item)
@@ -154,7 +154,7 @@ const UploadPhotosScreen = ({navigation, route: {
                         }
                       })
                       .catch(error => {
-                        console.log(error)
+                        // console.log(error)
                       })
                 }
               }

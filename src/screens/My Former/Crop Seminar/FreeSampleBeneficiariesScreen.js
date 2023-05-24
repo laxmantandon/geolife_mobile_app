@@ -29,7 +29,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
         if (x.status == true) {
@@ -50,7 +50,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
   }, [])
 
   const checkfarmer = (farmer) => {
-    console.log(farmer)
+    // console.log(farmer)
     let msg = `Are you sure you add ${farmer.title} for free sample ?`
     let msg1 = ` ${farmer.title} Alredy have a free sample product `
     Alert.alert('Confirmation!', `${farmer.free_sample ? msg1 : msg}`, [
@@ -76,18 +76,18 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     };
 
     launchCamera(options, (response) => {
-      // console.log(response.assets);
+      // // console.log(response.assets);
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        // console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        // console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
         // const source = { uri: response.uri };
-        // console.log('response', JSON.stringify(response.assets[0].base64));
+        // // console.log('response', JSON.stringify(response.assets[0].base64));
         const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
         // setcaptureimage("")
         // setcaptureimage(basse64image)
@@ -102,7 +102,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
 
 
   const OpenDropDown = (farmer) => {
-    console.log(farmer)
+    // console.log(farmer)
     if (farmer.free_sample == "Purchased") {
       Alert.alert("Farmer Already updated")
     } else {
@@ -138,9 +138,9 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     if (item) {
       req.crop_seminar_name = item.value.item.crop.name
     }
-    console.log(req)
+    // console.log(req)
     AuthenicationService.update_status_free_sample(req).then(x => {
-      console.log(x)
+      // console.log(x)
       if (x.status) {
         searchFilterFunction("")
         ToastAndroid.showWithGravityAndOffset(
@@ -167,9 +167,9 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
     if (item) {
       req.name = item.value.item.crop.name
     }
-    console.log(req)
+    // console.log(req)
     AuthenicationService.create_free_sample(req).then(x => {
-      console.log(x)
+      // console.log(x)
       if (x.status) {
         searchFilterFunction("")
         ToastAndroid.showWithGravityAndOffset(
@@ -202,11 +202,11 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
       alert('Please  enter farmer mobile number')
       return
     }
-    console.log(req)
+    // console.log(req)
     setIsLoading(true)
     AuthenicationService.create_farmer(req).then(x => {
       setIsLoading(false)
-      console.log(x)
+      // console.log(x)
       if (x.status) {
         setfarmerName('')
         setfarmerNumber('')

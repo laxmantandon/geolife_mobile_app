@@ -54,7 +54,7 @@ const ReturnOrderScreen = ({ navigation, props,
       setstock(cart)
     }
 
-    console.log(stock)
+    // console.log(stock)
     // setloading(false)
     getData()
 
@@ -95,7 +95,7 @@ const Return_Stock= ()=>{
 
   let mylocation = {}
   Geolocation.getCurrentPosition(info =>{
-    // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+    // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
       mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
@@ -105,9 +105,9 @@ const Return_Stock= ()=>{
     mylocation: mylocation,
     type:"Sales Return"
   }
-  console.log(req)
+  // console.log(req)
   AuthenicationService.checkoutProduct(req).then(r=>{
-    console.log(r)
+    // console.log(r)
     setisloading(false)
     if(r.status==true){
       navigation.goBack()
@@ -131,13 +131,13 @@ const getStock= ()=>{
   let req ={
     dealer_mobile : item.item.subtitle,  
   }
-  console.log(req)
+  // console.log(req)
   AuthenicationService.get_stock(req).then(r=>{
-    console.log(r.data[0].details.stock)
+    // console.log(r.data[0].details.stock)
     if(r.status==true){
          let mapped_array = []
          r.data[0].details.stock.forEach(a => {
-            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product })
+            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product,"status": 'Add Quantity', "percent": a.quantity, })
           })
           setstock(mapped_array)
     }else{
@@ -146,7 +146,7 @@ const getStock= ()=>{
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
     }
   }).catch(e=>{
-    console.log(e)
+    // console.log(e)
   })
 }
 
@@ -171,34 +171,28 @@ const getStock= ()=>{
         data={stock}
         renderItem={(item) => {
           return (
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Pressable onPress={() => {
-                // navigation.navigate('ProductDetails',{item})
-              }}
-                style={{ flex: 1, flexDirection: 'row' }}>
-                <Card item={item} />
-              </Pressable>
 
-             <View>
-            <View style={{flexDirection:'row'}}>
-            <Icon onPress={() => { removeProductTocart(item.item) }}
-                name={'remove-circle'} size={25} style={{ paddingTop: 5, paddingRight: 5, color: 'red' }} />
-              <Text style={{ paddingTop: 5, paddingRight: 5, color: 'black' }}> {item.item.quantity} </Text>
-              {/* <TextInput 
-              keyboardType='numaric'
-              onChangeText={(t)=>{
-                console.log(t)
-                setloading(true)
-                getData()
-                item.item.quantity= parseInt(t)
-              }}
-              value={item.item.quantity} /> */}
-              <Icon onPress={() => { addProductTocart(item.item) }}
-                name={'add-circle'} size={25} style={{ paddingTop: 5, paddingRight: 10, color: 'green' }} />
-              </View>
+<View style={{ flex: 1, flexDirection: 'row' }}>
+<View style={{ flex: 1, }}>
+    <Pressable onPress={() => { addProductTocart(item.item) }}
+      style={{ flex: 1, flexDirection: 'row' }}>
+      <Card item={item} />
+    </Pressable>
 
-            </View>
-            </View>
+    {item.item.quantity > 0 ? (
+      <Pressable style={{ flexDirection: 'row', alignSelf: 'center', marginBottom: 15 }}
+        onPress={() => { removeProductTocart(item.item) }}
+      >
+        <Icon
+          name={'remove-circle'} size={23} style={{ paddingRight: 5, color: 'red' }} />
+        <Text style={{ paddingTop: 2, color: 'red', fontWeight: 'bold' }}>Remove product from cart</Text>
+      </Pressable>
+    ) : ''}
+   
+  </View>
+
+</View>
+
           )
         }}
 

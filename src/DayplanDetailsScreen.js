@@ -22,7 +22,7 @@ const DayplanDetailsScreen = ({ navigation, props,
  
 
   const submit = () => {
-    // console.log(formdata)
+    // // console.log(formdata)
     let req = submitReqData(formdata);
     setisLoading(true);
 
@@ -40,7 +40,7 @@ const DayplanDetailsScreen = ({ navigation, props,
 
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);
-      console.log(response)
+      // console.log(response)
       if (response?.status == true) {
         ToastAndroid.showWithGravityAndOffset(
           response?.message,
@@ -54,13 +54,13 @@ const DayplanDetailsScreen = ({ navigation, props,
 
       }
     }).catch(e=>{
-      console.log(e)
+      // console.log(e)
     })
 
   }
 
   const update = () => {
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 

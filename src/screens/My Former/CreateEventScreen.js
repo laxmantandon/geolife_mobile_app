@@ -14,11 +14,11 @@ const CreateEventScreen = () => {
      { label: 'My Image', value: [], type: 'image', key: 'image', },
     ])
   // if (item) {
-  //   console.log(item)
+  //   // console.log(item)
 
   //   for (let i in formdata) {
   //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
+  //       // console.log('item value', item.item[n])
   //       if (formdata[i].key === n) {
   //         formdata[i].value = item.item[n]
   //       }
@@ -28,11 +28,11 @@ const CreateEventScreen = () => {
 
 
   const submit =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 

@@ -52,18 +52,19 @@ const LoginScreen = ({ navigation, setToken }) => {
   const maximumCodeLength = 4;
 
   useEffect(() => {
-    // RNOtpVerify.getHash().then(console.log).catch(console.log)
+    // RNOtpVerify.getHash().then(// console.log).catch(// console.log)
     // RNOtpVerify.getOtp().then(p=>RNOtpVerify.addListener(otpHandler)).catch(p=>{
-    //   console.log(p)
+    //   // console.log(p)
     // })
 
 
     getHash().then(hash => {
-      console.log(hash)
-    }).catch(console.log);
+      // console.log(hash)
+    }).catch(// console.log
+    );
 
     // startOtpListener(message => {
-    //   // console.log(message)
+    //   // // console.log(message)
     //   // const otpCode = /(\d{4})/g.exec(message)[1];
     //   if(message){
     //     setOTPCode(/(\d{4})/g.exec(message)[1])
@@ -104,7 +105,7 @@ const LoginScreen = ({ navigation, setToken }) => {
   // const startOtpListener=(message => {
   //     // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
   //     const mxotp = /(\d{4})/g.exec(message)[1];
-  //     console.log(message)
+  //     // console.log(message)
   //     // setOtp(otp);
   //   });
   
@@ -124,14 +125,14 @@ const LoginScreen = ({ navigation, setToken }) => {
       };
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
-        console.log(user)
-        console.log(response)
+        // console.log(user)
+        // console.log(response)
         // setToken(response?.data);
         if (response?.status == true) {
           setotp(true)
           setIsLoading(false)
           startOtpListener(message => {
-            // console.log(message)
+            // // console.log(message)
             // const otpCode = /(\d{4})/g.exec(message)[1];
             if(message){
               setOTPCode(/(\d{4})/g.exec(message)[1])
@@ -139,9 +140,9 @@ const LoginScreen = ({ navigation, setToken }) => {
             }
           }); 
           // startOtpListener(message => {
-          //   console.log(message)
+          //   // console.log(message)
           //   const motp = /(\d{4})/g.exec(message)[1];
-          //   console.log(motp)
+          //   // console.log(motp)
           //   setOTPCode(motp);
           // });
           // AsyncStorage.setItem('user_info', JSON.stringify(response.result));     
@@ -194,7 +195,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           AsyncStorage.setItem('user_info', JSON.stringify(response.data));
           // navigation.navigate('Home')
           RNRestart.restart();
-          console.log(AuthenicationService.gettoken())
+          // console.log(AuthenicationService.gettoken())
           setotp(false)
         } else {
           ToastAndroid.showWithGravityAndOffset(

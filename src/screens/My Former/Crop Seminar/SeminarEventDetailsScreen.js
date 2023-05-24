@@ -20,7 +20,7 @@ const SeminarEventDetailsScreen = ({navigation , props,
       ])
     const [event, setevent] = useState([{title:'Event name', subtitle:'Event Activity', image:'smndbmns'}])
 
-    console.log(item.item.crop.details)
+    // console.log(item.item.crop.details)
    if(item){
     event[0].title= item.item.title
     event[0].subtitle=item.item.subtitle

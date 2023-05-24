@@ -17,18 +17,18 @@ const AddFarmerScreen = ({navigation}) => {
 ])
 
 const submitnow =()=>{
-  // console.log(formdata)
+  // // console.log(formdata)
 let req = submitReqData(formdata);
-console.log(req)
+// console.log(req)
 
 // for (let i in formdata){
 //   // let ing = `${formdata[i].label} : ${formdata[i].value}`
 //   req[formdata[i].label ] = formdata[i].value
-//   // console.log(req)
-//   // console.log('submit' ,formdata[i].label)
+//   // // console.log(req)
+//   // // console.log('submit' ,formdata[i].label)
 
 // }
-// console.log(req)
+// // console.log(req)
 
 
   

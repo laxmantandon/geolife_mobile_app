@@ -7,32 +7,60 @@ import { Colors } from '../../contants'
 import { useEffect } from 'react'
 import { AuthenicationService } from '../../services'
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const FarmerOrdersScreen = ({ navigation }) => {
 
   const [data, setdata] = useState([])
   const [serachingData, setserachingData] = useState(true)
+  const [muser_info, setmuser_info] = useState([])
+
 
   const searchFilterFunction = (text) => {
     setserachingData(true)
     let req = {
       "text": text
     }
-    // console.log(text)
-    AuthenicationService.searchfarmerOrdersData(req)
-      .then(x => {
-        setserachingData(false)
-        console.log(x.data[0])
-        if (x.status == true) {
-          let mapped_array = []
-          x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
-            "status": a.payment_method, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
-          })
-          setdata(mapped_array)
-        } else {
-        }
-      })
+    AsyncStorage.getItem("user_info").then((value) => {
+      const user_info =JSON.parse(value)
+      setmuser_info(user_info)
+      if(user_info.user_role =='Dealer'){
+        AuthenicationService.searchdealerfarmerOrdersData(req)
+        .then(x => {
+          setserachingData(false)
+          // console.log(x.data[0])
+          if (x.status == true) {
+            let mapped_array = []
+            x.data.forEach(a => {
+              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
+              "status": a.payment_method, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
+            })
+            setdata(mapped_array)
+          } else {
+          }
+        })
+
+
+      }else{
+        AuthenicationService.searchfarmerOrdersData(req)
+        .then(x => {
+          setserachingData(false)
+          // console.log(x.data[0])
+          if (x.status == true) {
+            let mapped_array = []
+            x.data.forEach(a => {
+              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
+              "status": a.payment_method, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
+            })
+            setdata(mapped_array)
+          } else {
+          }
+        })
+      }
+
+
+    })
+   
   }
 
 
@@ -76,9 +104,13 @@ const FarmerOrdersScreen = ({ navigation }) => {
             </View>
           )
         }} />
-      <Pressable onPress={() => { navigation.navigate('FarmerProductKit', item=false) }}>
-        <FabButton />
-      </Pressable>
+
+        {muser_info.user_role==='Dealer'?(null):(
+ <Pressable onPress={() => { navigation.navigate('FarmerProductKit', item=false) }}>
+ <FabButton />
+</Pressable>
+        )}
+     
     </View>
   )
 }

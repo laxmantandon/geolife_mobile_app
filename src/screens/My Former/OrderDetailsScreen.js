@@ -12,7 +12,7 @@ const OrderDetailsScreen = ({navigation,route: {
 const [data, setdata] = useState([])
 
     useEffect(() => {
-      console.log(mdata.item)
+      // console.log(mdata.item)
         let mapped_array = []
         
             mapped_array.push({ "title": `${mdata.item.data.name}`, "subtitle":` Product kit for (${mdata.item.data.crop})`, 

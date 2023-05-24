@@ -10,8 +10,8 @@ import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native'
 import mstyle from './mstyle'
 import { StatusBar } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
-import CallLogs from 'react-native-call-log';
+// import { PermissionsAndroid } from 'react-native';
+// import CallLogs from 'react-native-call-log';
 
 const StartSession = ({props, navigation }) => {
   SplashScreen.hide();
@@ -22,23 +22,29 @@ const StartSession = ({props, navigation }) => {
   const [loading, setloading] = useState(false)
 
   useEffect(() => {
-    getcall_Logs()
+    // getcall_Logs()
     AuthenicationService.get_users_task(null).then(r => {
     }).catch(e => {
     })
 
     AsyncStorage.getItem("user_info").then((value) => {
-      console.log(value)
+      // console.log(value)
       const usrd = JSON.parse(value)
       if (usrd) {
+        if(usrd.user_role==="Dealer"){
+          console.log('dealer')
+          navigation.navigate('MydealerHome')
+        }
         setuser(usrd)
       } else {
         navigation.navigate('Login')
       }
+    }).catch(e=>{
+      
     })
     getcurrentTime()
     AsyncStorage.getItem("user_session").then((value) => {
-      console.log('session', value)
+      // console.log('session', value)
       const a_session = JSON.parse(value)
       if (a_session) {
         setsession_started(true)
@@ -65,8 +71,8 @@ const StartSession = ({props, navigation }) => {
       setloading(true)
       AsyncStorage.removeItem('user_session')
       let current_time = new Date()
-      // console.log(current_time.toISOString().split('T')[0])
-      // console.log(current_time.toTimeString().slice(0, 5))
+      // // console.log(current_time.toISOString().split('T')[0])
+      // // console.log(current_time.toTimeString().slice(0, 5))
 
       let stime = `${current_time.toISOString().split('T')[0]} ${current_time.toTimeString().slice(0, 5)}`
 
@@ -78,12 +84,12 @@ const StartSession = ({props, navigation }) => {
       }
 
       AuthenicationService.create_activity(req).then(r => {
-        console.log(r)
+        // console.log(r)
         setloading(false)
 
         if (r.status == true) {
           AsyncStorage.setItem('user_session', JSON.stringify(stime)).then(s => {
-            console.log(JSON.parse(s))
+            // console.log(JSON.parse(s))
             setsession_started(true)
             setsession(stime)
           })
@@ -105,81 +111,93 @@ const StartSession = ({props, navigation }) => {
   }
 
 
-  const getcall_Logs =()=>{
-    try {
-      const granted = PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-        {
-          title: 'Call Log Example',
-          message:
-            'Access your call logs',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        // console.log(CallLogs);
-        // let filter = {
-        //   minTimestamp: 1571835032,
-        //   maxTimestamp: 1571835033
-        // }
-        let call_logs =[]
-        CallLogs.load(1).then(c=>{         
-          for (let i in c) {
-            if (session < c[i].dateTime){
-              console.log('call logs ',c[i].dateTime)
-              call_logs=c[i]
-            }
-          }
-        })
-        return call_logs
-        // CallLogs.load(5).then(c => console.log(c));
-      } else {
-        // let filter = {
-        //   minTimestamp: 6000,
-        //   maxTimestamp: 1681103006147,
-        //   phoneNumbers : '+91992600041'
+  // const getcall_Logs =()=>{
+  //   try {
+  //     const granted = PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+  //       {
+  //         title: 'Call Log Example',
+  //         message:
+  //           'Access your call logs',
+  //         buttonNeutral: 'Ask Me Later',
+  //         buttonNegative: 'Cancel',
+  //         buttonPositive: 'OK',
+  //       }
+  //     )
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       // // console.log(CallLogs);
+  //       // let filter = {
+  //       //   minTimestamp: 1571835032,
+  //       //   maxTimestamp: 1571835033
+  //       // }
+  //       // let call_logs =[]
+  //       // CallLogs.load(1).then(c=>{         
+  //       //   for (let i in c) {
+  //       //     if (session < c[i].dateTime){
+  //       //       // console.log('call logs ',c[i].dateTime)
+  //       //       call_logs=c[i]
+  //       //     }
+  //       //   }
+  //       // })
+  //       // return call_logs
+  //       // CallLogs.load(5).then(c => // console.log(c));
+  //     } else {
+  //       // let filter = {
+  //       //   minTimestamp: 6000,
+  //       //   maxTimestamp: 1681103006147,
+  //       //   phoneNumbers : '+91992600041'
 
-        // }
-        // console.log('Call Log permission denied');
-        let call_logs =[]
-        CallLogs.load(2).then(c=>{
-          console.log(c[0])
-          // call_logs.push(c)
+  //       // }
+  //       // // console.log('Call Log permission denied');
+  //       // let call_logs =[]
+  //       // CallLogs.load(2).then(c=>{
+  //         // console.log(c[0])
+  //         // call_logs.push(c)
 
-          for (let i in c) {
-            if (session < c[i].dateTime){
-              console.log('call logs ',c[i].dateTime)
-              call_logs=c[i]
-            }
-          }
-        })
-        // return call_logs
+  //       //   for (let i in c) {
+  //       //     if (session < c[i].dateTime){
+  //       //       // console.log('call logs ',c[i].dateTime)
+  //       //       call_logs=c[i]
+  //       //     }
+  //       //   }
+  //       // }).catch(e=>{
 
-      }
-    }
-    catch (e) {
-      // console.log(e);
-    }
+  //       // })
+  //       // return call_logs
+
+  //     }
+  //   }
+  //   catch (e) {
+  //     console.log(e);
+  //   }
    
-  }
+  // }
 
   const endSession = () => {
   if (session_started){
     if (!loading) {
       setloading(true)
+      let call_logs =[]
+      // CallLogs.load(1).then(c=>{         
+      //   for (let i in c) {
+      //     if (session < c[i].dateTime){
+      //       // console.log('call logs ',c[i].dateTime)
+      //       call_logs=c[i]
+      //     }
+      //   }
+      // })
       AsyncStorage.removeItem('user_session')
       let req = {
         activity_type: 'End Day',
         activity_name: 'End Day',
+        session:session,
         image: '',
         notes: '',
-        calllogs:getcall_Logs()
+        calllogs:call_logs
       }
-      console.log(req)
+      // console.log(req)
       AuthenicationService.create_activity(req).then(r => {
-        console.log(r)
+        // console.log(r)
         setloading(false)
         if (r.status == true) {
           setsession_started(false)
@@ -223,7 +241,7 @@ const logOut=()=>{
           resizeMode="contain" />
       </View>
       <Text onPress={()=>{
-        getcall_Logs()
+        // getcall_Logs()
       }} style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name}`}</Text>
       <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
         {session_started ? (`Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}`) : 'Start Your Session'}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/geolocation": "^3.0.5",
+    "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.1",
     "@react-navigation/native-stack": "^6.9.6",
@@ -23,7 +24,6 @@
     "npm": "^9.3.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
-    "react-native-call-log": "^2.1.2",
     "react-native-canvas": "^0.1.38",
     "react-native-checkbox-selection": "^1.1.0",
     "react-native-countdown-component": "^2.7.1",

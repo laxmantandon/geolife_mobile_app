@@ -24,7 +24,7 @@ const AttendanceScreen = ({ navigation, route: {
   const [formData, setformData] = useState([    { label: 'Attendance Image', value: [], type: 'image', key: 'image', },
 ])
 
-  // console.log('IIIIIIIIIII', item.value.item.crop.name)
+  // // console.log('IIIIIIIIIII', item.value.item.crop.name)
 
 
   useEffect(() => {
@@ -41,17 +41,17 @@ const AttendanceScreen = ({ navigation, route: {
       .then(x => {
         if (x.status == true) {
           let mapped_array = []
-          // console.log(x.data[0])
+          // // console.log(x.data[0])
           x.data.forEach(a => {
             mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number, "checkbox": true, "value": false })
           })
           setdata(mapped_array)
-          console.log(mapped_array)
+          // console.log(mapped_array)
         } else {
         }
       })
       .catch(error => {
-        console.log(error)
+        // console.log(error)
       })
   }
 
@@ -64,7 +64,7 @@ const AttendanceScreen = ({ navigation, route: {
   }
 
   const checkActivity = (activity) => {
-    // console.log(data[activity.index].value)
+    // // console.log(data[activity.index].value)
     if (activity.item.value === true) {
     } else {
 
@@ -86,7 +86,7 @@ const AttendanceScreen = ({ navigation, route: {
         is_attendance: "Yes",
         crop_seminar_attendance: farmerData,
       }
-      console.log(req)
+      // console.log(req)
       if (formData[0]?.value.length > 0){
         req.images =formData[0]?.value
         req.is_attendance_image = true
@@ -97,9 +97,9 @@ const AttendanceScreen = ({ navigation, route: {
       // }
 
       setIsLoading(true);
-      // console.log(req)
+      // // console.log(req)
       AuthenicationService.update_crop_seminar(req).then(r => {
-        console.log('EEEEE', r)
+        // console.log('EEEEE', r)
         setIsLoading(false);
         if (r?.status == true) {
           navigation.goBack()
@@ -116,13 +116,13 @@ const AttendanceScreen = ({ navigation, route: {
         }
       }).catch(e => {
         setIsLoading(false);
-        console.log(e)
+        // console.log(e)
       })
     }
   }
   const selectFarmer = (sf_item) => {
     if (sf_item.item.value == true) {
-      console.log(sf_item.item)
+      // console.log(sf_item.item)
       const items = farmerData;
       items.push(sf_item.item.subtitle)
       setfarmerData(items)
@@ -137,7 +137,7 @@ const AttendanceScreen = ({ navigation, route: {
     <View style={mstyle.container}>
       <SearchableDropDown
         onItemSelect={(item) => {
-          console.log(item)
+          // console.log(item)
           const items = farmerData;
           items.push(item)
           setfarmerData(items)

@@ -16,11 +16,11 @@ const RaiseCropAlertScreen = ({navigation}) => {
   ])
   const [isloading, setisloading] = useState(false)
   // if (item) {
-  //   console.log(item)
+  //   // console.log(item)
 
   //   for (let i in formdata) {
   //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
+  //       // console.log('item value', item.item[n])
   //       if (formdata[i].key === n) {
   //         formdata[i].value = item.item[n]
   //       }
@@ -36,11 +36,11 @@ if (!req.notes){
 }
     if(!isloading){
       setisloading(true)
-    console.log(formdata)
+    // console.log(formdata)
     let req = submitReqData(formdata);
     AuthenicationService.crop_alert(req).then(response => {
       setisloading(false);
-      console.log(response)
+      // console.log(response)
       if (response?.status== true) {
       navigation.goBack()
       }else{
@@ -56,7 +56,7 @@ if (!req.notes){
   }
 
   const update =()=>{
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 

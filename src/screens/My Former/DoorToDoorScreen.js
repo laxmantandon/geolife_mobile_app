@@ -28,10 +28,10 @@ const DoorToDoorScreen = ({navigation}) => {
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchfarmerData(req)
       .then(x => {
-        // console.log('MMMMMM', x.data)
+        // // console.log('MMMMMM', x.data)
         // if (x.status == true) {
         //   let mapped_array = []
         //   x.data.forEach(a => {
@@ -41,7 +41,7 @@ const DoorToDoorScreen = ({navigation}) => {
         // } else {
         // }
       }).catch(e => {
-        console.log(e)
+        // console.log(e)
       })
   }
 
@@ -50,7 +50,7 @@ const DoorToDoorScreen = ({navigation}) => {
     setloading(true)
     let req = submitReqData(formdata);
     req.farmer_name=selectedItems.id
-    // console.log(req)
+    // // console.log(req)
     if (req.notes == "" || req.notes == undefined) {
       setloading(false)
       ToastAndroid.showWithGravityAndOffset(
@@ -68,7 +68,7 @@ const DoorToDoorScreen = ({navigation}) => {
       return
     }
     AuthenicationService.door_to_door_awareness(req).then(r => {
-      // console.log(r)
+      // // console.log(r)
       if (r.status == true) {
         setloading(false)
         navigation.goBack()
@@ -82,14 +82,14 @@ const DoorToDoorScreen = ({navigation}) => {
 
       }
     }).catch(e => {
-      console.log(e);
+      // console.log(e);
       setloading(false)
     })
 
   }
 
   const update =()=>{
-    // console.log(formdata)
+    // // console.log(formdata)
   }
 
 
@@ -99,7 +99,7 @@ const DoorToDoorScreen = ({navigation}) => {
        <SearchableDropDown
             onItemSelect={(item) => {
               formdata[0].value = item.name
-              console.log(formdata[0].value)
+              // console.log(formdata[0].value)
               // const items = this.state.selectedItems;
               // items.push(item)
               setselectedItems(item)
@@ -151,7 +151,7 @@ const DoorToDoorScreen = ({navigation}) => {
                         }
                       })
                       .catch(error => {
-                        console.log(error)
+                        // console.log(error)
                       })
                 }
               }

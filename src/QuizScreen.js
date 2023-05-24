@@ -64,7 +64,7 @@ const QuizScreen = ({ navigation, props,
 
   useEffect(() => {
     if (item) {
-      console.log(item)
+      // console.log(item)
       let reqw = []
       count = 0
       item.faq.forEach(e => {
@@ -73,9 +73,9 @@ const QuizScreen = ({ navigation, props,
           "label": `${count}. ${e.qua}`, "title": e.qua, "key": e.name, "options": e.qua_options.split(/\s*,\s*/)
           , value: '', type: 'select', "ans": e.ans
         })
-        console.log(reqw[0].options)
+        // console.log(reqw[0].options)
         // reqw.push(ree)
-        // console.log(e)
+        // // console.log(e)
       });
       setformdata(reqw)
     }
@@ -96,7 +96,7 @@ const QuizScreen = ({ navigation, props,
         if (e.ans == e.value) {
           points += 10/formdata.length
         }
-        console.log(points)
+        // console.log(points)
       });
       req = {
         "points": points
@@ -105,7 +105,7 @@ const QuizScreen = ({ navigation, props,
 
       AuthenicationService.submit_quiz(req).then(response => {
         setisLoading(false);
-        console.log(response)
+        // console.log(response)
         if (response?.status == true) {
           setvisible(true)
 
@@ -120,7 +120,7 @@ const QuizScreen = ({ navigation, props,
 
         }
       }).catch(e => {
-        console.log(e)
+        // console.log(e)
       })
 
     }
@@ -128,7 +128,7 @@ const QuizScreen = ({ navigation, props,
 
   getRefreshData =()=>{
     setTimeout(() => {
-      console.log('refresshing')
+      // console.log('refresshing')
       setLoading(false)
       
     }, 1000);

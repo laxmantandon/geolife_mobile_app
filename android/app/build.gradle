@@ -138,7 +138,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.geolife"
+        applicationId "com.erpgeolife"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -303,6 +303,7 @@ if (isNewArchitectureEnabled()) {
             substitute(module("com.facebook.react:hermes-engine"))
                     .using(project(":ReactAndroid:hermes-engine"))
                     .because("On New Architecture we're building Hermes from source")
+
         }
     }
 }

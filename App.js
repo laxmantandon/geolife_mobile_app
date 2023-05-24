@@ -125,16 +125,17 @@ function HomeScreen({ navigation }) {
   SplashScreen.hide();
   const [data, setdata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    // { title: 'My day', route: 'Myday', icon: 'ios-sunny-outline', color: 'gold' },
+    { title: 'My day', route: 'Myday', icon: 'ios-sunny-outline', color: 'gold' },
     { title: 'My farmer', route: 'Myfarmer', icon: 'ios-person-outline', color: 'black' },
     { title: 'Crop Seminar', route: 'CropSeminar', icon: 'ios-list', color: 'green' },
     // { title: 'My dealers', route: 'Mydealers', icon: 'ios-list', color: 'blue' }
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
+  const [attendance, setattendance] = useState([])
   const [user, setuser] = React.useState([])
   if (loggedIn == false) {
     AsyncStorage.getItem("user_info").then((value) => {
-      // console.log(value)
+      // // console.log(value)
       setloggedIn(true)
       const usrd = JSON.parse(value)
       if (usrd) {
@@ -173,7 +174,7 @@ function HomeScreen({ navigation }) {
         setsessionTime(duration.asHours())
       })
       getcurrentTime()
-       // console.log('session', value)
+       // // console.log('session', value)
         // let mn = JSON.parse(value)
         // mn++
         // setsession(mn)
@@ -200,8 +201,9 @@ function HomeScreen({ navigation }) {
     );
 
     getTask()
-
+    getAttendance()
     return () => backHandler.remove();
+
 
   }, [])
 
@@ -211,7 +213,7 @@ function HomeScreen({ navigation }) {
   getTask = async () => {
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      // console.log('RRRRR', r)
+      // // console.log('RRRRR', r)
       setloading(false)
 
       let my_tasks = []
@@ -224,10 +226,11 @@ function HomeScreen({ navigation }) {
 
       }
     }).catch(e => {
-      // console.log(e);
+      // // console.log(e);
     })
 
   }
+
   const chart_data=[ {value:4.50,label: 'Sun',frontColor: 'green'},
   {value:8.0,label: 'Mon',},
   {value:9.0,label: 'Tue',},
@@ -242,6 +245,23 @@ function HomeScreen({ navigation }) {
   {value:9.0,label: 'Fri',},
   {value:7.0,label: 'Sat',} 
 ]
+
+
+getAttendance = async () => {
+  setloading(true)
+  AuthenicationService.get_users_Attendance(null).then(r => {
+    // console.log('RRRRR', r)
+    setloading(false)
+    if (r.status == true) {
+      setattendance(r.data)
+    } else {
+      setattendance(chart_data)
+    }
+  }).catch(e => {
+    // // console.log(e);
+  })
+
+}
   return (
     <View style={mstyle.container1}>
       <StatusBar
@@ -327,7 +347,7 @@ function HomeScreen({ navigation }) {
 
 
               <View style={mstyle.ListContainer}> 
-                  <BarChart data={chart_data} 
+                  <BarChart data={attendance} 
                   frontColor="#177AD5"
                   barBorderRadius={4}
                   barWidth={22}
@@ -343,15 +363,12 @@ function HomeScreen({ navigation }) {
         <FlatList
           data={data}
           numColumns={2}
-         
           renderItem={(item) => {
             return (
               <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
                 <View
                   style={mstyle.ListContainer} >
-
                   <Icon name={item.item.icon} size={22} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
-
                   <View style={mstyle.detailContainer}>
                     <View style={mstyle.titleContainer}>
                       <Text style={mstyle.listListTitle} numberOfLines={1}>
@@ -478,7 +495,7 @@ function App({ navigation }) {
 
   const authContext = React.useMemo(() => ({
     sign_In: async (userdata) => {
-      // console.log('from app ', userdata)
+      // // console.log('from app ', userdata)
       // setUserToken('fgkj');
       // setIsLoading(false);
       const userToken = String(`token ${userdata.api_key}:${userdata.secret}`);
@@ -489,9 +506,9 @@ function App({ navigation }) {
 
         // await AsyncStorage.setItem('user_info', userToken);
       } catch (e) {
-        // console.log(e);
+        // // console.log(e);
       }
-      // console.log('user token: ', userToken);
+      // // console.log('user token: ', userToken);
       dispatch({ type: 'LOGIN', id: userName, token: userToken });
     },
     signOut: async () => {
@@ -500,7 +517,7 @@ function App({ navigation }) {
       try {
         await AsyncStorage.removeItem('user_info');
       } catch (e) {
-        // console.log(e);
+        // // console.log(e);
       }
       dispatch({ type: 'LOGOUT' });
     },
@@ -515,9 +532,9 @@ function App({ navigation }) {
       try {
         userToken = await AsyncStorage.getItem('user_info');
       } catch (e) {
-        // console.log(e);
+        // // console.log(e);
       }
-      // console.log('user token: ', userToken);
+      // // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 1000);
   }, []);
@@ -543,12 +560,68 @@ function App({ navigation }) {
               <Stack.Screen name="Home" component={MyDGODrawer} options={() => ({ headerShown: false })} />
               <Stack.Screen name="Login" component={LoginScreen} options={() => ({ headerShown: false })} />
 
+              {/* My dealer screen */}
+              <Stack.Screen name='MydealerHome' component={MyDealersScreen} 
+              options={({navigation}) => ({
+                headerStyle: {
+                  height: 80,
+                  elevation: 5,
+                  shadowOpacity: 100,
+                  backgroundColor:'white',
+                },
+                headerTitleAlign: 'left',
+                headerLeft: () => (
+
+                 <View style={{flexDirection:'row'}}>
+                   {/* <TouchableOpacity onPress={() => {navigation.openDrawer() }}>
+                    <Icon name='menu-outline' size={30} style={{color:'black', paddingLeft:10, paddingTop:8}} />
+                  </TouchableOpacity>
+                   */}
+                  <Image
+                    source={require('./src/assets/images/logo.png')}
+                    style={{ width: 105, height: 45, }}
+                    resizeMode="contain"
+                  />
+                 </View>
+                ),
+                headerRight: () => (
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity>
+                      <Icon name="notifications-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                        onPress={() => navigation.navigate('Notifications')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Icon name="headset" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                        onPress={() => navigation.navigate('Help')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Icon name="ios-person-circle-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
+                        onPress={() => navigation.navigate('Help')} />
+                    </TouchableOpacity>
+                  </View>
+
+
+                ),
+                headerTitle: () => null
+                // (
+                //   // <Text style={{fontWeight:'600', fontSize:17 ,color:'blue'}}>YTMonetize</Text>
+                //   <Image
+                //     source={require('./src/assets/images/logo.png')}
+                //     style={{width: 105,height:45,}}
+                //     resizeMode="contain"
+                //   />
+                // ),
+              })}
+              
+              />
+
+
               {/* My farmer screen */}
               <Stack.Screen name='Myfarmer' component={MyFarmerScreen} options={() => ({ headerTitle: "My Farmer" })} />
               <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({ headerTitle: "New Farmer" })} />
               <Stack.Screen name='Myfarmerlist' component={MyFarmerListScreen} options={() => ({ headerTitle: "Farmer List" })} />
               <Stack.Screen name='FarmerDetails' component={FarmerDetails} options={() => ({ headerTitle: "Farmer Details" })} />
-              <Stack.Screen name='FarmerOrdersScreen' component={FarmerOrdersScreen} options={() => ({ headerTitle: "Farmer Advance Booking Orders", })} />
+              <Stack.Screen name='FarmerOrdersScreen' component={FarmerOrdersScreen} options={() => ({ headerTitle: "Advance Booking Orders", })} />
               <Stack.Screen name='OrderDetails' component={OrderDetailsScreen} options={() => ({ headerTitle: "Farmer Orders Details", })} />
               <Stack.Screen name='FarmerProductKit' component={FramerProductKitScreen} options={() => ({ headerTitle: "Farmer Product Kit" })} />
               <Stack.Screen name='DoortoDoor' component={DoorToDoorScreen} options={() => ({ headerTitle: "Door To Door Visit" })} />
@@ -575,8 +648,8 @@ function App({ navigation }) {
 
 
 
-              {/* My My Dealers screen */}
-              <Stack.Screen name='Mydealers' component={MyDealersScreen} options={() => ({ headerTitle: "My Dealers" })} />
+              {/* My Dealer screen */}
+              {/* <Stack.Screen name='MydealerHome' component={MyDealersScreen} options={() => ({ headerTitle: "My Dealers" })} /> */}
 
               {/* My day Screen */}
               <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Day"  })} />

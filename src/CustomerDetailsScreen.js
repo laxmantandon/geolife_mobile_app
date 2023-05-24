@@ -25,8 +25,16 @@ const CustomerDetailsScreen = ({ navigation, props,
   const [stock, setstock] = useState()
 
   useEffect(() => {
+    console.log(item.cart)
+
     if(item.cart){
-      setselectedProducts(item.cart)
+      let mapped_array = []
+      item.cart.forEach(a => {
+            a.status= 'Add to Cart'
+            a.percent= a.quantity 
+            mapped_array.push(a)
+          })
+      setselectedProducts(mapped_array)
     }
     getStock()
   
@@ -57,7 +65,7 @@ const CustomerDetailsScreen = ({ navigation, props,
       setselectedProducts(cart)
     }
 
-    console.log(selectedProducts)
+    // console.log(selectedProducts)
     // setloading(false)
     getData()
 
@@ -109,7 +117,7 @@ const CustomerDetailsScreen = ({ navigation, props,
       setstock(cart)
     }
 
-    console.log(stock)
+    // console.log(stock)
     // setloading(false)
     getData()
 
@@ -149,7 +157,7 @@ const checkout= ()=>{
     setiscartloading(true)
   let mylocation = {}
   Geolocation.getCurrentPosition(info =>{
-    // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+    // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
       mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
@@ -159,9 +167,9 @@ const checkout= ()=>{
     mylocation: mylocation,
     type:"Sales Order"
   }
-  console.log(req)
+  // console.log(req)
   AuthenicationService.checkoutProduct(req).then(r=>{
-    console.log(r)
+    // console.log(r)
     setiscartloading(false)
     if(r.status==true){
       setselectedProducts([])
@@ -186,7 +194,7 @@ const Update_Stock= ()=>{
   if(!isloading){
   let mylocation = {}
   Geolocation.getCurrentPosition(info =>{
-    // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+    // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
       mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
@@ -195,9 +203,9 @@ const Update_Stock= ()=>{
     stock : stock,
     mylocation: mylocation
   }
-  console.log(req)
+  // console.log(req)
   AuthenicationService.update_stock(req).then(r=>{
-    console.log(r)
+    // console.log(r)
     setisloading(false)
 
     if(r.status==true){
@@ -222,13 +230,13 @@ const getStock= ()=>{
   let req ={
     dealer_mobile : item.item.subtitle,  
   }
-  console.log(req)
+  // console.log(req)
   AuthenicationService.get_stock(req).then(r=>{
-    console.log(r.data[0].details.stock)
+    // console.log(r.data[0].details.stock)
     if(r.status==true){
          let mapped_array = []
          r.data[0].details.stock.forEach(a => {
-            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product,"status": 'Add to Cart', "percent": 0, })
+            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name,"quantity": a.quantity, "uom": a.uom, "rate": a.rate, "item_code": a.product,"status": 'Add Quantity', "percent": a.quantity, })
           })
           setstock(mapped_array)
     }else{
@@ -237,23 +245,23 @@ const getStock= ()=>{
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
     }
   }).catch(e=>{
-    console.log(e)
+    // console.log(e)
   })
 }
 
   return (
     <ScrollView style={mstyle.container1}>
-      <View style={[mstyle.inputContainer,{paddingVertical:10, elevation:8}]}>
-        <Text style={{color:'gray', fontSize:15,}} >
+      <View style={[mstyle.inputContainer,{paddingVertical:18,paddingHorizontal:10, elevation:8}]}>
+        <Text style={{color:'black', fontSize:15,}} >
            Customer name :-
-           <Text style={{color:'gray', fontSize:15, fontWeight:'bold'}}> {item.item.title} </Text> </Text>
-        <Text style={{color:'gray', fontSize:15}} >
+           <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.title} </Text> </Text>
+        <Text style={{color:'black', fontSize:15}} >
            Customer Mobile :- 
-        <Text style={{color:'gray', fontSize:15, fontWeight:'bold'}}> {item.item.subtitle} </Text> </Text>
+        <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.subtitle} </Text> </Text>
       </View>
 
 
-      <View style={[mstyle.inputContainer,{marginTop:5,paddingHorizontal:1, paddingBottom:10, elevation:8}]}>
+      <View style={[mstyle.inputContainer,{marginTop:5,paddingHorizontal:0, paddingBottom:10, elevation:8}]}>
       <Text style={mstyle.title}>Dealer Stock Details:-</Text>
       <FlatList
         refreshing={loading}
@@ -370,25 +378,28 @@ const getStock= ()=>{
      </View>
       ):(null)}
 
-      <View style={{flexDirection:'row', paddingTop:10, paddingHorizontal:10}}>
+      <View style={{flex:1,flexDirection:'row',paddingVertical:10 , marginHorizontal:10}}>
         <Pressable
         style={{backgroundColor:Colors.GOOGLE_BLUE, 
-        width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}}
+        flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:5, paddingVertical:5,marginRight:3}}
          onPress={() => { navigation.navigate('ProductScreen', { item }) }}>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>New Order</Text>
+          <Icon name='add-circle-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>New Order</Text>
         </Pressable>
 
         <Pressable
         style={{backgroundColor:Colors.GOOGLE_BLUE, 
-          width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}}
+          flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:5,marginRight:3}}
            onPress={() => { navigation.navigate('AddPayment', { item }) }}>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>Payment Entry</Text>
+                      <Icon name='cash-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>Payment Entry</Text>
         </Pressable>
 
         <Pressable
         style={{backgroundColor:Colors.GOOGLE_BLUE, 
-          width:'33%', borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:10}} onPress={() => { navigation.navigate('ReturnOrder', { item }) }}>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>Return order</Text>
+          flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:5,marginRight:1}} onPress={() => { navigation.navigate('ReturnOrder', { item }) }}>
+                                <Icon name='refresh-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
+          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>Return order</Text>
         </Pressable>
       
       </View>

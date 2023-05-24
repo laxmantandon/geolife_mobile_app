@@ -24,14 +24,14 @@ const ProductScreen = ({ navigation, props,
     let req = {
       "text": text
     }
-    // console.log(text)
+    // // console.log(text)
     AuthenicationService.searchProductData(req)
       .then(x => {
         setserachingData(false)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name, "uom": a.uom, "rate": a.rate, "item_code": a.item_code })
+            mapped_array.push({ "subtitle": `Rs.${a.rate} /${a.uom}`, "title": a.product_name, "uom": a.uom, "rate": a.rate, "item_code": a.item_code,"item_code": a.product,"status": 'Add to Cart', "percent": 0,"quantity": 0 })
           })
           setdata(mapped_array)
         } else {
@@ -44,6 +44,7 @@ const ProductScreen = ({ navigation, props,
     for (let p of cart) {
       if (p.title === product.title) {
         p.quantity += 1;
+        p.percent += 1;
         added = true;
         break;
       }
@@ -58,7 +59,7 @@ const ProductScreen = ({ navigation, props,
       setselectedProducts(cart)
     }
 
-    console.log(selectedProducts)
+    // console.log(selectedProducts)
   }
 
   const removeProductTocart = (product) => {
@@ -112,29 +113,40 @@ const ProductScreen = ({ navigation, props,
         data={data}
         renderItem={(item) => {
           return (
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Pressable onPress={() => {
-                // navigation.navigate('ProductDetails',{item})
-              }}
-                style={{ flex: 1, flexDirection: 'row' }}>
-                <Card item={item} />
-              </Pressable>
+
+<View style={{ flex: 1, flexDirection: 'row' }}>
+<View style={{ flex: 1, }}>
+    <Pressable onPress={() => { addProductTocart(item.item) }}
+      style={{ flex: 1, flexDirection: 'row' }}>
+      <Card item={item} />
+    </Pressable>
+
+    {item.item.quantity > 0 ? (
+      <Pressable style={{ flexDirection: 'row', alignSelf: 'center', marginBottom: 15 }}
+        onPress={() => { removeProductTocart(item.item) }}
+      >
+        <Icon
+          name={'remove-circle'} size={23} style={{ paddingRight: 5, color: 'red' }} />
+        <Text style={{ paddingTop: 2, color: 'red', fontWeight: 'bold' }}>Remove product from cart</Text>
+      </Pressable>
+    ) : ''}
+   
+  </View>
+
+</View>
 
 
-              {/* <Icon  onPress={() => { removeProductTocart(item.item) }} 
-              name={'remove-circle'} size={25} style={{paddingTop:15, paddingRight:5, color:'red'}}/>
-<Text style={{paddingTop:15,paddingRight:5,color:'black'}}>{selectedProducts.length}  </Text> */}
-              <Icon onPress={() => { addProductTocart(item.item) }}
-                name={'add-circle'} size={25} style={{ paddingTop: 15, paddingRight: 10, color: 'green' }} />
-            </View>
+
+
+
           )
         }} />
 
       <Pressable onPress={() => {
         item.cart = selectedProducts
-        // console.log(item)
+        // // console.log(item)
         navigation.navigate('CustomerDetails', { item })
-      }}>
+      }} style={{paddingBottom:10}} >
         <Buttons title={'Go to Cart'} />
 
       </Pressable>

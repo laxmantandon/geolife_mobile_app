@@ -30,10 +30,10 @@ const ExpenseDetailsScreen = ({ navigation,
 
 
   if (item) {
-    console.log(item)
+    // console.log(item)
     for (let i in formdata) {
       for (let n in item.item) {
-        console.log('item value', item.item[n])
+        // console.log('item value', item.item[n])
         if (formdata[i].key === n) {
           formdata[i].value = item.item[n]
         }
@@ -45,7 +45,7 @@ const ExpenseDetailsScreen = ({ navigation,
   const getData = () => {
     setLoading(true)
     AuthenicationService.expense_type(req).then(res => {
-      // console.log(JSON.parse(res.data[0].json))
+      // // console.log(JSON.parse(res.data[0].json))
       setLoading(false)
 
       if (res?.status == true) {
@@ -57,7 +57,7 @@ const ExpenseDetailsScreen = ({ navigation,
           mapped_array.push({ "title": `${a.name}`, "json": `${a.json}` })
         })
         formdata[0].options = mapped_array
-        console.log(mapped_array)
+        // console.log(mapped_array)
         setexpense_type(mapped_array)
       } else {
       }
@@ -74,7 +74,7 @@ const ExpenseDetailsScreen = ({ navigation,
     let req = submitReqData(formdata);
     req.expense_type = selected_type
     setisLoading(true);
-    // console.log(re/q)
+    // // console.log(re/q)
     if (req.expense_type == '' || req.expense_type == null) {
       Alert.alert('Please Select Expense type ')
       setisLoading(false);
@@ -86,10 +86,10 @@ const ExpenseDetailsScreen = ({ navigation,
     //   Alert.alert('Please Enter Amount')
     //   return
     // }
-console.log(req)
+// console.log(req)
     AuthenicationService.create_expenses(req).then(response => {
       setisLoading(false);
-      console.log(response)
+      // console.log(response)
       if (response?.status == true) {
         navigation.goBack()
         ToastAndroid.showWithGravityAndOffset(
@@ -108,7 +108,7 @@ console.log(req)
   }
 
   const update = () => {
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 
@@ -161,7 +161,7 @@ console.log(req)
               <Pressable onPress={() => {
                 setselected_type(item.item.title)
                 let v = JSON.parse(item.item.json)
-                console.log(v)
+                // console.log(v)
                 if (v) {
                   if (v.length) {
                     setformdata(v)

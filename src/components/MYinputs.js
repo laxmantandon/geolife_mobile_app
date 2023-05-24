@@ -18,7 +18,7 @@ import moment from 'moment'
 
 
 const MYinputs = ({ item }) => {
-  // console.log('FROM MY INPUT',  item)
+  // // console.log('FROM MY INPUT',  item)
 
   const [visible, setIsVisible] = useState(false);
   const [captureimage, setcaptureimage] = useState([])
@@ -37,18 +37,18 @@ const MYinputs = ({ item }) => {
     };
 
     launchCamera(options, (response) => {
-      // console.log(response.assets);
+      // // console.log(response.assets);
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        // console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        // console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
         // const source = { uri: response.uri };
-        // console.log('response', JSON.stringify(response.assets[0].base64));
+        // // console.log('response', JSON.stringify(response.assets[0].base64));
         const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
         setcaptureimage([])
         // item?.value=basse64image
@@ -57,7 +57,7 @@ const MYinputs = ({ item }) => {
         // captureimage=basse64image
 
         item.value.push(basse64image)
-        // console.log(''item.value)
+        // // console.log(''item.value)
 
         setcaptureimage(item.value)
 
@@ -152,7 +152,7 @@ const MYinputs = ({ item }) => {
                           rowTextStyle={{ fontSize: 14 }}
 
                           onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index)
+                            // console.log(selectedItem, index)
                             item.value = selectedItem
                             item.index = index
 
@@ -188,7 +188,7 @@ const MYinputs = ({ item }) => {
                               date={item?.value}
                               onConfirm={text => {
                                 item.value = text
-                                console.log(item)
+                                // console.log(item)
                                 setOpen(false)
                               }}
                               onCancel={() => {
@@ -226,7 +226,7 @@ const MYinputs = ({ item }) => {
                               multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
                               onChangeText={text => {
                                 item.value = text
-                                // console.log(item)
+                                // // console.log(item)
                               }}
                               // value={item?.value}
                               defaultValue={item?.value}

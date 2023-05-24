@@ -15,6 +15,7 @@ const FarmerDetails = ({ navigation, route: {
 
   const [data, setdata] = useState([])
   const [loading, setloading] = useState(true)
+  const [farmerData, setfarmerData] = useState(false)
 
   const getData = () => {
     setloading(true)
@@ -23,14 +24,14 @@ const FarmerDetails = ({ navigation, route: {
     }
     AuthenicationService.farmerCropData(req)
       .then(x => {
-        console.log(x.data[0])
+        // console.log(x.data[0])
         setloading(false)
         if (x.mobileNumber == item.item.subtitle) {
           let mapped_array = []
           x.data.forEach(a => {
             mapped_array.push({
-              "title": `${a.cropName}`, "subtitle": `Stage :- ${a.stageName}`, "date": a.endDate, "status": a.status,
-              "details": { 'unit': a.cropFarmSizeUnit, 'size': a.cropFarmSize, 'startDate': a.startDate }, "footer_details": true
+              "title": `${a.cropName}`, "subtitle": `${a.stageName}`, "enddate": a.endDate, "status": a.status,"image":a.cropImages[0],
+              "details": { 'stage':a.stageName,'unit': a.cropFarmSizeUnit, 'size': a.cropFarmSize, 'startDate': a.startDate }, "footer_details": true
             })
           })
           setdata(mapped_array)
@@ -41,6 +42,13 @@ const FarmerDetails = ({ navigation, route: {
 
   useEffect(() => {
     getData()
+    if (item){
+      let m ={
+        name:item.item.title,
+        id:item.item.subtitle
+      }
+      setfarmerData(m)
+    }
   }, [])
 
 
@@ -68,7 +76,7 @@ const FarmerDetails = ({ navigation, route: {
         <View style={{ width: '30%', marginRight: '5%' }}>
           <Icon name={'cart'}
             onPress={() => {
-              navigation.navigate('FarmerProductKit', item)
+              navigation.navigate('FarmerProductKit', farmerData)
             }} size={30} style={{ paddingTop: 2, color:Colors.DEFAULT_GREEN , alignSelf: 'center' }} />
         </View>
 
@@ -83,7 +91,7 @@ const FarmerDetails = ({ navigation, route: {
         ListEmptyComponent={() => {
           return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Text style={{ textAlign: 'center' }}> Former data not available</Text>
+              <Text style={{ textAlign: 'center' }}> Farmer data not available</Text>
 
             </View>
           )
@@ -93,41 +101,6 @@ const FarmerDetails = ({ navigation, route: {
             <View style={{ flex: 1, flexDirection: 'row' }}>
               <Card item={item} />
 
-              {/* <Pressable onPress={() => {
-              }}
-              style={{flex:1,  flexDirection:'row'}}>
-
-                <View
-                style={[mstyle.ListContainer, { width: '100%' }]} >
-
-                <View style={[mstyle.detailContainer, { width: '90%' }]}>
-                  <View style={mstyle.titleContainer}>
-                    <Text style={mstyle.listListTitle} numberOfLines={1}>
-                        {item.cropName}
-                    </Text>
-                    <Text>{`${item.startDate} To ${moment(item.endDate).format('MM/DD/YYYY')}`}</Text>
-                    <Text>{item.status}</Text>
-                    <Text>{item.stageName}</Text>
-                    <Text>{item.cropName}</Text>
-
-
-
-
-                   
-                  </View>
-
-                  <View style={{ width: '15%' }}>
-                    
-                    
-
-
-                  </View>
-
-                </View>
-              </View>
-              
-            
-              </Pressable> */}
             </View>
           )
         }} />

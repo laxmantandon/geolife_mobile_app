@@ -29,7 +29,7 @@ npm install
  
 3. gradlew assembleDebug 
 
-
+4. gradlew bundleRelease //for Production bundle build only this command run in cd folder skip 1 3 steps
 ```
 ### 3. running app on emulator 
 ```

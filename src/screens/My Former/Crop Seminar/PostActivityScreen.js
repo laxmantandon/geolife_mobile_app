@@ -23,19 +23,19 @@ const PostActivityScreen = ({navigation ,  route: {
   const [loading, setloading] = useState(false)
   const [IsLoading, setIsLoading] = useState(false)
 
-// console.log('IIIIIIIIIII', item.value.item.crop.name)
+// // console.log('IIIIIIIIIII', item.value.item.crop.name)
 
 
   useEffect(() => {
     if(item) {
-      // console.log(item.value.item.crop.details.post_activities)
+      // // console.log(item.value.item.crop.details.post_activities)
       let mapped_array = []
       for (let f in data){
         item.value.item.crop.details.post_activities.forEach(i => {
-        // console.log('iiiiiiii', i.activity_status)
+        // // console.log('iiiiiiii', i.activity_status)
         if(data[f].title == i.activity_name){
           data[f].value = i.activity_status==0?false:true
-          console.log(i.activity_status, data[f].value)
+          // console.log(i.activity_status, data[f].value)
         }
       })
     }
@@ -54,7 +54,7 @@ const getData =()=>{
 }
 
 const checkActivity = (activity)=>{
-// console.log(data[activity.index].value)
+// // console.log(data[activity.index].value)
     if(activity.item.value===true){
   }else{
 
@@ -75,12 +75,12 @@ const updateActivity=()=>{
     is_post_activity: "Yes",
     post_activities:activitysubmitReqData(data),
   }
-  console.log(req)
+  // console.log(req)
 
   setIsLoading(true);
-      // console.log(req)
+      // // console.log(req)
     AuthenicationService.update_crop_seminar(req).then(r => {
-      // console.log('EEEEE', r)
+      // // console.log('EEEEE', r)
       setIsLoading(false);
       if (r?.status== true) {
       navigation.goBack()
@@ -97,7 +97,7 @@ const updateActivity=()=>{
       }
     }).catch(e => {
       setIsLoading(false);
-      console.log(e)
+      // console.log(e)
     })
 }
 

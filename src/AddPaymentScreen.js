@@ -22,7 +22,7 @@ const AddPaymentScreen = ({ navigation, props,
   const [isLoading, setisLoading] = useState(false)
 
   useEffect(() => {
-    console.log(item.item.subtitle)
+    // console.log(item.item.subtitle)
   }, [])
 
 

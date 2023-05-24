@@ -32,11 +32,11 @@ const CreateSeminarScreen = ({navigation}) => {
 
     ])
   // if (item) {
-  //   console.log(item)
+  //   // console.log(item)
 
   //   for (let i in formdata) {
   //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
+  //       // console.log('item value', item.item[n])
   //       if (formdata[i].key === n) {
   //         formdata[i].value = item.item[n]
   //       }
@@ -54,16 +54,16 @@ const CreateSeminarScreen = ({navigation}) => {
   }, [])
  
   const getSeminarMasters = ()=>{
-    // console.log('SEMINAR MASTERS CALLED')
+    // // console.log('SEMINAR MASTERS CALLED')
     req=null
     AuthenicationService.get_seminar_masters(req).then(r => {
-      console.log('SEMINAR MASTERS', r)
+      // console.log('SEMINAR MASTERS', r)
       if (r?.status== true) {
         // setIsLoading(false)
 
         let bk=[]
         for (let m in r?.data["bk_center"] ){
-          console.log(r?.data["bk_center"][m].name)
+          // console.log(r?.data["bk_center"][m].name)
           bk.push(r?.data["bk_center"][m].name)
         }
 
@@ -85,12 +85,12 @@ const CreateSeminarScreen = ({navigation}) => {
         // navigation.goBack()
       }
     }).catch(e => {
-      console.log(e)
+      // console.log(e)
     })
   }
 
   const submit = () => {
-    // console.log(formdata)
+    // // console.log(formdata)
     if(!loading){
       setIsLoading(true);
       let req = submitReqData(formdata);
@@ -122,11 +122,11 @@ const CreateSeminarScreen = ({navigation}) => {
       req.seminar_time =req.seminar_time.toTimeString().slice(0,5)
       setIsLoading(true);
       
-      // console.log('REQUEST', req)
+      // // console.log('REQUEST', req)
   
       AuthenicationService.create_crop_seminar(req).then(r => {
         setIsLoading(false);
-        // console.log(r)
+        // // console.log(r)
         if (r?.status == true) {
           ToastAndroid.showWithGravityAndOffset(
             'New Seminar created Successfully',

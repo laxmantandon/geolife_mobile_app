@@ -37,7 +37,7 @@ const CropSeminarScreen = ({navigation}) => {
     req=null
     AuthenicationService.crop_seminar(req).then(r => {
       setserachingData(false)
-      // console.log(r)
+      // // console.log(r)
       if (r?.status== true) {
         let mapped_array=[]
              
@@ -46,13 +46,13 @@ const CropSeminarScreen = ({navigation}) => {
           a.details.post_activities.forEach(b=>{
             if (b.activity_status){
               v += 1
-              console.log('Persent',b)
+              // console.log('Persent',b)
             }
           })
           a.details.pre_activities.forEach(b=>{
             if (b.activity_status){
               v += 1
-              console.log('Persent',b)
+              // console.log('Persent',b)
             }
           })
           let m ={
@@ -68,8 +68,8 @@ const CropSeminarScreen = ({navigation}) => {
 
           // search(a.details.post_activities)
           // search(a.details.pre_activities)
-          // console.log(a.details.post_activities.length + a.details.pre_activities.length)
-          // console.log(a.details.pre_activities.length)
+          // // console.log(a.details.post_activities.length + a.details.pre_activities.length)
+          // // console.log(a.details.pre_activities.length)
           mapped_array.push(m)
         })
         setdata(mapped_array)

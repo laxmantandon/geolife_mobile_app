@@ -19,11 +19,11 @@ const WhatsappFarmerScreen = () => {
     // { label: 'My Image', value: mimage, type: 'image', key: 'image', },
   ])
   // if (item) {
-  //   console.log(item)
+  //   // console.log(item)
 
   //   for (let i in formdata) {
   //     for (let n in item.item) {
-  //       console.log('item value', item.item[n])
+  //       // console.log('item value', item.item[n])
   //       if (formdata[i].key === n) {
   //         formdata[i].value = item.item[n]
   //       }
@@ -37,7 +37,7 @@ const WhatsappFarmerScreen = () => {
   const getData = ()=>{
     req=null
     AuthenicationService.whatsapp_templates(req).then(r => {
-      console.log(r)
+      // console.log(r)
       if (r?.status== true) {
         // setformdata(r?.data)
         setmimage(r?.data.image.image)
@@ -48,7 +48,7 @@ const WhatsappFarmerScreen = () => {
       }else{
       }
     }).catch(e => {
-      console.log('eeeeee', e)
+      // console.log('eeeeee', e)
     })
   }
 
@@ -64,10 +64,10 @@ const WhatsappFarmerScreen = () => {
     
 Share.open(options)
 .then((res) => {
-  console.log(res);
+  // console.log(res);
 })
 .catch((err) => {
-  err && console.log(err);
+  
 });
 
     

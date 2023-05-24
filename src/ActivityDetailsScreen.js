@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable, FlatList, ScrollView, ToastAndroid, Alert } from 'react-native'
+import { View, StyleSheet, Pressable, FlatList, ScrollView, ToastAndroid, Alert, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from './components/MYinputs';
 import mstyle from './mstyle';
@@ -24,11 +24,11 @@ const ActivityDetailsScreen = ({ navigation, props,
   ])
   const [isLoading, setisLoading] = useState(false)
   if (item) {
-    console.log(item)
+    // console.log(item)
 
     for (let i in formdata) {
       for (let n in item.item) {
-        console.log('item value', item.item[n])
+        // console.log('item value', item.item[n])
         if (formdata[i].key === n) {
           formdata[i].value = item.item[n]
         }
@@ -37,9 +37,9 @@ const ActivityDetailsScreen = ({ navigation, props,
   }
 
   if (activity_type.length===0){
-    console.log(activity_type.length)
+    // console.log(activity_type.length)
     AuthenicationService.activity_type(req).then(res => {
-      // console.log(res.data)
+      // // console.log(res.data)
       if (res?.status == true) {
         mapped_array=[]
         res.data.forEach(a=> {
@@ -55,7 +55,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
 
   const submit = () => {
-    // console.log(formdata)
+    // // console.log(formdata)
     let req = submitReqData(formdata);
     setisLoading(true);
 
@@ -73,7 +73,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);
-      console.log(response)
+      // console.log(response)
       if (response?.status == true) {
         ToastAndroid.showWithGravityAndOffset(
           response?.message,
@@ -87,21 +87,22 @@ const ActivityDetailsScreen = ({ navigation, props,
 
       }
     }).catch(e=>{
-      console.log(e)
+      // console.log(e)
     })
 
   }
 
   const update = () => {
-    console.log(formdata)
+    // console.log(formdata)
   }
 
 
 
   return (
-    <View style={mstyle.container}>
+    <SafeAreaView style={mstyle.container1}>
       <FlatList
         data={formdata}
+        style={{paddingBottom:50}}
         renderItem={({ item, index }) => {
           return (
             <Pressable
@@ -114,13 +115,13 @@ const ActivityDetailsScreen = ({ navigation, props,
 
       {item.item ? (<Pressable onPress={() => { update() }}>
         <Buttons title={'Update'} loading={isLoading} />
-      </Pressable>) : (<Pressable onPress={() => { submit() }}>
+      </Pressable>) : (<Pressable style={{paddingBottom:20}} onPress={() => { submit() }}>
         <Buttons title={'Submit'} loading={isLoading} />
       </Pressable>)}
 
 
 
-    </View>
+    </SafeAreaView>
   )
 }
 

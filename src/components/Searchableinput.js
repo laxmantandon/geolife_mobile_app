@@ -4,12 +4,12 @@ import mstyle from '../mstyle'
 import { Colors } from '../contants'
 
 const Searchableinput = ({data}) => {
-    console.log(data)
+    // console.log(data)
 
     const searchFilterFunction = (text) => {
-        console.log(text)
+        // console.log(text)
         const res = data.filter(obj => Object.values(obj).some(val => val.includes(text)));
-        console.log(res)
+        // console.log(res)
         // setdata(res)
         data=res
     }
@@ -27,7 +27,7 @@ const Searchableinput = ({data}) => {
                
                 onChangeText={text => {
                     searchFilterFunction(text)
-                    // console.log(item)
+                    // // console.log(item)
                 }}
                 // value={item?.value}
             />

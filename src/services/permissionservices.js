@@ -13,9 +13,9 @@ const CameraPermission = () => {
          }
          );
          if (grantedcamera === PermissionsAndroid.RESULTS.GRANTED) {
-           console.log("Camera permission given");
+           // console.log("Camera permission given");
          } else {
-           console.log("Camera permission Already have");
+           // console.log("Camera permission Already have");
          }
        } catch (err) {
        console.warn(err);

@@ -19,9 +19,9 @@ const base_url2 ='https://crop.erpgeolife.com/api/resource'
       let token ='';
 
       AsyncStorage.getItem('user_info').then((muser) =>{
-        // console.log('muser', muser) 
+        // // console.log('muser', muser) 
          user= JSON.parse(muser)
-        //  console.log('muser', `token ${user.api_key}:${user.api_secret}`) 
+        //  // console.log('muser', `token ${user.api_key}:${user.api_secret}`) 
 
           // token = `token ${user.api_key}:${user.api_secret}`
         
@@ -61,7 +61,7 @@ const register = async user => {
     );
     return registerResponse?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     return {status: false, message: 'Oops! Something went wrong'};
   }
 };
@@ -75,13 +75,13 @@ const login = async user => {
       mobile_no: user?.username,
       otp: user?.otpCode,
     };
-    // console.log()
+    // // console.log()
     let loginResponse = await AuthRequest.get(
       `${base_url}.validate_otp?mobile_no=${user?.username}&otp=${user?.otpCode}`,
     );
     return loginResponse?.data.message;
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     return {status: false, message: 'Oops! Something went wrong'};
   }
 };
@@ -97,7 +97,7 @@ const sendOTP = async user => {
     );
     return loginResponse?.data.message;
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     return {status: false, message: error, url:`${base_url}.generate_otp?mobile_no=${user?.username}`
 };
   }
@@ -116,7 +116,7 @@ const sendOTP = async user => {
 // return fetch("https://api3.thefarmpeople.in/api/v1/users/external", requestOptions)
 //   // .then(response => response.text())
 //   // .then(result =>{result})
-//   // .catch(error => console.log('error', error));
+//   // .catch(error => // console.log('error', error));
 // }
 
 // const searchfarmerData =async req=>{
@@ -138,10 +138,10 @@ const sendOTP = async user => {
 // return fetch("https://api3.thefarmpeople.in/api/v1/users/external/search?page=1&limit=10", requestOptions)
 //   // .then(response => response.text())
 //   // .then(result => {
-//   //   console.log('farmer search', result)
+//   //   // console.log('farmer search', result)
     
 //   //   return result})
-//   // .catch(error => console.log('error', error));
+//   // .catch(error => // console.log('error', error));
 // }
 
 const searchfarmerData = async req => {
@@ -154,7 +154,7 @@ const searchfarmerData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -174,12 +174,32 @@ const searchfarmerOrdersData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+    return {status: false, message: 'Oops! Something went wrong '};
+
+  }
+};
+
+const searchdealerfarmerOrdersData = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.post(
+      `${base_url}.dealer_search_farmer_orders`, req, {headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
 
   }
 };
@@ -195,7 +215,7 @@ const searchCropData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -214,7 +234,7 @@ const searchdealerData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -232,7 +252,7 @@ const searchProductData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -249,7 +269,7 @@ const searchProductKitData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -269,7 +289,7 @@ const checkUserExist = async (type, value) => {
     
     return userCheckResponse?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     return {status: false, message: 'Oops! Something went wrong'};
   }
 };
@@ -277,7 +297,7 @@ const checkUserExist = async (type, value) => {
 
 const crop_seminar = async req => {
   gettoken()
-  console.log('from auth service', gettoken())
+  // console.log('from auth service', gettoken())
   try {
     
     let Response = await AuthRequest.get(
@@ -285,7 +305,7 @@ const crop_seminar = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -297,7 +317,7 @@ const crop_seminar = async req => {
 
 const create_crop_seminar = async req => {
   gettoken()
-  console.log('Auth', gettoken())
+  // console.log('Auth', gettoken())
   try {
     let Response = await AuthRequest.post(
       `${base_url}.crop_seminar`,
@@ -305,7 +325,7 @@ const create_crop_seminar = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -322,7 +342,7 @@ const update_crop_seminar = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -340,7 +360,7 @@ const crop_alert = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -358,7 +378,7 @@ const activity_list = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -370,16 +390,16 @@ const activity_list = async req => {
 
 const create_activity = async req => {
   gettoken()
-  console.log('gettoken()', gettoken())
+  // console.log('gettoken()', gettoken())
   try {
-    console.log(req)
+    // console.log(req)
     let Response = await AuthRequest.post(
       `${base_url}.activity_list`,
       req,{headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -391,16 +411,16 @@ const create_activity = async req => {
 
 const submit_quiz = async req => {
   gettoken()
-  console.log('gettoken()', gettoken())
+  // console.log('gettoken()', gettoken())
   try {
-    console.log(req)
+    // console.log(req)
     let Response = await AuthRequest.post(
       `${base_url}.submit_quiz`,
       req,{headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -419,7 +439,7 @@ const expenses_list = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -437,7 +457,7 @@ const create_expenses = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -448,7 +468,7 @@ const create_expenses = async req => {
 
 const door_to_door_awareness = async req => {
   gettoken()
-  console.log('gettoken()', gettoken())
+  // console.log('gettoken()', gettoken())
   try {
     let Response = await AuthRequest.post(
       `${base_url}.door_to_door_awareness`,
@@ -456,7 +476,7 @@ const door_to_door_awareness = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -473,7 +493,7 @@ const sticker_pasting = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -492,7 +512,7 @@ const activity_type = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -512,7 +532,7 @@ const expense_type = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -532,7 +552,7 @@ const get_free_sample = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -550,7 +570,7 @@ const checkoutProduct = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -568,7 +588,7 @@ const checkoutProductKit = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -585,7 +605,7 @@ const update_stock = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -602,7 +622,7 @@ const Add_payment_entry = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -619,7 +639,7 @@ const create_farmer = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -636,7 +656,7 @@ const create_free_sample = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -653,7 +673,7 @@ const update_status_free_sample = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -672,7 +692,7 @@ const whatsapp_templates = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -685,7 +705,7 @@ const whatsapp_templates = async req => {
 const get_seminar_masters = async req => {
   try {
     gettoken()
-    console.log('FROM AUTH SERVICE', gettoken())
+    // console.log('FROM AUTH SERVICE', gettoken())
     
     let Response = await AuthRequest.get(
       `${base_url}.get_seminar_masters`,{headers:gettoken()}
@@ -693,7 +713,7 @@ const get_seminar_masters = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -712,7 +732,7 @@ const get_users_task = async req => {
         );
         return Response?.data.message
   } catch (error) {
-    console.log('API ERROR ', error.response.data);
+    // console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -729,7 +749,7 @@ const farmerCropData = async req => {
         );
         return Response?.data
   } catch (error) {
-    console.log('API ERROR ', error.response.data);
+    // console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -744,7 +764,20 @@ const get_stock = async req => {
         );
         return Response?.data.message
   } catch (error) {
-    console.log('API ERROR ', error.response.data);
+    // console.log('API ERROR ', error.response.data);
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+const get_users_Attendance = async req => {
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url}.get_attendance`,{headers:gettoken()}
+          
+        );
+        return Response?.data.message
+  } catch (error) {
+    // console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -755,5 +788,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
-  create_farmer,searchfarmerOrdersData,submit_quiz
+  create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData
 };

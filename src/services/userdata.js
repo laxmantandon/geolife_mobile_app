@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const userdata = () => {
     useEffect(() => {
         AsyncStorage.getItem('user_info').then((muser) =>{
-            console.log(muser) 
+            // console.log(muser) 
             // setuser(JSON.parse(muser))
         
             return JSON.parse(muser)
