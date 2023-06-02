@@ -32,8 +32,6 @@ const MYinputs = ({ item }) => {
       mediaType: 'photo',
       saveToPhotos: true,
       quality: 0.3
-
-
     };
 
     launchCamera(options, (response) => {
@@ -152,7 +150,7 @@ const MYinputs = ({ item }) => {
                           rowTextStyle={{ fontSize: 14 }}
 
                           onSelect={(selectedItem, index) => {
-                            // console.log(selectedItem, index)
+                            console.log(selectedItem, index)
                             item.value = selectedItem
                             item.index = index
 

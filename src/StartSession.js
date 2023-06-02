@@ -10,6 +10,7 @@ import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native'
 import mstyle from './mstyle'
 import { StatusBar } from 'react-native';
+import  MydealersScreen from './../src/screens/My Dealers/DealerPaymentScreen'
 // import { PermissionsAndroid } from 'react-native';
 // import CallLogs from 'react-native-call-log';
 
@@ -231,6 +232,9 @@ const logOut=()=>{
         backgroundColor={'white'}
         translucent
       />
+      {user.user_role=='Dealer'?(<View>
+        <MydealersScreen/>
+      </View>) :(<View>
       <View style={{
         justifyContent: 'center',
         alignItems: 'center', marginTop: 100
@@ -280,6 +284,8 @@ const logOut=()=>{
         <Buttons title={'Logout'} loading={loading} bgcolor={'red'}/>
       </Pressable>
 
+      </View>)}
+      
     </View>
   )
 }

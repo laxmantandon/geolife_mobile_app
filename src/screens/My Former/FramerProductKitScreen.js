@@ -70,15 +70,16 @@ const FramerProductKitScreen = ({ navigation, props,
   const [selectedFarmer, setselectedFarmer] = useState('')
   const [iscartloading, setiscartloading] = useState(false)
   const [delivery_date, setdelivery_date] = useState({ label: 'Expected Delivery Date', value: new Date(), type: 'date', key: 'expected_date' })
-  const [kit_type, setkit_type] = useState({ label: 'Product Kit Type', value: new Date(), type: 'select',value: '', options: ["Standard CNP", "Premium CNP"], key: 'kit_type' })
+  // const [kit_type, setkit_type] = useState({ label: 'Product Kit Type', value: new Date(), type: 'select',value: '', options: ["Standard CNP", "Premium CNP"], key: 'kit_type' })
+  
   const [payment_method, setpayment_method] = useState({ label: 'Payment Method', value: '', options: ["Cash", "UPI"], type: 'select', })
   const [amount, setamount] = useState(0)
   const [visible, setVisible] = React.useState(false);
 
-  const [crop_bundle_list, setcrop_bundle_list] = useState([{title:'Builb Crops', large_image:'https://crop.erpgeolife.com/files/bulb crops.jpg'},
+  const [crop_bundle_list, setcrop_bundle_list] = useState([{title:'Bulb Crops', large_image:'https://crop.erpgeolife.com/files/bulb crops.jpg'},
   {title:'Leafy Vegetables', large_image:'https://crop.erpgeolife.com/files/Leafy veg.jpg'},
-  {title:'PADDY', large_image:'https://crop.erpgeolife.com/files/paddy.....jpg'},
-  {title:'Vegetable', large_image:'https://crop.erpgeolife.com/files/veg.jpg'}])
+  {title:'Paddy', large_image:'https://crop.erpgeolife.com/files/paddy.....jpg'},
+  {title:'Vegetables', large_image:'https://crop.erpgeolife.com/files/veg.jpg'}])
   const [crop_bundle, setcrop_bundle] = useState('')
   const [CNP_kit_type, setCNP_kit_type] = useState([
   {title:'With Soil Application', large_image:'https://crop.erpgeolife.com/files/with_soil.jpg'},
@@ -99,12 +100,12 @@ const [cnp_type, setcnp_type] = useState('')
         // req.text = selectedCrops?.id
         req.text = crop_bundle
         req.cnp_type= cnp_type
-        req.kit_type=kit_type.value
+        // req.kit_type=kit_type.value
         req.dealer = selectedDelers.id
-        if(!kit_type.value){
-          alert('Please Select Product Kit Type')
-          return
-        }
+        // if(!kit_type.value){
+        //   alert('Please Select Product Kit Type')
+        //   return
+        // }
 
         if(!req.dealer){
           alert('Please Select Dealer')
@@ -121,7 +122,7 @@ const [cnp_type, setcnp_type] = useState('')
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
-              mapped_array.push({ "subtitle": `Crop Name - ${a.crop}`, "title": a.kit_name, "quantity": 0, "status": 'Add to Cart', "percent": 0, "name": a.name })
+              mapped_array.push({ "subtitle": `Price - ${a.price}`,"price": a.price, "title": a.kit_name, "quantity": 0, "status": 'Add to Cart', "percent": 0, "name": a.name })
             })
             setdata(mapped_array)
           } else {
@@ -179,9 +180,9 @@ const [cnp_type, setcnp_type] = useState('')
       );
       cart.push(product);
       setdata(cart)
+      console.log(    cart.reduce((a, b) => a + (b['price'] || 0), 0)      )
       // setselectedProducts(cart)
     }
-
     // console.log(data)
     // setloading(false)
     getData()
@@ -231,7 +232,7 @@ const [cnp_type, setcnp_type] = useState('')
       // console.log(farmerData)
       setselectedFarmer(farmerData)
     }
-    searchFilterFunctionFarmer('')
+    searchFilterFunctionFarmer(' ')
     getDealers()
     getCrops()
     getData()
@@ -335,7 +336,7 @@ const [cnp_type, setcnp_type] = useState('')
   const SubmitOrder = () => {
     let req = {
       cart: selectedProducts,
-      crop: selectedCrops.name,
+      // crop: selectedCrops.name,
       farmer: selectedFarmer.id,
       dealer_mobile: selectedDelers.id,
       expected_date: delivery_date.value,
@@ -348,9 +349,9 @@ const [cnp_type, setcnp_type] = useState('')
     //   alert('Please Enter Valid Amount')
     //   return
     // }
-    // console.log(req)
+    console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
-      // console.log(r)
+      console.log(r)
       setiscartloading(false)
       if (r.status == true) {
         setselectedProducts([])
@@ -478,7 +479,9 @@ const [cnp_type, setcnp_type] = useState('')
             }} />
 
           <View style={mstyle.inputContainer1}>
-            <Text style={mstyle.content}>
+          <Text style={[mstyle.content,{fontWeight:'bold'}]}>
+              Total payable amount :- 
+            </Text><Text style={mstyle.content}>
               Enter Token Amount
             </Text>
             <View style={mstyle.inputContainer}>
@@ -524,8 +527,7 @@ const [cnp_type, setcnp_type] = useState('')
                  <View style={{margin:1}}>
                  <Image source={{uri:item.item.large_image}} 
                  resizeMode={'contain'}
-                              style={{width:'100%', height:200,borderRadius:8}}  />
-                
+                 style={{width:'100%', height:200,borderRadius:8}}  />
                   </View>
                   </Pressable>
               )
@@ -824,9 +826,9 @@ const [cnp_type, setcnp_type] = useState('')
                     </View>
                   </View>
                   <View >
-                  <View >
+                  {/* <View >
                     <MYinputs item={kit_type} />
-                  </View>
+                  </View> */}
                     <MYinputs item={delivery_date} />
                   </View>
                   <View >

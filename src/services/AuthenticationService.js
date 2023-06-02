@@ -187,10 +187,8 @@ const searchfarmerOrdersData = async req => {
 const searchdealerfarmerOrdersData = async req => {
   try {
     gettoken()
-    
     let Response = await AuthRequest.post(
       `${base_url}.dealer_search_farmer_orders`, req, {headers:gettoken()}
-      
     );
     return Response?.data.message
   } catch (error) {
@@ -200,7 +198,23 @@ const searchdealerfarmerOrdersData = async req => {
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
     return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
 
+const searchdealerPaymentData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.post(
+      `${base_url}.dealer_payments_data`, req, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
   }
 };
 
@@ -244,6 +258,26 @@ const searchdealerData = async req => {
 };
 
 
+const searchgeomitraData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.get(
+      `${base_url}.search_geomitra`, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+  }
+};
+
+
+
+
 const searchProductData = async req => {
   try {
     gettoken()
@@ -263,7 +297,7 @@ const searchProductData = async req => {
 
 const searchProductKitData = async req => {
   try {
-    gettoken()
+    console.log(gettoken())
     let Response = await AuthRequest.post(
       `${base_url}.search_product_kit`, req, {headers:gettoken()}
     );
@@ -788,5 +822,6 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
-  create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData
+  create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
+  searchdealerPaymentData, searchgeomitraData
 };

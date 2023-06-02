@@ -60,6 +60,8 @@ import { DrawerToggleButton, createDrawerNavigator } from '@react-navigation/dra
 import { DrawerContent } from './src/DrawerScreen';
 import FarmerOrdersScreen from './src/screens/My Former/FarmerOrdersScreen';
 import OrderDetailsScreen from './src/screens/My Former/OrderDetailsScreen';
+import DealerPaymentScreen from './src/screens/My Dealers/DealerPaymentScreen';
+import DealerProfileScreen from './src/screens/My Dealers/DealerProfileScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -586,7 +588,7 @@ function App({ navigation }) {
                 ),
                 headerRight: () => (
                   <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity>
+                    {/* <TouchableOpacity>
                       <Icon name="notifications-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
                         onPress={() => navigation.navigate('Notifications')} />
                     </TouchableOpacity>
@@ -597,7 +599,7 @@ function App({ navigation }) {
                     <TouchableOpacity>
                       <Icon name="ios-person-circle-outline" size={20} style={{ paddingLeft: 0, color: 'black', paddingRight: 10 }}
                         onPress={() => navigation.navigate('Help')} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
 
 
@@ -612,10 +614,8 @@ function App({ navigation }) {
                 //   />
                 // ),
               })}
-              
               />
-
-
+              <Stack.Screen name='DealerProfile' component={DealerProfileScreen} options={() => ({ headerTitle: "My profile" })} />
               {/* My farmer screen */}
               <Stack.Screen name='Myfarmer' component={MyFarmerScreen} options={() => ({ headerTitle: "My Farmer" })} />
               <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({ headerTitle: "New Farmer" })} />
@@ -649,7 +649,7 @@ function App({ navigation }) {
 
 
               {/* My Dealer screen */}
-              {/* <Stack.Screen name='MydealerHome' component={MyDealersScreen} options={() => ({ headerTitle: "My Dealers" })} /> */}
+              <Stack.Screen name='DealerPaymentScreen' component={DealerPaymentScreen} options={() => ({ headerTitle: "Payments" })} />
 
               {/* My day Screen */}
               <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Day"  })} />

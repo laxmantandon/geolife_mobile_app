@@ -8,19 +8,29 @@ import { useEffect } from 'react'
 import { AuthenicationService } from '../../services'
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import MYinputs from '../../components/MYinputs'
+import DateInput from '../../components/DateInput'
+import moment from 'moment'
+import submitReqData from '../../services/FormData'
 
 const FarmerOrdersScreen = ({ navigation }) => {
 
   const [data, setdata] = useState([])
   const [serachingData, setserachingData] = useState(true)
   const [muser_info, setmuser_info] = useState([])
+  const [from_date, setfrom_date] = useState({ label: 'From Date', value: new Date(), type: 'date', key: 'from_date'  })
+  const [to_date, setto_date] = useState({ label: 'To Date', value:moment().add(7,'d').toDate(), type: 'date', key: 'to_date'  })
 
 
   const searchFilterFunction = (text) => {
     setserachingData(true)
+    mj=submitReqData([from_date, to_date])
     let req = {
-      "text": text
+      "text": text,
+      "from_date":moment(mj.from_date).format('yyyy-MM-DD'),
+      "to_date":moment(mj.to_date).format('yyyy-MM-DD')
     }
+    console.log(req)
     AsyncStorage.getItem("user_info").then((value) => {
       const user_info =JSON.parse(value)
       setmuser_info(user_info)
@@ -28,7 +38,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
         AuthenicationService.searchdealerfarmerOrdersData(req)
         .then(x => {
           setserachingData(false)
-          // console.log(x.data[0])
+          console.log(x.data)
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
@@ -37,6 +47,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
             })
             setdata(mapped_array)
           } else {
+            setdata([])
           }
         })
 
@@ -54,6 +65,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
             })
             setdata(mapped_array)
           } else {
+            setdata([])
           }
         })
       }
@@ -73,6 +85,20 @@ const FarmerOrdersScreen = ({ navigation }) => {
 
   return (
     <View style={mstyle.container1}>
+<View style={{flexDirection:'row', paddingBottom:4}}>
+  <View style={{flex:1}}>
+  <DateInput item={from_date} />
+  </View>
+  <Text style={{color:'green', fontSize:14, fontWeight:'bold', paddingVertical:7}}>TO</Text>
+  <View style={{flex:1}}>
+  <DateInput item={to_date} />
+  </View>
+  <Pressable onPress={()=>{ searchFilterFunction('') }}>
+          <Text style={{color:'white',fontWeight:'bold',fontSize: 15, borderRadius:8,backgroundColor:Colors.DEFAULT_GREEN,
+          padding:9,paddingHorizontal:10,marginRight:10}}>GO</Text>
+        </Pressable>
+</View>
+
       <View style={mstyle.inputContainer}>
         <View style={mstyle.inputSubContainer}>
           <TextInput

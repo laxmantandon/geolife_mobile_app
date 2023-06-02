@@ -1,17 +1,79 @@
-import { View, Text, FlatList, Pressable,Alert, BackHandler } from 'react-native'
+import { View, Text, FlatList, Pressable, Alert, BackHandler, Image } from 'react-native'
 import React, { useState } from 'react'
 import mstyle from '../../mstyle'
 import Card from '../../components/Card'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useEffect } from 'react';
+import { AuthenicationService } from '../../services';
+import { Button } from 'react-native-paper';
+import { Colors, Fonts } from '../../contants';
+import { colors } from 'react-native-gifted-charts/src/PieChart/colors';
+import { ScrollView } from 'react-native-gesture-handler';
+import CameraPermission from '../../services/permissionservices'
+import { launchCamera } from 'react-native-image-picker'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const MyDealersScreen = ({navigation}) => {
+const MyDealersScreen = ({ navigation }) => {
   const [data, setdata] = useState([
-    {title:'Orders', value:'0', route:'FarmerOrdersScreen'},
-    {title:'Payments', value:'0'},
-    {title:'Geo Mitra', value:'0'},
+    { title: 'Orders', value: '0', route: 'FarmerOrdersScreen', icon: 'cart-outline', color: 'red' },
+    { title: 'Payments', value: geoMitradata, route: 'DealerPaymentScreen', icon: 'wallet-outline', color: 'green' },
+    // {title:'Geo Mitra', value:'0',route:'FarmerOrdersScreen'},
   ])
+  const [IsLoadingData, setIsLoadingData] = useState(false)
+  const [geoMitradata, setgeoMitradata] = useState([])
+  const [receiveable_amount, setreceiveable_amount] = useState(0)
+  const [captureimage, setcaptureimage] = useState("")
+  const [loggedIn, setloggedIn] = React.useState(false)
+  const [user, setuser] = React.useState([])
+  const [qrcode, setqrcode] = useState('')
+  if (loggedIn == false) {
+    AsyncStorage.getItem("user_info").then((value) => {
+      setloggedIn(true)
+      const usrd = JSON.parse(value)
+      console.log(usrd.dealer_data.qr_code)
+      if (usrd) {
+        setuser(usrd)
+        setqrcode(usrd.dealer_data?.qr_code)
+      } else {
+        navigation.navigate('Login')
+      }
+    })
+  }
+
+
+
+  const startCamera = () => {
+
+    CameraPermission()
+    let options = {
+      includeBase64: true,
+      mediaType: 'photo',
+      saveToPhotos: true,
+      quality: 0.3
+
+
+    };
+
+    launchCamera(options, (response) => {
+
+      if (response.didCancel) {
+        // console.log('User cancelled image picker');
+      } else if (response.error) {
+        // console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        // console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        // const source = { uri: response.uri };
+        // // console.log('response', JSON.stringify(response.assets[0].base64));
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+        setcaptureimage("")
+        setcaptureimage(basse64image)
+      }
+    });
+
+  }
+
 
 
   const backButtonPressd = () => {
@@ -26,11 +88,11 @@ const MyDealersScreen = ({navigation}) => {
   }
 
   useEffect(() => {
+    getGeomitraData()
     navigation.getState().routes[0].name
     const backAction = () => {
       backButtonPressd()
       return true;
-
     };
 
 
@@ -38,43 +100,211 @@ const MyDealersScreen = ({navigation}) => {
       'hardwareBackPress',
       backAction,
     );
-
     return () => backHandler.remove();
-
   }, [])
-  
+
+  const getGeomitraData = () => {
+    setIsLoadingData(true)
+    let req = ''
+    AuthenicationService.searchgeomitraData(req)
+      .then(x => {
+        setIsLoadingData(false)
+        // console.log(x)
+        if (x.status == true) {
+          let mapped_array = []
+          let total_amount = 0
+          let geo_mitra = []
+          x.data.forEach(a => {
+            total_amount = total_amount + a.geo_mitra_cash
+            console.log(total_amount)
+            geo_mitra.push(a.geo_mitra_name)
+            mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
+          })
+          setreceiveable_amount(total_amount)
+          setgeoMitradata(mapped_array)
+          // setgeoMitradata([])
+
+        } else {
+          setgeoMitradata([])
+        }
+      })
+  }
+
+
 
 
   return (
-    <View style={[mstyle.container1]}>
+    <ScrollView style={[mstyle.container1]}>
+
+      <View style={{}}>
+        <View style={[mstyle.detailContainer, { backgroundColor: Colors.LIGHT_GREEN, paddingHorizontal: 15, paddingVertical: 25, borderRadius: 10 }]}>
+          <Pressable onPress={()=>{navigation.navigate("DealerProfile")}} style={[mstyle.titleContainer, { width: '85%' }]}>
+            <Text style={mstyle.listListTitle} numberOfLines={1}>
+              {user.first_name} {user.last_name}
+            </Text>
+            <Text style={{
+              color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
+            }} numberOfLines={2}>{user.mobile_no}</Text>
+            <Text onPress={() => { getcurrentTime() }} style={{
+              color: 'navy', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
+            }} numberOfLines={1}>Receiveable Amount <Text style={{ fontSize: 25, color: 'green', fontWeight: 'bold' }}> {receiveable_amount} </Text> Rs.
+
+            </Text>
+          </Pressable>
+          <View style={{ width: '15%' }}>
+            <Pressable title='Check Out' onPress={() => {
+              AsyncStorage.clear()
+              navigation.navigate('Login')
+            }} >
+
+              <Icon name='power' size={25}
+                style={{
+                  textAlign: 'center', color: 'red', backgroundColor: Colors.LIGHT_RED,
+                  paddingHorizontal: 10, paddingVertical: 10, borderRadius: 50
+                }} />
+              {/* <Text>Check out user</Text> */}
+            </Pressable>
+
+
+          </View>
+
+
+
+        </View>
+        {qrcode == '' ? ('') : (
+          <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
+            <Pressable
+              onPress={() => startCamera()} style={{
+                alignSelf: 'center', flexDirection: 'row', width: 40, height: 40, marginVertical: 10,
+                backgroundColor: 'white', borderRadius: 50
+              }} >
+              <Icon name='camera' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
+              {/* <Image style={{ width: 50, height: 50 }}
+      source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
+    /> */}
+            </Pressable>
+
+            {
+              captureimage ? (
+                <View>
+                  <Image style={{
+                    alignSelf: 'center', borderRadius: 5,
+                    width: 80,
+                    height: 100,
+                    marginTop: 1,
+                    backgroundColor: 'silver'
+                  }} source={{ uri: captureimage }} />
+
+                  <Pressable style={{ padding: 10, backgroundColor: 'gray', borderRadius: 10, marginTop: 10, marginHorizontal: 45 }}>
+                    <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
+                  </Pressable>
+                </View>
+              ) : ('')
+            }
+            <View>
+              <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
+                Please upload your UPI QR CODE</Text>
+              <Text style={{ fontSize: 14, color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
+                For Receive Online Payment We Need Your UPI QRCode</Text>
+            </View>
+
+
+          </View>
+        )}
+      </View>
+
+      {/* <View style={{paddingBottom:10}}>
+        <Text style={{textAlign:'center',color:'green', fontSize:28, fontWeight:'bold'}}>Rs. {receiveable_amount}</Text>
+        <Text style={{textAlign:'center', color:'black',fontSize:14}}>Total Receiveable Amount</Text>
+      </View> */}
 
       <FlatList
-      numColumns={2}
-      style={{flex:1}}
-      data={data}
-      contentContainerStyle={{flex:1}}
-      renderItem={(item)=>{
-        return(
-          <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
-                <View
-                  style={mstyle.ListContainer} >
-                  <Icon name={item.item.icon} size={22} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
-                  <View style={mstyle.detailContainer}>
-                    <View style={mstyle.titleContainer}>
-                      <Text style={mstyle.listListTitle} numberOfLines={1}>
-                        {item.item.title}
-                      </Text>
-                    </View>
+        refreshing={IsLoadingData}
+        onRefresh={() => {
+          getGeomitraData()
+        }}
+        numColumns={2}
+        style={{ flex: 1, marginTop: 5 }}
+        data={data}
+        contentContainerStyle={{ flex: 1 }}
+        renderItem={(item) => {
+          return (
+            <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route), {"item":geoMitradata} }}>
+              <View
+                style={mstyle.ListContainer} >
 
+                <Icon name={item.item.icon} size={25} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
+                <View style={mstyle.detailContainer}>
+                  <View style={mstyle.titleContainer}>
+                    <Text style={mstyle.listListTitle} numberOfLines={1}>
+                      {item.item.title}
+                    </Text>
                   </View>
-                </View>
-              </Pressable>
-        )
 
-      }}
-       />
-      
-    </View>
+                </View>
+              </View>
+            </Pressable>
+          )
+        }}
+
+        ListFooterComponent={() => {
+          return (
+            <View>
+              <Text style={mstyle.title}>Geo Mitra List</Text>
+              <FlatList
+                data={geoMitradata}
+                contentContainerStyle={{ flex: 1 }}
+                renderItem={(item) => {
+                  return (
+                    <View style={[mstyle.ListContainer]} >
+                      <View style={mstyle.detailContainer}>
+                        <View style={mstyle.titleContainer}>
+                          <Text style={mstyle.listListTitle} numberOfLines={1}>
+                            {item.item.title}
+                          </Text>
+                          <Text style={mstyle.content} numberOfLines={1}>{item.item.subtitle}
+                          </Text>
+                        </View>
+
+                      </View>
+                      <View style={{ backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto' }} >
+                        <View style={{ padding: 10 }}>
+                          <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{item.item.percent}</Text>
+                          <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>Receiveable Amount</Text>
+                        </View>
+                      </View>
+
+                    </View>
+                  )
+                }}
+
+                ListEmptyComponent={() => {
+                  return (
+                    <View style={{ paddingVertical: 40 }}>
+                      <Text style={{ textAlign: 'center' }}>
+                        <Icon size={100} name='refresh-circle-outline' color={colors.LIGHT_GREEN} style={{ color: colors.LIGHT_GREEN }} />
+
+                      </Text>
+                      <Text style={{ textAlign: 'center', color: 'gray', fontSize: 15 }}>
+                        No Data Please Refresh
+                      </Text>
+                      {/* <Image source={require('../../assets/images/nodata.jpg')} style={{width:'100%'}}/> */}
+                      <Button onPress={() => { getGeomitraData() }}
+                        labelStyle={{ color: 'green', fontWeight: 'bold', fontSize: 15 }}
+                        contentStyle={{ backgroundColor: Colors.LIGHT_GREEN, }}>Refresh</Button>
+                    </View>
+                  )
+                }}
+
+
+              />
+
+            </View>
+          )
+        }}
+      />
+
+    </ScrollView>
   )
 }
 
