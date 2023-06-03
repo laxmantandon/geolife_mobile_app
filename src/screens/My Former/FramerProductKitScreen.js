@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Buttons from '../../components/Buttons'
 import SearchableDropDown from 'react-native-searchable-dropdown'
 import MYinputs from '../../components/MYinputs'
+import CameraPermission from '../../services/permissionservices'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 
 
 const ModalPoup = ({ visible, children }) => {
@@ -69,6 +71,7 @@ const FramerProductKitScreen = ({ navigation, props,
   const [selectedDelers, setselectedDelers] = useState()
   const [selectedFarmer, setselectedFarmer] = useState('')
   const [iscartloading, setiscartloading] = useState(false)
+  const [imageloading, setimageloading] = useState(false)
   const [delivery_date, setdelivery_date] = useState({ label: 'Expected Delivery Date', value: new Date(), type: 'date', key: 'expected_date' })
   // const [kit_type, setkit_type] = useState({ label: 'Product Kit Type', value: new Date(), type: 'select',value: '', options: ["Standard CNP", "Premium CNP"], key: 'kit_type' })
   
@@ -266,7 +269,7 @@ const [cnp_type, setcnp_type] = useState('')
     }
     AuthenicationService.searchdealerData(req)
       .then(x => {
-        // console.log(x.data)
+        // console.log("kjh sakfsj",x.data)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -375,6 +378,67 @@ const [cnp_type, setcnp_type] = useState('')
     // })
   }
 
+  const startCamera = () => {
+
+    CameraPermission()
+    let options = {
+      includeBase64: true,
+      mediaType: 'photo',
+      saveToPhotos: true,
+      quality: 0.3
+    };
+
+launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        // console.log('User cancelled image picker');
+      } else if (response.error) {
+        // console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        // console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        // const source = { uri: response.uri };
+        // // console.log('response', JSON.stringify(response.assets[0].base64));
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+        UploadRefrenceImage(basse64image)
+      }
+    });
+
+  }
+
+  const UploadRefrenceImage=(basse64image)=>{
+    setimageloading(true)
+    req={
+      'image':basse64image,
+      "doctype":''
+    }
+    AuthenicationService.uploadImage(req).then(r => {
+      console.log(r)
+      setimageloading(false)
+      if (r.status == true) {
+        setVisible(false)
+        navigation.goBack()
+        ToastAndroid.showWithGravityAndOffset(
+          'Payment Receipt Uploaded Done',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+      }else{
+        ToastAndroid.showWithGravityAndOffset(
+            'Oops! Something went please try again',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+
+      }
+
+    }).catch(e=>{
+      ToastAndroid.showWithGravityAndOffset(
+        'Oops! Something went please try again',
+        ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+      );
+    })
+
+  }
+
   return (
     <SafeAreaView style={mstyle.container1}>
       
@@ -382,9 +446,13 @@ const [cnp_type, setcnp_type] = useState('')
         <View style={{ alignItems: 'center' }}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => {
+if (payment_method.value == 'UPI'){
 
-              setVisible(false)
-              navigation.goBack()
+}else{
+  setVisible(false)
+  navigation.goBack()
+}
+              
             }}>
               <Icon name='close-circle-outline' style={{ color: 'red', fontWeight: 'bold' }} size={30} />
             </TouchableOpacity>
@@ -397,6 +465,15 @@ const [cnp_type, setcnp_type] = useState('')
               source={{ uri: selectedDelers.qr_code }}
               style={{ maxHeight: 350, minHeight: 250, width: '100%', }}
             />
+
+            <Pressable
+              onPress={() => startCamera()} style={{
+                alignSelf: 'center',  marginVertical: 10,
+                backgroundColor: 'white', borderRadius: 50
+              }} >
+              <Icon name='camera' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
+             <Text style={{color:'red'}}>Upload payment receipt</Text>
+            </Pressable>
             {/* <Image
           source={require('../../assets/images/check.png')}
           style={{height: 50, width: 50, marginVertical: 10}}

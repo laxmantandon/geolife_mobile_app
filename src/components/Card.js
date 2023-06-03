@@ -87,7 +87,7 @@ const Card = ({ item }) => {
               </Text>
               {data?.subtitle ? (<Text style={{
                 color: 'gray', fontSize: 13, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
-              }} numberOfLines={2}>{sub_title ? `*****${data.subtitle.substring(0, 5)}` : data.subtitle}</Text>) : ('')}
+              }} numberOfLines={2}>{sub_title ? `${data.subtitle}` : data.subtitle}</Text>) : ('')}
             </View>
           </View>
           {data?.status ?

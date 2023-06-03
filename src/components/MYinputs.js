@@ -71,6 +71,14 @@ const MYinputs = ({ item }) => {
     });
 
   }
+const [loading, setloading] = useState(false)
+
+
+const [givedans, setgivedans] = useState('')
+const [realans, setrealans] = useState(item.ans)
+
+
+
   return (
     <View >
       <View style={[mstyle.inputContainer1, {
@@ -78,14 +86,68 @@ const MYinputs = ({ item }) => {
 
       }]}>
         {item?.type === 'checkbox' ? (
-          <Pressable style={{ flex: 1, flexDirection: 'row' }}
-            onPress={() => { item?.value === true ? item.value = false : item.value = true }}
-          >
-            <Icon name={item?.value === true ? 'ios-checkmark-circle' : 'ios-checkmark-circle'}
-              size={22} style={{ paddingTop: 18, paddingLeft: 20, color: item?.value === true ? 'green' : 'silver' }} />
-            <Text style={mstyle.content}>{item.label}</Text>
+          <View>
+            <Text style={[mstyle.content,{fontWeight:'bold'}]}>{item.label}</Text>
+            <FlatList
+            data={item.options}
+            numColumns={2}
+            renderItem={({item, index})=>{
+              return(
+                <View style={{flex:1, paddingVertical:5}}>
+                  <Pressable style={{ flex: 1, flexDirection: 'row' }}
+                    onPress={() => {
+                      if (givedans){
 
-          </Pressable>
+                      }else{
+                        setgivedans(item)
+                        item.gived_ans=item
+                        item.value=item
+                        console.log(item)
+                        
+                      }
+                     
+                    }}
+                  >
+           
+              <View style={{ backgroundColor: Colors.LIGHT_GREEN, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} >
+                  {givedans?(
+                   <View>
+                    {
+                      givedans != item ?(<Icon name={realans===item ? 'ios-checkmark-circle' : 'ios-ellipse-outline'}
+                      size={20} style={{ padding: 8, color: givedans===realans ?(givedans===realans? 'green' : 'red'):'green' }} />
+                      ):(
+                         <Icon name={givedans===item ? 'ios-checkmark-circle' : 'ios-ellipse-outline'}
+                    size={20} style={{ padding: 8, color: givedans===item ?(givedans===realans? 'green' : 'red'):'gray' }} />
+
+                      )
+                    }
+                    
+                    </View>
+                  ):(
+                    <Icon name={ 'ios-ellipse-outline'}
+                    size={20} style={{ padding: 8, color:'gray' }} />
+                  )}
+              </View>
+              <View style={mstyle.detailContainer}>
+                <View style={[mstyle.titleContainer,{width:'90%'}]}>
+                  <Text style={[mstyle.listListTitle,{fontWeight:'600'}]} numberOfLines={4}>
+                    {item} {index}
+                  </Text>
+                  
+                </View>
+              </View>
+              
+            </Pressable>
+
+
+                  </View>
+              )
+
+            }}
+            
+            />
+         
+            </View>
         ) : (
           <View>
             <Text style={mstyle.content}>{item.label}</Text>

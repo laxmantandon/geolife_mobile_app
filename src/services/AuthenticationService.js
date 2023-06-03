@@ -403,6 +403,25 @@ const crop_alert = async req => {
   }
 };
 
+
+const farmer_meeting = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.farmer_meeting`,
+      req,{headers:gettoken()}
+    );
+    // console.log(Response)
+    return Response?.data.message
+  } catch (error) {
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
 const activity_list = async req => {
   try {
     
@@ -803,6 +822,19 @@ const get_stock = async req => {
   }
 };
 
+const uploadImage = async req => {
+  try {         
+        let Response = await AuthRequest.post(
+          `${base_url}.uploadImage`,req,{headers:gettoken()}
+          
+        );
+        return Response?.data.message
+  } catch (error) {
+    // console.log('API ERROR ', error.response.data);
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
 const get_users_Attendance = async req => {
   try {         
         let Response = await AuthRequest.get(
@@ -823,5 +855,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
-  searchdealerPaymentData, searchgeomitraData
+  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting
 };

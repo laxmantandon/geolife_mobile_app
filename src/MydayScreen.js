@@ -10,7 +10,11 @@ import { useEffect } from 'react';
 const MydayScreen = ({navigation}) => {
 
   const [data, setdata] = useState([
-    {title:'Activity', route:'Activity'},{title:'Expense', route:'Expense'},{title:'Customer', route:'Customer'},{title:'Day Plan', route:'Dayplan'}
+    {title:'Activities', route:'Activity'},
+    {title:'Expense', route:'Expense'},
+    {title:'Customer/ Dealer', route:'Customer'},
+    {title:'Day Plan', route:'Dayplan'},
+    {title:'Dealer Visit', route:'Activity'}
   ])
 
   useEffect(() => {

@@ -17,8 +17,9 @@ const MyFarmerScreen = ({navigation}) => {
         {title:'Crop Seminar', route:'CropSeminar',icon:'layers-outline',icon_color:'black'},
         {title:'Pravakta Kisan', route:'PravaktaScreen',icon:'person-outline',icon_color:'green'},
         {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item, icon:'list-outline',icon_color:'black'},
-        {title:'Advance Booking Product kit', route:'FarmerOrdersScreen',  value:item ,icon:'cart-outline',icon_color:'navy'},
+        {title:'BCNP Kit Booking', route:'FarmerOrdersScreen',  value:item ,icon:'cart-outline',icon_color:'navy'},
         {title:'Raise Crop Alert', route:'RaiseCropAlertScreen' ,icon:'alert-circle-outline',icon_color:'red'},
+        {title:'Farmer Meeting', route:'FarmerMeetingScreen' ,icon:'people-circle-outline',icon_color:'gray'},
       ])
 
       useEffect(() => {

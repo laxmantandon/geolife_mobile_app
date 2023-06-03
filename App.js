@@ -62,6 +62,7 @@ import FarmerOrdersScreen from './src/screens/My Former/FarmerOrdersScreen';
 import OrderDetailsScreen from './src/screens/My Former/OrderDetailsScreen';
 import DealerPaymentScreen from './src/screens/My Dealers/DealerPaymentScreen';
 import DealerProfileScreen from './src/screens/My Dealers/DealerProfileScreen';
+import FarmerMeetingScreen from './src/screens/My Former/FarmerMeetingScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -616,6 +617,7 @@ function App({ navigation }) {
               })}
               />
               <Stack.Screen name='DealerProfile' component={DealerProfileScreen} options={() => ({ headerTitle: "My profile" })} />
+              <Stack.Screen name='FarmerMeetingScreen' component={FarmerMeetingScreen} options={() => ({ headerTitle: "Farmer Meeting" })} />
               {/* My farmer screen */}
               <Stack.Screen name='Myfarmer' component={MyFarmerScreen} options={() => ({ headerTitle: "My Farmer" })} />
               <Stack.Screen name='AddFarmer' component={AddFarmerScreen} options={() => ({ headerTitle: "New Farmer" })} />

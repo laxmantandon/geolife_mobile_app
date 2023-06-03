@@ -6,10 +6,12 @@ import Buttons from './components/Buttons';
 import { AuthenicationService } from './services';
 import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Fonts } from './contants';
+import { Colors, Fonts } from './contants';
 import MultiSelect from 'react-native-checkbox-selection';
 import { TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
+import Share from 'react-native-share';
+
 
 
 
@@ -71,7 +73,7 @@ const QuizScreen = ({ navigation, props,
         count += 1
         reqw.push({
           "label": `${count}. ${e.qua}`, "title": e.qua, "key": e.name, "options": e.qua_options.split(/\s*,\s*/)
-          , value: '', type: 'select', "ans": e.ans
+          , value: '', type: 'checkbox', "ans": e.ans, "gived_ans":''
         })
         // console.log(reqw[0].options)
         // reqw.push(ree)
@@ -96,11 +98,13 @@ const QuizScreen = ({ navigation, props,
         if (e.ans == e.value) {
           points += 10/formdata.length
         }
-        // console.log(points)
+        console.log(e)
+         console.log(points)
       });
       req = {
         "points": points
       }
+      console.log(req,)
       setisLoading(true);
 
       AuthenicationService.submit_quiz(req).then(response => {
@@ -128,13 +132,30 @@ const QuizScreen = ({ navigation, props,
 
   getRefreshData =()=>{
     setTimeout(() => {
-      // console.log('refresshing')
+      console.log(formdata)
       setLoading(false)
       
     }, 1000);
   }
   const [visible, setvisible] = useState(false)
   const [formAns, setformAns] = useState([])
+
+  const share = () => {
+    let req = {}
+    // Linking.openURL(`whatsapp://send?text=${murl}%0A%0A${msg}%0A%0AImage%20Link%20:%20${mimage}`)
+    const options = {
+      title: "Watch This Video",
+      message: `Watch this awesome video https://www.youtube.com/watch?v=${item.youtube_video} `, // Note that according to the documentation at least one of "message" or "url" fields is required
+      url: item.youtube_video,
+    };
+    Share.open(options)
+      .then((res) => {
+
+      })
+      .catch((err) => {
+      });
+
+  }
 
   return (
     <View style={[mstyle.container, { paddingTop: 30 }]}>
@@ -171,7 +192,7 @@ const QuizScreen = ({ navigation, props,
        
         <TouchableOpacity onPress={() => {
               setvisible(false)
-              navigation.navigate('Home')
+              // navigation.navigate('Home')
             }}>
         <Buttons title="Go To Home" />
             </TouchableOpacity>
@@ -198,7 +219,7 @@ const QuizScreen = ({ navigation, props,
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <TouchableOpacity onPress={()=>{
+            <View onPress={()=>{
 
             }}>
               <MYinputs item={item} />
@@ -207,13 +228,23 @@ const QuizScreen = ({ navigation, props,
                   <Text>{item.ans}</Text>
                 </View>
               )} */}
-            </TouchableOpacity>
+            </View>
           )
         }} />
 
-      <Pressable onPress={() => { submit() }}>
+      <Pressable onPress={() => { submit() }} style={{paddingVertical:10}}>
         <Buttons title={'Submit'} loading={isLoading} />
       </Pressable>
+
+      <Pressable onPress={() => { share() }} style={{flexDirection:'row', paddingVertical:10,
+      backgroundColor:Colors.LIGHT_GREEN,
+      alignItems:'center',justifyContent:'center'
+      }}>
+        <Text style={{textAlign:'center'}}>
+      <Icon name='logo-whatsapp' style={{ color: 'green', fontWeight: 'bold',textAlign:'center' }} size={25} /> </Text>
+        <Text style={{ color: 'green', fontWeight: 'bold',textAlign:'center' }} >Share this video </Text>
+      </Pressable>
+
 
 
 

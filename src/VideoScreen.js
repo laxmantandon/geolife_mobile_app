@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, StyleSheet } from 'react-native'
+import { View, Text, Dimensions, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
 import { useRef } from 'react';
@@ -19,7 +19,7 @@ const VideoScreen = ({navigation,
     const [loading, setloading] = useState(true)
 
     useEffect(() => {
-      
+
     }, [])
     
 
@@ -48,29 +48,34 @@ const VideoScreen = ({navigation,
       },
       []);
   return (
-    <View pointerEvents="none" style={[styles.child, { backgroundColor: 'silver' , height:'100%'  }]}>
+    <View>
+      <View pointerEvents="none" style={[styles.child, { backgroundColor: 'silver' , height:'100%'  }]}>
            
-             <YoutubePlayer
-                ref={playerRef}
-                play={true}
-                videoId={item.youtube_video}
-                onChangeState={onStateChange}
-                height={SCREEN_HEIGHT}
-                initialPlayerParams={{'controls':false, 'rel':0}}
-                // video width -> screen height
-                // width={SCREEN_HEIGHT}
-                // prevent aspect ratio auto sizing
-                webViewProps={{
-                injectedJavaScript: `
-                    var element = document.getElementsByClassName('container')[0];
-                    element.style.position = 'unset';
-                    element.style.paddingBottom = 'unset';
-                    true;
-                `,
-                }}
-                  />
-          {/* <Text style={styles.text}>{item}</Text> */}
-        </View>
+           <YoutubePlayer
+              ref={playerRef}
+              play={true}
+              videoId={item.youtube_video}
+              onChangeState={onStateChange}
+              height={'80%'}
+              initialPlayerParams={{'controls':false, 'rel':0}}
+              // video width -> screen height
+              // width={SCREEN_HEIGHT}
+              // prevent aspect ratio auto sizing
+              webViewProps={{
+              injectedJavaScript: `
+                  var element = document.getElementsByClassName('container')[0];
+                  element.style.position = 'unset';
+                  element.style.paddingBottom = 'unset';
+                  true;
+              `,
+              }}
+                />
+        {/* <Text style={styles.text}>{item}</Text> */}
+      </View>
+      <Pressable style={{padding:10}} >
+        <Text>Whatsapp Share</Text>
+      </Pressable>
+    </View>
   )
 }
 
