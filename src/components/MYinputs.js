@@ -77,7 +77,12 @@ const [loading, setloading] = useState(false)
 const [givedans, setgivedans] = useState('')
 const [realans, setrealans] = useState(item.ans)
 
-
+const getData=(i)=>{
+  setgivedans(i)
+  item.gived_ans=i
+  item.value=i
+  console.log(item.gived_ans)
+}
 
   return (
     <View >
@@ -99,10 +104,7 @@ const [realans, setrealans] = useState(item.ans)
                       if (givedans){
 
                       }else{
-                        setgivedans(item)
-                        item.gived_ans=item
-                        item.value=item
-                        console.log(item)
+                       getData(item)
                         
                       }
                      

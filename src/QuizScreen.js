@@ -111,7 +111,8 @@ const QuizScreen = ({ navigation, props,
         setisLoading(false);
         // console.log(response)
         if (response?.status == true) {
-          setvisible(true)
+          // setvisible(true)
+          navigation.navigate('Home')
 
           ToastAndroid.showWithGravityAndOffset(
             response.message,
@@ -219,7 +220,8 @@ const QuizScreen = ({ navigation, props,
         data={formdata}
         renderItem={({ item, index }) => {
           return (
-            <View onPress={()=>{
+            <Pressable onPress={()=>{
+              console.log(item)
 
             }}>
               <MYinputs item={item} />
@@ -228,7 +230,7 @@ const QuizScreen = ({ navigation, props,
                   <Text>{item.ans}</Text>
                 </View>
               )} */}
-            </View>
+            </Pressable>
           )
         }} />
 

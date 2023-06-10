@@ -650,6 +650,23 @@ const checkoutProductKit = async req => {
   }
 };
 
+const checkoutPaymentUpdate = async req => {
+  try {
+    let Response = await AuthRequest.put(
+      `${base_url}.create_Advance_booking_order`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
 const update_stock = async req => {
   try {
     let Response = await AuthRequest.post(
@@ -855,5 +872,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
-  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting
+  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting,checkoutPaymentUpdate
 };

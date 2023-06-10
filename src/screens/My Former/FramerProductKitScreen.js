@@ -15,6 +15,7 @@ import SearchableDropDown from 'react-native-searchable-dropdown'
 import MYinputs from '../../components/MYinputs'
 import CameraPermission from '../../services/permissionservices'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import { ActivityIndicator } from 'react-native-paper'
 
 
 const ModalPoup = ({ visible, children }) => {
@@ -335,8 +336,11 @@ const [cnp_type, setcnp_type] = useState('')
     }
 
   }
+const [booking_id, setbooking_id] = useState('')
 
   const SubmitOrder = () => {
+  if(imageloading == false){
+    setimageloading(true)
     let req = {
       cart: selectedProducts,
       // crop: selectedCrops.name,
@@ -356,9 +360,12 @@ const [cnp_type, setcnp_type] = useState('')
     AuthenicationService.checkoutProductKit(req).then(r => {
       console.log(r)
       setiscartloading(false)
+      setimageloading(false)
+
       if (r.status == true) {
         setselectedProducts([])
         // item.cart = []
+        setbooking_id(r.name)
         ToastAndroid.showWithGravityAndOffset(
           r?.message,
           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -376,6 +383,7 @@ const [cnp_type, setcnp_type] = useState('')
     //     'Network Error No Internet',
     //     ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
     // })
+  }
   }
 
   const startCamera = () => {
@@ -407,12 +415,17 @@ launchImageLibrary(options, (response) => {
   }
 
   const UploadRefrenceImage=(basse64image)=>{
-    setimageloading(true)
+    if(imageloading==false){
+      setimageloading(true)
     req={
       'image':basse64image,
-      "doctype":''
+      "ref_number":booking_id,
+      farmer: selectedFarmer.id,
+      dealer_mobile: selectedDelers.id,
+      amount: amount,
+      payment_method: payment_method.value
     }
-    AuthenicationService.uploadImage(req).then(r => {
+    AuthenicationService.checkoutPaymentUpdate(req).then(r => {
       console.log(r)
       setimageloading(false)
       if (r.status == true) {
@@ -436,11 +449,22 @@ launchImageLibrary(options, (response) => {
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
       );
     })
+    }
 
   }
 
   return (
     <SafeAreaView style={mstyle.container1}>
+
+      <ModalPoup visible={imageloading}>
+        <View style={{ alignItems: 'center' }}>
+          <View style={[styles.header,{ flexDirection:'row'}]}>
+           <Text style={{fontSize:22, color:'black'}}> Loading </Text> 
+           <ActivityIndicator/>
+
+            </View>
+            </View>
+      </ModalPoup>
       
       <ModalPoup visible={visible}>
         <View style={{ alignItems: 'center' }}>

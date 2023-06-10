@@ -26,19 +26,8 @@ const MyDealersScreen = ({ navigation }) => {
   const [loggedIn, setloggedIn] = React.useState(false)
   const [user, setuser] = React.useState([])
   const [qrcode, setqrcode] = useState('')
-  if (loggedIn == false) {
-    AsyncStorage.getItem("user_info").then((value) => {
-      setloggedIn(true)
-      const usrd = JSON.parse(value)
-      console.log(usrd.dealer_data.qr_code)
-      if (usrd) {
-        setuser(usrd)
-        setqrcode(usrd.dealer_data?.qr_code)
-      } else {
-        navigation.navigate('Login')
-      }
-    })
-  }
+  
+  
 
 
 
@@ -87,6 +76,20 @@ const MyDealersScreen = ({ navigation }) => {
     ]);
   }
 
+  const LogoutDealer = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to logout this account?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      { text: 'Logout', onPress: () => {
+        AsyncStorage.clear()
+        navigation.navigate('Login')
+      } },
+    ]);
+  }
+
   useEffect(() => {
     getGeomitraData()
     navigation.getState().routes[0].name
@@ -94,6 +97,19 @@ const MyDealersScreen = ({ navigation }) => {
       backButtonPressd()
       return true;
     };
+
+
+    AsyncStorage.getItem("user_info").then((value) => {
+      setloggedIn(true)
+      const usrd = JSON.parse(value)
+      console.log(usrd["dealer_data"][0].qr_code)
+      if (usrd) {
+        setuser(usrd)
+        setqrcode(usrd["dealer_data"][0].qr_code)
+      } else {
+        navigation.navigate('Login')
+      }
+    })
 
 
     const backHandler = BackHandler.addEventListener(
@@ -109,14 +125,14 @@ const MyDealersScreen = ({ navigation }) => {
     AuthenicationService.searchgeomitraData(req)
       .then(x => {
         setIsLoadingData(false)
-        // console.log(x)
+        console.log(x)
         if (x.status == true) {
           let mapped_array = []
           let total_amount = 0
           let geo_mitra = []
           x.data.forEach(a => {
             total_amount = total_amount + a.geo_mitra_cash
-            console.log(total_amount)
+            // console.log(total_amount)
             geo_mitra.push(a.geo_mitra_name)
             mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
           })
@@ -138,7 +154,7 @@ const MyDealersScreen = ({ navigation }) => {
 
       <View style={{}}>
         <View style={[mstyle.detailContainer, { backgroundColor: Colors.LIGHT_GREEN, paddingHorizontal: 15, paddingVertical: 25, borderRadius: 10 }]}>
-          <Pressable onPress={()=>{navigation.navigate("DealerProfile")}} style={[mstyle.titleContainer, { width: '85%' }]}>
+          <Pressable onPress={() => { navigation.navigate("DealerProfile") }} style={[mstyle.titleContainer, { width: '85%' }]}>
             <Text style={mstyle.listListTitle} numberOfLines={1}>
               {user.first_name} {user.last_name}
             </Text>
@@ -153,11 +169,11 @@ const MyDealersScreen = ({ navigation }) => {
           </Pressable>
           <View style={{ width: '15%' }}>
             <Pressable title='Check Out' onPress={() => {
-              AsyncStorage.clear()
-              navigation.navigate('Login')
+             LogoutDealer()
             }} >
 
               <Icon name='power' size={25}
+
                 style={{
                   textAlign: 'center', color: 'red', backgroundColor: Colors.LIGHT_RED,
                   paddingHorizontal: 10, paddingVertical: 10, borderRadius: 50
@@ -171,20 +187,69 @@ const MyDealersScreen = ({ navigation }) => {
 
 
         </View>
-        {qrcode == '' ? ('') : (
-          <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
-            <Pressable
-              onPress={() => startCamera()} style={{
-                alignSelf: 'center', flexDirection: 'row', width: 40, height: 40, marginVertical: 10,
-                backgroundColor: 'white', borderRadius: 50
-              }} >
-              <Icon name='camera' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
-              {/* <Image style={{ width: 50, height: 50 }}
-      source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
-    /> */}
-            </Pressable>
+        {qrcode  ? (
+          <View>
+          <Image style={{
+            alignSelf: 'center', borderRadius: 5,
+            width: '100%',
+            height: 350,
+            marginTop: 1,
+            backgroundColor: 'silver'
+          }} source={{ uri: `https://crop.erpgeolife.com${qrcode}` }} />
 
+          </View>
+        ) : (
+          <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
+            {/* <Image source={require('../../assets/images/qrscan.gif')} style={{width:'100%',height:250}}/> */}
             {
+              captureimage ? (
+                <View>
+                  <Image style={{
+                    alignSelf: 'center', borderRadius: 5,
+                    width: '100%',
+                    height: 300,
+                    marginTop: 1,
+                    backgroundColor: 'silver'
+                  }} source={{ uri: captureimage }} />
+                  <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                    <Pressable style={{ flexDirection: 'row', padding: 10, backgroundColor: 'red', 
+                    borderRadius: 10, marginTop: 10, marginHorizontal: 5 }}
+
+                    onPress={()=>{
+                      setcaptureimage('')
+                    }}
+                    
+                    >
+                      <Icon name='trash-outline' size={18} style={{ color: 'white' }} />
+                      <Text style={{ color: 'white', textAlign: 'center' }}>Remove Image</Text>
+                    </Pressable>
+                    <Pressable style={{ flexDirection: 'row', padding: 10, backgroundColor: 'green', borderRadius: 10, marginTop: 10, marginHorizontal: 5 }}>
+                      <Icon name='cloud-upload-outline' size={18} style={{ color: 'white', paddingRight: 5 }} />
+
+                      <Text style={{ color: 'white', textAlign: 'center' }}>Upload Image</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              ) : (
+
+                <View>
+                  <Image source={require('../../assets/images/qrscan.gif')} style={{ width: '100%', height: 250, borderRadius: 10 }} />
+                  <Pressable
+                    onPress={() => startCamera()} style={{
+                      alignSelf: 'center', flexDirection: 'row', width: 40, height: 40, marginVertical: 10,
+                      backgroundColor: 'white', borderRadius: 50
+                    }} >
+                    <Icon name='camera' size={30} style={{
+                      alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN,
+                      color: 'green', borderRadius: 50, padding: 5
+                    }} />
+                  </Pressable>
+                </View>
+
+              )
+            }
+
+            {/* {
               captureimage ? (
                 <View>
                   <Image style={{
@@ -200,9 +265,9 @@ const MyDealersScreen = ({ navigation }) => {
                   </Pressable>
                 </View>
               ) : ('')
-            }
-            <View>
-              <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
+            } */}
+            <View style={{paddingVertical:5}}>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
                 Please upload your UPI QR CODE</Text>
               <Text style={{ fontSize: 14, color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
                 For Receive Online Payment We Need Your UPI QRCode</Text>
@@ -224,12 +289,12 @@ const MyDealersScreen = ({ navigation }) => {
           getGeomitraData()
         }}
         numColumns={2}
-        style={{ flex: 1, marginTop: 5 }}
+        style={{ flex: 1, marginTop: 5, marginBottom: 50 }}
         data={data}
         contentContainerStyle={{ flex: 1 }}
         renderItem={(item) => {
           return (
-            <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route), {"item":geoMitradata} }}>
+            <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route), { "item": geoMitradata } }}>
               <View
                 style={mstyle.ListContainer} >
 

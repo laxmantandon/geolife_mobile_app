@@ -20,7 +20,7 @@ const PravaktaScreen = ({ navigation }) => {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "subtitle": a.mobile_number })
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`,  "second_subtitle": `TFT app:${a.app_installed?a.app_installed:'Installed'}, Crop added : ${a.crop_added?'Yes':'No'} `, "subtitle": a.mobile_number })
           })
           setdata(mapped_array)
         } else {

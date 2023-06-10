@@ -35,7 +35,7 @@ const FreeSampleBeneficiariesScreen = ({ navigation, route: {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name, "subtitle": a.mobile_number, "free_sample": a.free_sample, "status": a.free_sample ? a.free_sample : 'Add Sample' })
+            mapped_array.push({ "title": `${a.first_name} ${a.last_name}`, "name": a.free_sample_name,  "second_subtitle": `TFT app:${a.app_installed?a.app_installed:'Installed'}, Crop added : ${a.crop_added?'Yes':'No'} `, "subtitle": a.mobile_number, "free_sample": a.free_sample, "status": a.free_sample ? a.free_sample : 'Add Sample' })
           })
           setdata(mapped_array)
         } else {

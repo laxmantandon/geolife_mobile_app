@@ -10,16 +10,16 @@ const MyFarmerScreen = ({navigation}) => {
   }
     const [data, setdata] = useState([
         {title:'My Farmer List', route:'Myfarmerlist',icon:'people-outline',icon_color:'black'},
-        {title:'Door to Door Visit for App Download ', route:'DoortoDoor',icon:'logo-google-playstore',icon_color:'skyblue'},
-        {title:'Sticker Pasting', route:'StickerPastingScreen',icon:'clipboard-outline',icon_color:'black'},
+        // {title:'Sticker Pasting', route:'StickerPastingScreen',icon:'clipboard-outline',icon_color:'black'},
         {title:'WhatsApp to Farmer', route:'WhatsappFarmerScreen',icon:'logo-whatsapp',icon_color:'green'},
-        // {title:'Call to Farmer', route:'CallFarmerScreen'},
-        {title:'Crop Seminar', route:'CropSeminar',icon:'layers-outline',icon_color:'black'},
-        {title:'Pravakta Kisan', route:'PravaktaScreen',icon:'person-outline',icon_color:'green'},
-        {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item, icon:'list-outline',icon_color:'black'},
-        {title:'BCNP Kit Booking', route:'FarmerOrdersScreen',  value:item ,icon:'cart-outline',icon_color:'navy'},
-        {title:'Raise Crop Alert', route:'RaiseCropAlertScreen' ,icon:'alert-circle-outline',icon_color:'red'},
+        {title:'Door to Door Visit for App Download ', route:'DoortoDoor',icon:'logo-google-playstore',icon_color:'skyblue'},
         {title:'Farmer Meeting', route:'FarmerMeetingScreen' ,icon:'people-circle-outline',icon_color:'gray'},
+        // {title:'Call to Farmer', route:'CallFarmerScreen'},
+        // {title:'Crop Seminar', route:'CropSeminar',icon:'layers-outline',icon_color:'black'},
+        {title:'Pravakta Kisan', route:'PravaktaScreen',icon:'person-outline',icon_color:'green'},
+        {title:'Raise Crop Alert', route:'RaiseCropAlertScreen' ,icon:'alert-circle-outline',icon_color:'red'},
+        {title:'BCNP Kit Booking', route:'FarmerOrdersScreen',  value:item ,icon:'cart-outline',icon_color:'navy'},
+        {title:'Free Sample Distribution List', route:'FreeSampleBeneficiaries',  value:item, icon:'list-outline',icon_color:'black'},
       ])
 
       useEffect(() => {
