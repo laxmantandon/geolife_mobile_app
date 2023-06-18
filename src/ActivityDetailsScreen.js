@@ -24,16 +24,31 @@ const ActivityDetailsScreen = ({ navigation, props,
   ])
   const [isLoading, setisLoading] = useState(false)
   if (item) {
-    // console.log(item)
-
-    for (let i in formdata) {
-      for (let n in item.item) {
-        // console.log('item value', item.item[n])
-        if (formdata[i].key === n) {
-          formdata[i].value = item.item[n]
-        }
+    console.log(item)
+    AuthenicationService.activity_for(req).then(res => {
+      console.log(res.data)
+      if (res?.status == true) {
+        mapped_array = []
+        res.data.forEach(a => {
+          mapped_array.push({"json": `${a.json}` })
+        })
+        setformdata(JSON.parse(mapped_array))
+      } else {
       }
-    }
+    })
+
+    // for (let i in formdata) {
+    //   for (let n in item.item) {
+    //     // console.log('item value', item.item[n])
+    //     if (formdata[i].key === n) {
+    //       formdata[i].value = item.item[n]
+    //     }
+    //   }
+    // }
+
+
+
+
   }
 
   if (activity_type.length===0){

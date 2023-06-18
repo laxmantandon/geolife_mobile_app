@@ -13,6 +13,8 @@ import { StatusBar } from 'react-native';
 import  MydealersScreen from './../src/screens/My Dealers/DealerPaymentScreen'
 // import { PermissionsAndroid } from 'react-native';
 // import CallLogs from 'react-native-call-log';
+import Geolocation from '@react-native-community/geolocation';
+
 
 const StartSession = ({props, navigation }) => {
   SplashScreen.hide();
@@ -83,6 +85,12 @@ const StartSession = ({props, navigation }) => {
         image: '',
         notes: ''
       }
+
+      Geolocation.getCurrentPosition(info =>{
+        // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+          req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
+          "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
+      })
 
       AuthenicationService.create_activity(req).then(r => {
         // console.log(r)
@@ -196,6 +204,12 @@ const StartSession = ({props, navigation }) => {
         notes: '',
         calllogs:call_logs
       }
+      
+      Geolocation.getCurrentPosition(info =>{
+        // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+          req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
+          "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
+      })
       // console.log(req)
       AuthenicationService.create_activity(req).then(r => {
         // console.log(r)

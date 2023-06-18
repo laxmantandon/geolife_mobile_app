@@ -424,9 +424,46 @@ const farmer_meeting = async req => {
 
 const activity_list = async req => {
   try {
-    
     let Response = await AuthRequest.get(
       `${base_url}.activity_list`,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+
+  }
+};
+
+
+const dayplan_list = async req => {
+  try {
+    let Response = await AuthRequest.get(
+      `${base_url}.dayplan_list`,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+
+  }
+};
+
+const activity_for = async req => {
+  try {
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.activity_for`,{headers:gettoken()}
       
     );
     return Response?.data.message
@@ -802,7 +839,7 @@ const get_users_task = async req => {
         );
         return Response?.data.message
   } catch (error) {
-    // console.log('API ERROR ', error.response.data);
+    console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -872,5 +909,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
-  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting,checkoutPaymentUpdate
+  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting,checkoutPaymentUpdate,activity_for,dayplan_list
 };

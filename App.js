@@ -64,6 +64,7 @@ import DealerPaymentScreen from './src/screens/My Dealers/DealerPaymentScreen';
 import DealerProfileScreen from './src/screens/My Dealers/DealerProfileScreen';
 import FarmerMeetingScreen from './src/screens/My Former/FarmerMeetingScreen';
 import CropProjectScreen from './src/screens/My Former/CropProjectScreen';
+import ActivityDealerDetailsScreen from './src/ActivityDealerDetailsScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -137,13 +138,13 @@ function HomeScreen({ navigation }) {
 
   const [dashboarddata, setdashboarddata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    { subtitle: "In A Month", value: "15/30", title: 'Present Days', route: 'Myday', icon: 'ios-sunny-outline', color: '#90EE90' },
-    { subtitle: "Total Done", value: "12", title: 'BCNP Kit Booking', route: 'Myfarmer', icon: 'ios-person-outline', color: 'skyblue' },
-    { subtitle: "In 15 Days", value: "03/25", title: 'Dealer Not Visit', route: 'CropSeminar', icon: 'ios-list', color: Colors.LIGHT_GREEN },
-    { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads', route: 'CropSeminar', icon: 'ios-list', color: Colors.LIGHT_RED },
-    { subtitle: "My former list", value: "450", title: 'Farmer Connected', route: 'CropSeminar', icon: 'ios-list', color: '#B0E0E6' },
-    { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed', route: 'CropSeminar', icon: 'ios-list', color: Colors.LIGHT_GREY },
-    { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ', route: 'CropSeminar', icon: 'ios-list', color: Colors.LIGHT_YELLOW },
+    { subtitle: "In A Month", value: "15/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' },
+    { subtitle: "Total Done", value: "12", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' },
+    { subtitle: "In 15 Days", value: "03/25", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN },
+    { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED },
+    { subtitle: "My former list", value: "450", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' },
+    { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY },
+    { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW },
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
   const [attendance, setattendance] = useState([])
@@ -228,8 +229,7 @@ function HomeScreen({ navigation }) {
   getTask = async () => {
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      // // console.log('RRRRR', r)
-      setloading(false)
+      console.log('RRRRR', r)
 
       let my_tasks = []
       if (r.status == true) {
@@ -237,35 +237,51 @@ function HomeScreen({ navigation }) {
           my_tasks.push({ 'subtitle': d.priority, 'title': d.description, 'icon': 'chevron-forward-outline', 'icon_color': d.status == 'Open' ? Colors.DEFAULT_RED : Colors.SECONDARY_GREEN })
         })
         settask(my_tasks)
+        let dashboarddata1 = dashboarddata
+        dashboarddata1[2].value = r.dashboard?.dealer_not_visit?r.dashboard?.dealer_not_visit:'0'
+        dashboarddata1[1].value = r.dashboard?.kit_booking?r.dashboard?.kit_booking:'0'
+        dashboarddata1[0].value = r.dashboard?.present_days?r.dashboard?.present_days:'0'
+        dashboarddata1[3].value = r.dashboard?.tft_downloads?r.dashboard?.tft_downloads:'0'
+        dashboarddata1[4].value = r.dashboard?.farmer_connected?r.dashboard?.farmer_connected:'0'
+        dashboarddata1[5].value = r.dashboard?.new_dealer?r.dashboard?.new_dealer:'0'
+        dashboarddata1[6].value = r.dashboard?.target_achievement?r.dashboard?.target_achievement:'0'
+        setdashboarddata(dashboarddata1)
+        setloading(false)
+        console.log(r.dashboard?.dealer_not_visit)
+
       } else {
+        setloading(false)
 
       }
     }).catch(e => {
       // // console.log(e);
+      setloading(false)
+
     })
 
   }
 
-  const chart_data = [{ value: 4.50, label: 'Sun', frontColor: 'green' },
-  { value: 8.0, label: 'Mon', },
-  { value: 9.0, label: 'Tue', },
-  { value: 7.0, label: 'Wed', },
-  { value: 8.0, label: 'Thu', },
-  { value: 9.0, label: 'Fri', },
-  { value: 7.0, label: 'Sat', },
-  { value: 8.0, label: 'Mon', },
-  { value: 9.0, label: 'Tue', },
-  { value: 7.0, label: 'Wed', },
-  { value: 8.0, label: 'Thu', },
-  { value: 9.0, label: 'Fri', },
-  { value: 7.0, label: 'Sat', }
+  const chart_data = [
+  //   { value: 4.50, label: 'Sun', frontColor: 'green' },
+  // { value: 8.0, label: 'Mon', },
+  // { value: 9.0, label: 'Tue', },
+  // { value: 7.0, label: 'Wed', },
+  // { value: 8.0, label: 'Thu', },
+  // { value: 9.0, label: 'Fri', },
+  // { value: 7.0, label: 'Sat', },
+  // { value: 8.0, label: 'Mon', },
+  // { value: 9.0, label: 'Tue', },
+  // { value: 7.0, label: 'Wed', },
+  // { value: 8.0, label: 'Thu', },
+  // { value: 9.0, label: 'Fri', },
+  // { value: 7.0, label: 'Sat', }
   ]
 
 
   getAttendance = async () => {
     setloading(true)
     AuthenicationService.get_users_Attendance(null).then(r => {
-      // console.log('RRRRR', r)
+      console.log('RRRRR', r)
       setloading(false)
       if (r.status == true) {
         setattendance(r.data)
@@ -360,69 +376,79 @@ function HomeScreen({ navigation }) {
             </View>
           </View>
 
-          <View style={{ marginHorizontal: 4 }}>
-
-            <FlatList
-              data={dashboarddata}
-              numColumns={4}
-              renderItem={(item) => {
-                return (
-                  <Pressable style={{ flex: 1, }} onPress={() => {  }}>
-                  
-                    <View style={{flex: 1,
-                      backgroundColor: item.item.color,
-                      // borderColor: 'black',
-                      // borderWidth: .3,
-                      // borderBottomColor: Colors.SECONDARY_WHITE,
-                      // borderBottomWidth: 1,
-                      paddingLeft: 7,
-                      paddingVertical: 7,
-                      borderRadius: 10,
-                      marginHorizontal: 4,
-                      marginVertical: 5,
-                      elevation: 8
-                    }} >
-                      <View>
-                        <Text style={{ fontSize: 15, textAlign: 'center',color:'black',fontWeight:'bold' }}>
-                          {item.item?.value}
-                        </Text>
-                      </View>
-
-                      <View style={{ }} >
-                        {/* <Icon name={item.item.icon} size={22} style={{ paddingTop: 5,  color: 'black',bottom:1,alignSelf:'center'}} /> */}
-                        <View style={[mstyle.detailContainer,{marginHorizontal:1}]}>
-                          
-                          <View style={mstyle.titleContainer}>
-                            <Text style={{
-                              flex: 1, fontSize: 12, color: 'black',
-                              fontFamily: Fonts.POPPINS_MEDIUM,
-                              fontWeight: 'bold',textAlign:'center'
-                            }} numberOfLines={2}>
-                              {item.item.title}
-                            </Text>
-                            {/* {item.item?.subtitle ? (
-                              <Text style={[mstyle.listListTitle, { flex: 1, fontSize: 12, color: 'gray', }]} numberOfLines={2}>
-                                {item.item?.subtitle}
-                              </Text>
-                            ) : ('')
-                            } */}
-
-
-                          </View>
-
-                        </View>
-                      </View>
-                    </View>
-                  </Pressable>
-                )
-              }}
-            />
-
-          </View>
+        
 
           <FlatList
+            refreshing={loading}
+            onRefresh={() => { getTask() }}
             data={data}
             numColumns={2}
+
+            ListHeaderComponent={()=>{
+              return(
+
+                <View style={{ marginHorizontal: 4 }}>
+
+                <FlatList
+                  data={dashboarddata}
+                  numColumns={4}
+                  renderItem={(item) => {
+                    return (
+                      <Pressable style={{ flex: 1, }} onPress={() => {  }}>
+                      
+                        <View style={{flex: 1,
+                          backgroundColor: item.item.color,
+                          // borderColor: 'black',
+                          // borderWidth: .3,
+                          // borderBottomColor: Colors.SECONDARY_WHITE,
+                          // borderBottomWidth: 1,
+                          paddingLeft: 7,
+                          paddingVertical: 7,
+                          borderRadius: 10,
+                          marginHorizontal: 4,
+                          marginVertical: 5,
+                          elevation: 8
+                        }} >
+                          <View>
+                            <Text style={{ fontSize: 15, textAlign: 'center',color:'black',fontWeight:'bold' }}>
+                              {item.item?.value}
+                            </Text>
+                          </View>
+    
+                          <View style={{ }} >
+                            {/* <Icon name={item.item.icon} size={22} style={{ paddingTop: 5,  color: 'black',bottom:1,alignSelf:'center'}} /> */}
+                            <View style={[mstyle.detailContainer,{marginHorizontal:1}]}>
+                              
+                              {/* <View style={[mstyle.titleContainer,{borderColor:'black', borderWidth:1}]}> */}
+                                <Text style={{
+                                  flex: 1, fontSize: 12, color: 'black',
+                                  fontFamily: Fonts.POPPINS_MEDIUM,
+                                  fontWeight: 'bold',textAlign:'center'
+                                }} numberOfLines={2}>
+                                  {item.item.title}
+                                </Text>
+                                {/* </View> */}
+                                {/* {item.item?.subtitle ? (
+                                  <Text style={[mstyle.listListTitle, { flex: 1, fontSize: 12, color: 'gray', }]} numberOfLines={2}>
+                                    {item.item?.subtitle}
+                                  </Text>
+                                ) : ('')
+                                } */}
+    
+    
+    
+                            </View>
+                          </View>
+                        </View>
+                      </Pressable>
+                    )
+                  }}
+                />
+    
+              </View>
+                
+              )
+            }}
             renderItem={(item) => {
               return (
                 <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route) }}>
@@ -443,8 +469,68 @@ function HomeScreen({ navigation }) {
               )
             }}
 
-            // ListFooterComponent={() => {
-            //   return (
+            ListFooterComponent={() => {
+              return (
+                <View>
+                  <View style={mstyle.ListContainer}>
+            <BarChart data={attendance}
+              frontColor="#177AD5"
+              barBorderRadius={4}
+              barWidth={22}
+              noOfSections={5}
+              yAxisThickness={0}
+              xAxisThickness={0}
+              labelWidth={18}
+              labelsExtraHeight={15}
+              spacing={20}
+            />
+
+          </View>
+
+                <View style={{ backgroundColor: 'white', borderRadius: 4, margin: 8, elevation: 5, paddingBottom: 10 }} >
+                <Text style={mstyle.title}>Current Task</Text>
+                <FlatList
+                  data={task}
+                  renderItem={(item) => {
+                    return (
+                      <Pressable style={{ flex: 1, flexDirection: 'row' }}
+                        // onPress={() => { getTask() }}
+                      >
+                        {/* <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} /> */}
+                        <Card item={item} />
+                      </Pressable>
+      
+                    )
+                  }}
+                  ListEmptyComponent={(item) => {
+                    return (
+                      <View style={{ flex: 1, alignSelf: 'center', paddingTop: 50 }}
+                      //  onPress={() => { navigation.navigate(item.route) }}
+                      >
+      
+                        <Text style={{ color: 'gray', fontSize: 14, textAlign: 'center' }}>No Data In List Please Refresh</Text>
+                        <Pressable onPress={() => { getTask() }} >
+                          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+      
+                            <Text style={{
+                              color: Colors.DEFAULT_GREEN, backgroundColor: Colors.LIGHT_GREEN,
+                              paddingHorizontal: 20, paddingVertical: 6, fontSize: 16,
+                              borderRadius: 7, fontWeight: '500'
+                            }}>
+                              <Icon name='refresh-circle-outline' size={18}
+                                style={{ paddingTop: 18, paddingHorizontal: 10 }} />
+                              Refresh</Text>
+      
+                          </View>
+      
+                        </Pressable>
+                      </View>
+      
+                    )
+                  }} />
+              </View>
+
+              </View>
             //     <View style={{ backgroundColor: 'white', borderRadius: 4, margin: 8, elevation: 5, paddingBottom: 10 }} >
             //       <Text style={mstyle.title}>Current Task</Text>
             //       <FlatList
@@ -490,73 +576,17 @@ function HomeScreen({ navigation }) {
             //         }} />
             //     </View>
 
-            //   )
-            // }}
+              )
+            }}
           />
 
 
           
-<View style={mstyle.ListContainer}>
-            <BarChart data={attendance}
-              frontColor="#177AD5"
-              barBorderRadius={4}
-              barWidth={22}
-              noOfSections={5}
-              yAxisThickness={0}
-              xAxisThickness={0}
-              labelWidth={18}
-              labelsExtraHeight={15}
-              spacing={20}
-            />
-
-          </View>
+          
         </View>
 
 
-        <View style={{ backgroundColor: 'white', borderRadius: 4, margin: 8, elevation: 5, paddingBottom: 10 }} >
-                  <Text style={mstyle.title}>Current Task</Text>
-                  <FlatList
-                    refreshing={loading}
-                    onRefresh={() => { getTask() }}
-                    data={task}
-                    renderItem={(item) => {
-                      return (
-                        <Pressable style={{ flex: 1, flexDirection: 'row' }}
-                        //  onPress={() => { navigation.navigate(item.route) }}
-                        >
-                          {/* <Icon name='chevron-forward-outline' size={22} style={{ paddingTop: 18, paddingLeft: 10 }} /> */}
-                          <Card item={item} />
-                        </Pressable>
-
-                      )
-                    }}
-                    ListEmptyComponent={(item) => {
-                      return (
-                        <View style={{ flex: 1, alignSelf: 'center', paddingTop: 50 }}
-                        //  onPress={() => { navigation.navigate(item.route) }}
-                        >
-
-                          <Text style={{ color: 'gray', fontSize: 14, textAlign: 'center' }}>No Data In List Please Refresh</Text>
-                          <Pressable onPress={() => { getTask() }} >
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-
-                              <Text style={{
-                                color: Colors.DEFAULT_GREEN, backgroundColor: Colors.LIGHT_GREEN,
-                                paddingHorizontal: 20, paddingVertical: 6, fontSize: 16,
-                                borderRadius: 7, fontWeight: '500'
-                              }}>
-                                <Icon name='refresh-circle-outline' size={18}
-                                  style={{ paddingTop: 18, paddingHorizontal: 10 }} />
-                                Refresh</Text>
-
-                            </View>
-
-                          </Pressable>
-                        </View>
-
-                      )
-                    }} />
-                </View>
+     
 
 
 
@@ -804,6 +834,7 @@ function App({ navigation }) {
               <Stack.Screen name="Myday" component={MydayScreen} options={() => ({ headerTitle: "My Self" })} />
               <Stack.Screen name="Activity" component={ActivityScreen} options={() => ({ headerTitle: "Activity" })} />
               <Stack.Screen name="ActivityDetails" component={ActivityDetailsScreen} options={() => ({ headerTitle: "Add Activity" })} />
+              <Stack.Screen name="ActivityDealerDetails" component={ActivityDealerDetailsScreen} options={() => ({ headerTitle: "Add Activity" })} />
               <Stack.Screen name="Expense" component={ExpenseScreen} options={() => ({ headerTitle: "Expenses" })} />
               <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({ headerTitle: "Add Expenses" })} />
               <Stack.Screen name="Customer" component={CustomerScreen} options={() => ({ headerTitle: "Customer" })} />

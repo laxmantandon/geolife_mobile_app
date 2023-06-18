@@ -26,17 +26,17 @@ const DayplanDetailsScreen = ({ navigation, props,
     let req = submitReqData(formdata);
     setisLoading(true);
 
-    if (req.activity_type=='' || req.activity_type==null){
-      Alert.alert('Please Select Activity type ')
-      setisLoading(false);
-      return
-    }
+    // if (req.activity_type=='' || req.activity_type==null){
+    //   Alert.alert('Please Select Activity type ')
+    //   setisLoading(false);
+    //   return
+    // }
 
-    if (req.activity_name=='' || req.activity_name==null){
-      setisLoading(false);
-      Alert.alert('Please Enter Activity Name')
-      return
-    }
+    // if (req.activity_name=='' || req.activity_name==null){
+    //   setisLoading(false);
+    //   Alert.alert('Please Enter Activity Name')
+    //   return
+    // }
 
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);

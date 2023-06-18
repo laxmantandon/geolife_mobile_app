@@ -14,7 +14,7 @@ const MydayScreen = ({navigation}) => {
     {title:'Expense', route:'Expense'},
     {title:'Customer/ Dealer', route:'Customer'},
     {title:'Day Plan', route:'Dayplan'},
-    {title:'Dealer Visit', route:'Activity'}
+    {title:'Dealer Visit', route:'ActivityDealerDetails'}
   ])
 
   useEffect(() => {

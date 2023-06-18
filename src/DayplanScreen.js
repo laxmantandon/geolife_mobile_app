@@ -19,7 +19,7 @@ const DayplanScreen = ({navigation}) => {
   const getData = ()=>{
     req=null
     setloading(true)
-    AuthenicationService.activity_list(req).then(response => {
+    AuthenicationService.dayplan_list(req).then(response => {
       // console.log(response)
       setloading(false)
       if (response?.status== true) {
