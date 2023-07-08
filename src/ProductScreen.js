@@ -18,6 +18,7 @@ const ProductScreen = ({ navigation, props,
   const [data, setdata] = useState([])
   const [serachingData, setserachingData] = useState(true)
   const [selectedProducts, setselectedProducts] = useState([])
+  const [searchable, setsearchable] = useState(true)
 
   const searchFilterFunction = (text) => {
     setserachingData(true)
@@ -38,7 +39,10 @@ const ProductScreen = ({ navigation, props,
         }
       })
   }
+  
   const addProductTocart = (product) => {
+    setserachingData(true)
+    setsearchable(false)
     let added = false;
     let cart = selectedProducts
     for (let p of cart) {
@@ -51,6 +55,8 @@ const ProductScreen = ({ navigation, props,
     }
     if (!added) {
       product.quantity = 1;
+      product.percent = 1;
+      
       ToastAndroid.showWithGravityAndOffset(
         'Product Added',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -58,26 +64,48 @@ const ProductScreen = ({ navigation, props,
       cart.push(product);
       setselectedProducts(cart)
     }
+    setsearchable(true)
+setTimeout(() => {
+  setserachingData(false)
+console.log(cart)
+}, 500);
+
 
     // console.log(selectedProducts)
   }
 
   const removeProductTocart = (product) => {
+    setsearchable(false)
+    setserachingData(true)
 
     let cart = selectedProducts
     for (let [index, p] of cart.entries()) {
       if (p.title === product.title) {
         p.quantity -= 1;
+        p.percent -= 1;
         if (p.quantity < 1) {
+          ToastAndroid.showWithGravityAndOffset(
+            'Product Removed',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+          cart.splice(index, 1);
+        }else{
           ToastAndroid.showWithGravityAndOffset(
             'Product Quantity Removed',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
           );
-          cart.splice(index, 1);
+
           setselectedProducts(cart)
+
         }
       }
     }
+    setsearchable(true)
+    setTimeout(() => {
+      setserachingData(false)
+    console.log(cart)
+    }, 500);
+
 
   }
 
@@ -85,6 +113,13 @@ const ProductScreen = ({ navigation, props,
     // getData()
     searchFilterFunction("")
   }, [])
+
+  const getData =()=>{
+    setTimeout(() => {
+      setserachingData(false)
+      clearTimeout();
+    },500 );
+  }
 
   return (
     <View style={mstyle.container1}>
@@ -108,7 +143,11 @@ const ProductScreen = ({ navigation, props,
       <FlatList
         refreshing={serachingData}
         onRefresh={() => {
-          searchFilterFunction("")
+          if(searchable){
+            searchFilterFunction("")
+          }else{
+            getData()
+          }
         }}
         data={data}
         renderItem={(item) => {

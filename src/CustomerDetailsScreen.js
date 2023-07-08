@@ -27,19 +27,39 @@ const CustomerDetailsScreen = ({ navigation, props,
   useEffect(() => {
     console.log(item.cart)
 
-    if(item.cart){
-      let mapped_array = []
-      item.cart.forEach(a => {
-            a.status= 'Add to Cart'
-            a.percent= a.quantity 
-            mapped_array.push(a)
-          })
-      setselectedProducts(mapped_array)
-    }
+    const interval = setInterval(() => {
+      if(item.cart){
+        setloading(true)
+        let mapped_array = []
+        item.cart.forEach(a => {
+              a.status= 'Add to Cart'
+              a.percent= a.quantity 
+              mapped_array.push(a)
+            })
+        setselectedProducts(mapped_array)
+        getData()
+      }
+
+    }, 1000);
+
+    // Subscribe for the focus Listener
+    const unsubscribe = navigation.addListener('focus', () => {
+    });
+
     getStock()
-  
+
+setTimeout(() => {
+  clearTimeout(interval);
+
+}, 10000);
+
+    return () => {
+      clearTimeout(interval);
+      
+      unsubscribe;
+    };
    
-  }, [])
+  }, [navigation])
   
 
   const addProductTocart = (product) => {
@@ -162,7 +182,7 @@ const checkout= ()=>{
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
   let req ={
-    dealer_mobile : item.item.subtitle,
+    dealer_mobile : item.item.mobile_number,
     cart : selectedProducts,
     mylocation: mylocation,
     type:"Sales Order"
@@ -199,13 +219,13 @@ const Update_Stock= ()=>{
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
   let req ={
-    dealer_mobile : item.item.subtitle,
+    dealer_mobile : item.item.mobile_number,
     stock : stock,
     mylocation: mylocation
   }
   // console.log(req)
   AuthenicationService.update_stock(req).then(r=>{
-    // console.log(r)
+    console.log(r)
     setisloading(false)
 
     if(r.status==true){
@@ -228,7 +248,7 @@ const Update_Stock= ()=>{
 
 const getStock= ()=>{
   let req ={
-    dealer_mobile : item.item.subtitle,  
+    dealer_mobile : item.item.mobile_number,  
   }
   // console.log(req)
   AuthenicationService.get_stock(req).then(r=>{
@@ -257,7 +277,7 @@ const getStock= ()=>{
            <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.title} </Text> </Text>
         <Text style={{color:'black', fontSize:15}} >
            Customer Mobile :- 
-        <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.subtitle} </Text> </Text>
+        <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.mobile_number} </Text> </Text>
       </View>
 
 

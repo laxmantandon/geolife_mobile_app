@@ -154,7 +154,7 @@ const searchfarmerData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -729,7 +729,24 @@ const Add_payment_entry = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
+const Add_payment_cash_entry = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.add_dealer_Cash_payment`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -879,12 +896,12 @@ const get_stock = async req => {
 const uploadImage = async req => {
   try {         
         let Response = await AuthRequest.post(
-          `${base_url}.uploadImage`,req,{headers:gettoken()}
+          `${base_url}.Upload_image_in_dealer`,req,{headers:gettoken()}
           
         );
         return Response?.data.message
   } catch (error) {
-    // console.log('API ERROR ', error.response.data);
+    console.log('API ERROR ', error.response.data ,gettoken());
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -909,5 +926,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   get_users_task, gettoken, farmerCropData, get_free_sample, expense_type, searchdealerData,searchProductData,
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
-  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting,checkoutPaymentUpdate,activity_for,dayplan_list
+  searchdealerPaymentData, searchgeomitraData, uploadImage, farmer_meeting,checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry
 };

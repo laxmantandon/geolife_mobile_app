@@ -11,7 +11,7 @@ const AddPaymentScreen = ({ navigation, props,
   route: {
     params: { item },
   }, }) => {
-  const [payment_type, setpayment_type] = useState(["Online Payment", "Cash", "Cheque"])
+  const [payment_type, setpayment_type] = useState(["UPI", "Cash", "Cheque"])
   const [formdata, setformdata] = useState([
     { label: 'Select Payment Method', key: 'type', value: '', options: payment_type, type: 'select', },
     { label: 'Refrence Number', placeholder: 'Enter Refrence Number', key: 'ref_number', value: '', type: 'text' },
@@ -32,7 +32,7 @@ const AddPaymentScreen = ({ navigation, props,
 
       setisLoading(true)
       let req = submitReqData(formdata)
-      req.dealer_mobile = item.item.subtitle
+      req.dealer_mobile = item.item.mobile_number
 
       if (!req.dealer_mobile) {
         setisLoading(false)
@@ -54,8 +54,11 @@ const AddPaymentScreen = ({ navigation, props,
 
 
       AuthenicationService.Add_payment_entry(req).then(r => {
+        console.log(r)
         setisLoading(false)
         if (r.status == true) {
+          navigation.goBack()
+
           ToastAndroid.showWithGravityAndOffset(
             r.message,
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -85,7 +88,7 @@ const AddPaymentScreen = ({ navigation, props,
 
         ListFooterComponent={() => {
           return (
-            <Pressable onPress={() => {
+            <Pressable style={{paddingBottom:20}} onPress={() => {
               submitPayment()
             }}>
               <Buttons title={'Submit Payment'} loading={isLoading} />

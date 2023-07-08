@@ -35,7 +35,7 @@ const StartSession = ({props, navigation }) => {
       const usrd = JSON.parse(value)
       if (usrd) {
         if(usrd.user_role==="Dealer"){
-          console.log('dealer')
+          // console.log('dealer')
           navigation.navigate('MydealerHome')
         }
         setuser(usrd)
@@ -246,59 +246,65 @@ const logOut=()=>{
         backgroundColor={'white'}
         translucent
       />
-      {user.user_role=='Dealer'?(<View>
+      {user?.user_role=='Dealer'?(<View>
         <MydealersScreen/>
-      </View>) :(<View>
-      <View style={{
-        justifyContent: 'center',
-        alignItems: 'center', marginTop: 100
-      }}>
-
-        <Image source={require('../src/assets/images/logo.png')}
-          style={{ width: 170, }}
-          resizeMode="contain" />
-      </View>
-      <Text onPress={()=>{
-        // getcall_Logs()
-      }} style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name}`}</Text>
-      <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
-        {session_started ? (`Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}`) : 'Start Your Session'}
-        {/* {moment(session).format('LTS')} */}
-      </Text>
-
-      <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
-        {session_started ? `Working Time ${(Math.round(sessionTime * 100) / 100).toFixed(2)} hours` : ''}
-        {/* {moment(session).format('LTS')} */}
-      </Text>
-      
-      <Pressable onPress={() => {
-        if (session_started == true) {
-          endSession()
-        } else {
-          startMYSession()
-        }
-      }}>
-        <Buttons title={session_started == false ? 'Start Session' : 'End Session'} loading={loading} />
-      </Pressable>
-      {session_started == true ? (
+      </View>) :(
+     <View>
+       {user?.user_role == "Geo Mitra"?(
+        <View>
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center', marginTop: 100
+        }}>
+  
+          <Image source={require('../src/assets/images/logo.png')}
+            style={{ width: 170, }}
+            resizeMode="contain" />
+        </View>
+        <Text onPress={()=>{
+          // getcall_Logs()
+        }} style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name}`}</Text>
+        <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
+          {session_started ? (`Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}`) : 'Start Your Session'}
+          {/* {moment(session).format('LTS')} */}
+        </Text>
+  
+        <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
+          {session_started ? `Working Time ${(Math.round(sessionTime * 100) / 100).toFixed(2)} hours` : ''}
+          {/* {moment(session).format('LTS')} */}
+        </Text>
+        
         <Pressable onPress={() => {
           if (session_started == true) {
-            navigation.navigate('Home')
+            endSession()
+          } else {
+            startMYSession()
           }
         }}>
-          <Buttons title={"Go To Home"}  bgcolor={'green'}/>
+          <Buttons title={session_started == false ? 'Start Session' : 'End Session'} loading={loading} />
         </Pressable>
-      ) : null}
-
-
-      <Pressable onPress={()=>{
-        logOut()
-        
-      }}>
-        <Buttons title={'Logout'} loading={loading} bgcolor={'red'}/>
-      </Pressable>
-
-      </View>)}
+        {session_started == true ? (
+          <Pressable onPress={() => {
+            if (session_started == true) {
+              navigation.navigate('Home')
+            }
+          }}>
+            <Buttons title={"Go To Home"}  bgcolor={'green'}/>
+          </Pressable>
+        ) : null}
+  
+  
+        <Pressable onPress={()=>{
+          logOut()
+          
+        }}>
+          <Buttons title={'Logout'} loading={loading} bgcolor={'red'}/>
+        </Pressable>
+  
+        </View>
+      ):('')}
+      </View>
+     )}
       
     </View>
   )

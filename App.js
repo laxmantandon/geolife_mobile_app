@@ -138,13 +138,13 @@ function HomeScreen({ navigation }) {
 
   const [dashboarddata, setdashboarddata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    { subtitle: "In A Month", value: "15/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' },
-    { subtitle: "Total Done", value: "12", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' },
-    { subtitle: "In 15 Days", value: "03/25", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN },
-    { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED },
-    { subtitle: "My former list", value: "450", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' },
-    { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY },
-    { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW },
+    { subtitle: "In A Month", value: "15/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
+    { subtitle: "Total Done", value: "12", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' ,route:"FarmerOrdersScreen" },
+    { subtitle: "In 15 Days", value: "03/25", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"ActivityDealerDetails" },
+    { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
+    { subtitle: "My former list", value: "450", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
+    { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer" },
+    { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
   const [attendance, setattendance] = useState([])
@@ -394,7 +394,9 @@ function HomeScreen({ navigation }) {
                   numColumns={4}
                   renderItem={(item) => {
                     return (
-                      <Pressable style={{ flex: 1, }} onPress={() => {  }}>
+                      <Pressable style={{ flex: 1, }} onPress={() => { if (item.item?.route){
+                        navigation.navigate(item.item?.route)
+                      } }}>
                       
                         <View style={{flex: 1,
                           backgroundColor: item.item.color,

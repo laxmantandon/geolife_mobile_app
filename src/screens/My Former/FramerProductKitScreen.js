@@ -16,6 +16,7 @@ import MYinputs from '../../components/MYinputs'
 import CameraPermission from '../../services/permissionservices'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { ActivityIndicator } from 'react-native-paper'
+import submitReqData from '../../services/FormData'
 
 
 const ModalPoup = ({ visible, children }) => {
@@ -91,6 +92,18 @@ const FramerProductKitScreen = ({ navigation, props,
   large_image:'https://crop.erpgeolife.com/files/without_soil.jpg'}
 ])
 const [cnp_type, setcnp_type] = useState('')
+const [qrcode, setqrcode] = useState('')
+const [FarmerShowModal, setFarmerShowModal] = useState(false)
+const [newForm, setnewForm] = useState([
+  { label: 'Farmer First Name', placeholder:'Ex. - Rama', key: 'first_name', value:'', keyboard:'text' },
+  { label: 'Farmer Last Name', placeholder:'Ex. - Dash', key: 'last_name', value:'', keyboard:'text' },
+  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric' },
+  { label: 'City', placeholder:'Ex. - Pune', key: 'city', value:'', keyboard:'text' },
+  { label: 'Mobile Number', placeholder:'Ex. - 1234567890', key: 'mobile_no', value:'', keyboard:'numeric' },
+  { label: 'Farm In Acres', placeholder:'Ex. - 15', key: 'acre', value:'', keyboard:'numeric' },
+  
+])
+const [IsLoading, setIsLoading] = useState(false)
 
   const searchFilterFunction = (text) => {
     // if (selectedCrops?.id) {
@@ -116,10 +129,10 @@ const [cnp_type, setcnp_type] = useState('')
           return
         }
       
-      console.log(req)
+      // console.log(req)
       AuthenicationService.searchProductKitData(req)
         .then(x => {
-          console.log(x)
+          // console.log(x)
           setserachingData(false)
           setloading(false)
 
@@ -142,7 +155,8 @@ const [cnp_type, setcnp_type] = useState('')
     // setloading(true)
     // setserachingData(true)
     let req = {
-      "text": text
+      "text": text,
+      "all_farmer":1
     }
     if (text == '') {
       req.text = false
@@ -152,7 +166,6 @@ const [cnp_type, setcnp_type] = useState('')
       .then(x => {
         // setserachingData(false)
         // setloading(false)
-
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
@@ -184,7 +197,7 @@ const [cnp_type, setcnp_type] = useState('')
       );
       cart.push(product);
       setdata(cart)
-      console.log(    cart.reduce((a, b) => a + (b['price'] || 0), 0)      )
+      // console.log(    cart.reduce((a, b) => a + (b['price'] || 0), 0)      )
       // setselectedProducts(cart)
     }
     // console.log(data)
@@ -356,9 +369,9 @@ const [booking_id, setbooking_id] = useState('')
     //   alert('Please Enter Valid Amount')
     //   return
     // }
-    console.log(req)
+    // console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
-      console.log(r)
+      // console.log(r)
       setiscartloading(false)
       setimageloading(false)
 
@@ -426,7 +439,7 @@ launchImageLibrary(options, (response) => {
       payment_method: payment_method.value
     }
     AuthenicationService.checkoutPaymentUpdate(req).then(r => {
-      console.log(r)
+      // console.log(r)
       setimageloading(false)
       if (r.status == true) {
         setVisible(false)
@@ -452,6 +465,51 @@ launchImageLibrary(options, (response) => {
     }
 
   }
+
+  const Create_Farmer = () => {
+    if(IsLoading==false){
+      req = submitReqData(newForm)
+     if (!req.first_name) {
+       alert('Please  enter farmer name')
+       return
+     }
+     if (!req.pincode) {
+       alert('Please  enter farmer pincode')
+       return
+     }
+     if (!req.mobile_no) {
+      alert('Please  enter farmer mobile number')
+      return
+    }
+    //  console.log(req)
+     setIsLoading(true)
+     AuthenicationService.create_farmer(req).then(x => {
+       setIsLoading(false)
+      //  console.log(x)
+       if (x.status) {
+         setFarmerShowModal(false)
+         ToastAndroid.showWithGravityAndOffset(
+           x.message,
+           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+         );
+       } else {
+         ToastAndroid.showWithGravityAndOffset(
+           'Farmer Not Submited Please Try Again',
+           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+         );
+ 
+       }
+ 
+     }).catch(e=>{
+       setIsLoading(false)
+       ToastAndroid.showWithGravityAndOffset(
+         'No internet connection',
+         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+       );
+     })
+    }
+   }
+ 
 
   return (
     <SafeAreaView style={mstyle.container1}>
@@ -485,10 +543,21 @@ if (payment_method.value == 'UPI'){
         {payment_method.value == 'UPI' ? (
           <View style={{ alignItems: 'center' }}>
             {/* <Icon name='checkmark-circle-outline' style={{color:'green', fontWeight:'bold'}} size={150} /> */}
-            <Image
-              source={{ uri: selectedDelers.qr_code }}
-              style={{ maxHeight: 350, minHeight: 250, width: '100%', }}
-            />
+           {selectedDelers?.qr_code?(
+           <Image
+            source={{ uri: selectedDelers?.qr_code.replace('/private','') }}
+            style={{ maxHeight: 450, minHeight: 350, width: '100%', }}
+          />
+
+           ):(
+
+            <View>
+              <Text style={{color:'red', fontSize:17}} >
+
+              </Text>
+              </View>
+
+           )} 
 
             <Pressable
               onPress={() => startCamera()} style={{
@@ -521,6 +590,41 @@ if (payment_method.value == 'UPI'){
           Advance Booking was successfully
         </Text>
       </ModalPoup>
+
+      <Modal
+        animationType="slide"
+        // transparent={true}
+        visible={FarmerShowModal}
+        onRequestClose={() => {
+          setFarmerShowModal(!FarmerShowModal);
+        }}>
+        <View style={{ padding: 10,  backgroundColor: 'white' }}>
+          <Text style={{ textAlign: 'right', fontSize: 15, color: 'red', fontWeight: '700' }} 
+          onPress={() => { setFarmerShowModal(false) }}>X</Text>
+          <Text style={{ fontSize: 20,textAlign:'center', fontWeight: '600', color: 'black' }}>Create New Farmer</Text>
+          <FlatList 
+          data={newForm}
+          renderItem={({item})=>{
+            return(
+              <View>
+                <MYinputs item={item} />
+                </View>
+            )
+          }}
+          ListFooterComponent={()=>{
+            return(
+              <Pressable onPress={() => { Create_Farmer() }}>
+              <Buttons title={'Submit Farmer'} loading={IsLoading} />
+            </Pressable>
+            )
+          }}
+          />
+          
+         
+
+        </View>
+      </Modal>
+
       {/* <Button title="Open Modal" onPress={() => setVisible(true)} /> */}
       {data.length ? (
         <View>
@@ -667,7 +771,14 @@ if (payment_method.value == 'UPI'){
                     backgroundColor: 'white',
 
                   }]}>
-                    <Text style={{ color: 'black' }}> Select Famer</Text>
+                    <View style={{flexDirection:'row'}}>
+                    <Text style={{ color: 'black' }}> Select Farmer <Text style={{fontWeight:'bold', fontSize:15}}>OR</Text>  </Text>
+                    <Pressable onPress={()=>{
+                      setFarmerShowModal(true)
+                    }} >
+                      <Text style={{color:Colors.GOOGLE_BLUE, fontWeight:'bold'}}>Add New Farmer</Text>
+                    </Pressable>
+                      </View>
 
                     <View style={mstyle.inputSubContainer}>
                       {selectedFarmer ? (
@@ -688,7 +799,7 @@ if (payment_method.value == 'UPI'){
                             // items.push(item)
                             setselectedFarmer(item)
 
-                            console.log(selectedFarmer)
+                            // console.log(selectedFarmer)
                           }}
                           containerStyle={{ padding: 1, width: '100%' }}
                           onRemoveItem={(item, index) => {
@@ -871,6 +982,7 @@ if (payment_method.value == 'UPI'){
                             // const items = selectedCrops;
                             // items.push(item)
                             setselectedDelers(item)
+                            setqrcode(selectedDelers?.qrcode)
                             // console.log(selectedDelers)
                           }}
                           containerStyle={{ padding: 3, width: '100%' }}

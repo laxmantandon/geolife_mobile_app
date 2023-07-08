@@ -14,6 +14,7 @@ import Buttons from '../../components/Buttons'
 import DateInput from '../../components/DateInput'
 import moment from 'moment'
 import submitReqData from '../../services/FormData'
+import Geolocation from '@react-native-community/geolocation';
 
 
 const DealerPaymentScreen = ({navigation,})  => {
@@ -30,7 +31,7 @@ const DealerPaymentScreen = ({navigation,})  => {
 
   const [from_date, setfrom_date] = useState({ label: 'From Date', value: new Date(), type: 'date', key: 'from_date'  })
   const [to_date, setto_date] = useState({ label: 'To Date', value:moment().add(7,'d').toDate(), type: 'date', key: 'to_date'})
-  const [geomitra, setgeomitra] = useState({ label: 'Select Geo Mitra', value: [], type: 'select', key: 'geomitra', options:geomitraoptions })
+  const [geomitra, setgeomitra] = useState({ label: 'Select Geo Mitra', value: '', type: 'select', key: 'geomitra', options:geomitraoptions })
   const [geoMitradata, setgeoMitradata] = useState([])
   const [geomitraoptions, setgeomitraoptions] = useState([])
   const [IsLoadingData, setIsLoadingData] = useState(false)
@@ -47,10 +48,10 @@ const DealerPaymentScreen = ({navigation,})  => {
       "from_date":moment(mj.from_date).format('yyyy-MM-DD'),
       "to_date":moment(mj.to_date).format('yyyy-MM-DD')
     }
-    console.log(text)
+    // console.log(text)
     AuthenicationService.searchdealerPaymentData(req)
       .then(x => {
-        console.log(x)
+        // console.log(x)
         if (x.status == true) {
           let mapped_array = []
           let upi = 0
@@ -61,7 +62,7 @@ const DealerPaymentScreen = ({navigation,})  => {
             }else{
               upi = upi + a.amount
             }
-            console.log(a)
+            // console.log(a)
             mapped_array.push({ "title": `${a.payment_method} :- ${a.name}`, "name": a.free_sample_name, "subtitle": `Dealer :- ${a.dealer}`, "date": a.posting_date, "status": 'Amount in rs', "percent": a.amount })
           })
           setupiamt(upi)
@@ -120,21 +121,31 @@ const DealerPaymentScreen = ({navigation,})  => {
 
   const Add_payment = () => {
     if (IsLoading == false) {
+      
       req = {
-        farmer_name: dgoName,
-        mobile_no: amount
+        geo_mitra: geoMitradata[geomitra?.index].geo_mitra,
+        amount: geoMitradata[geomitra?.index]?.percent,
+        image : captureimage,
+        notes:notes,
+        mylocation:""
       }
-      if (!dgoName) {
-        alert('Please  enter farmer name')
-        return
-      }
-      if (!amount) {
-        alert('Please  enter farmer mobile number')
-        return
-      }
+      Geolocation.getCurrentPosition(info =>{
+        // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+          req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
+          "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
+      })
       // console.log(req)
+
+      if (!req.geo_mitra) {
+        alert('Please enter Geomitra name')
+        return
+      }
+      if (!req.amount) {
+        alert('No receiveable amount')
+        return
+      }
       setIsLoading(true)
-      AuthenicationService.Add_payment_entry(req).then(x => {
+      AuthenicationService.Add_payment_cash_entry(req).then(x => {
         setIsLoading(false)
         // console.log(x)
         if (x.status) {
@@ -147,7 +158,7 @@ const DealerPaymentScreen = ({navigation,})  => {
           );
         } else {
           ToastAndroid.showWithGravityAndOffset(
-            'Farmer Not Submited Please Try Again',
+            'Please Try Again',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
           );
 
@@ -167,19 +178,19 @@ const DealerPaymentScreen = ({navigation,})  => {
     let req=''
     AuthenicationService.searchgeomitraData(req)
     .then(x => {
-      console.log(x)
+      // console.log(x)
       if (x.status == true) {
         let mapped_array = []
         let mapped_array2 = []
         x.data.forEach(a => {
           mapped_array2.push(a.geo_mitra_name)
           // console.log(a.geo_mitra_name)
-          mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
+          mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`,  "geo_mitra": a.geo_mitra, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
         })
         setgeoMitradata(mapped_array)
         setgeomitraoptions(mapped_array2)
         geomitra.options = mapped_array2
-        console.log('mapped array',geomitra)
+        // console.log('mapped array',geomitra)
         setIsLoadingData(false)
 
       } else {

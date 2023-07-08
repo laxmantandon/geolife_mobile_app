@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Alert, BackHandler, Image } from 'react-native'
+import { View, Text, FlatList, Pressable, Alert, BackHandler, Image, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import mstyle from '../../mstyle'
 import Card from '../../components/Card'
@@ -10,7 +10,7 @@ import { Colors, Fonts } from '../../contants';
 import { colors } from 'react-native-gifted-charts/src/PieChart/colors';
 import { ScrollView } from 'react-native-gesture-handler';
 import CameraPermission from '../../services/permissionservices'
-import { launchCamera } from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyDealersScreen = ({ navigation }) => {
@@ -26,35 +26,26 @@ const MyDealersScreen = ({ navigation }) => {
   const [loggedIn, setloggedIn] = React.useState(false)
   const [user, setuser] = React.useState([])
   const [qrcode, setqrcode] = useState('')
-  
-  
+  const [userData, setuserData] = useState()
+
+
 
 
 
   const startCamera = () => {
-
     CameraPermission()
     let options = {
       includeBase64: true,
       mediaType: 'photo',
       saveToPhotos: true,
       quality: 0.3
-
-
     };
-
-    launchCamera(options, (response) => {
-
+    launchImageLibrary(options, (response) => {
       if (response.didCancel) {
-        // console.log('User cancelled image picker');
       } else if (response.error) {
-        // console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        // console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
-        // const source = { uri: response.uri };
-        // // console.log('response', JSON.stringify(response.assets[0].base64));
         const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
         setcaptureimage("")
         setcaptureimage(basse64image)
@@ -62,8 +53,6 @@ const MyDealersScreen = ({ navigation }) => {
     });
 
   }
-
-
 
   const backButtonPressd = () => {
     Alert.alert('Hold on!', 'Are you sure you want to exit?', [
@@ -83,10 +72,12 @@ const MyDealersScreen = ({ navigation }) => {
         onPress: () => null,
         style: 'cancel',
       },
-      { text: 'Logout', onPress: () => {
-        AsyncStorage.clear()
-        navigation.navigate('Login')
-      } },
+      {
+        text: 'Logout', onPress: () => {
+          AsyncStorage.clear()
+          navigation.navigate('Login')
+        }
+      },
     ]);
   }
 
@@ -102,7 +93,7 @@ const MyDealersScreen = ({ navigation }) => {
     AsyncStorage.getItem("user_info").then((value) => {
       setloggedIn(true)
       const usrd = JSON.parse(value)
-      console.log(usrd["dealer_data"][0].qr_code)
+      // console.log('user data', usrd)
       if (usrd) {
         setuser(usrd)
         setqrcode(usrd["dealer_data"][0].qr_code)
@@ -125,10 +116,11 @@ const MyDealersScreen = ({ navigation }) => {
     AuthenicationService.searchgeomitraData(req)
       .then(x => {
         setIsLoadingData(false)
-        console.log(x)
+        // console.log(x)
         if (x.status == true) {
           let mapped_array = []
           let total_amount = 0
+          setqrcode(x.qr_code)
           let geo_mitra = []
           x.data.forEach(a => {
             total_amount = total_amount + a.geo_mitra_cash
@@ -136,6 +128,7 @@ const MyDealersScreen = ({ navigation }) => {
             geo_mitra.push(a.geo_mitra_name)
             mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
           })
+
           setreceiveable_amount(total_amount)
           setgeoMitradata(mapped_array)
           // setgeoMitradata([])
@@ -146,137 +139,39 @@ const MyDealersScreen = ({ navigation }) => {
       })
   }
 
+  const UploadImage = () => {
+    setIsLoadingData(true)
+    if (!captureimage) {
+      Alert.alert("Upload Your Qr Code")
+      return
+    }
+    let req = {
+      "doctype": "Dealer",
+      "name": user?.name,
+      "image": captureimage
+    }
+    // console.log(req)
+    AuthenicationService.uploadImage(req)
+      .then(x => {
+        setIsLoadingData(false)
+        if (x.status == true) {
+          setqrcode(x.qr_code)
+          ToastAndroid.showWithGravityAndOffset(
+            'Qr Code Submited Successfully',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+
+        } else {
+        }
+      })
+  }
+
 
 
 
   return (
-    <ScrollView style={[mstyle.container1]}>
+    <View style={[mstyle.container1]}>
 
-      <View style={{}}>
-        <View style={[mstyle.detailContainer, { backgroundColor: Colors.LIGHT_GREEN, paddingHorizontal: 15, paddingVertical: 25, borderRadius: 10 }]}>
-          <Pressable onPress={() => { navigation.navigate("DealerProfile") }} style={[mstyle.titleContainer, { width: '85%' }]}>
-            <Text style={mstyle.listListTitle} numberOfLines={1}>
-              {user.first_name} {user.last_name}
-            </Text>
-            <Text style={{
-              color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
-            }} numberOfLines={2}>{user.mobile_no}</Text>
-            <Text onPress={() => { getcurrentTime() }} style={{
-              color: 'navy', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
-            }} numberOfLines={1}>Receiveable Amount <Text style={{ fontSize: 25, color: 'green', fontWeight: 'bold' }}> {receiveable_amount} </Text> Rs.
-
-            </Text>
-          </Pressable>
-          <View style={{ width: '15%' }}>
-            <Pressable title='Check Out' onPress={() => {
-             LogoutDealer()
-            }} >
-
-              <Icon name='power' size={25}
-
-                style={{
-                  textAlign: 'center', color: 'red', backgroundColor: Colors.LIGHT_RED,
-                  paddingHorizontal: 10, paddingVertical: 10, borderRadius: 50
-                }} />
-              {/* <Text>Check out user</Text> */}
-            </Pressable>
-
-
-          </View>
-
-
-
-        </View>
-        {qrcode  ? (
-          <View>
-          <Image style={{
-            alignSelf: 'center', borderRadius: 5,
-            width: '100%',
-            height: 350,
-            marginTop: 1,
-            backgroundColor: 'silver'
-          }} source={{ uri: `https://crop.erpgeolife.com${qrcode}` }} />
-
-          </View>
-        ) : (
-          <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
-            {/* <Image source={require('../../assets/images/qrscan.gif')} style={{width:'100%',height:250}}/> */}
-            {
-              captureimage ? (
-                <View>
-                  <Image style={{
-                    alignSelf: 'center', borderRadius: 5,
-                    width: '100%',
-                    height: 300,
-                    marginTop: 1,
-                    backgroundColor: 'silver'
-                  }} source={{ uri: captureimage }} />
-                  <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                    <Pressable style={{ flexDirection: 'row', padding: 10, backgroundColor: 'red', 
-                    borderRadius: 10, marginTop: 10, marginHorizontal: 5 }}
-
-                    onPress={()=>{
-                      setcaptureimage('')
-                    }}
-                    
-                    >
-                      <Icon name='trash-outline' size={18} style={{ color: 'white' }} />
-                      <Text style={{ color: 'white', textAlign: 'center' }}>Remove Image</Text>
-                    </Pressable>
-                    <Pressable style={{ flexDirection: 'row', padding: 10, backgroundColor: 'green', borderRadius: 10, marginTop: 10, marginHorizontal: 5 }}>
-                      <Icon name='cloud-upload-outline' size={18} style={{ color: 'white', paddingRight: 5 }} />
-
-                      <Text style={{ color: 'white', textAlign: 'center' }}>Upload Image</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              ) : (
-
-                <View>
-                  <Image source={require('../../assets/images/qrscan.gif')} style={{ width: '100%', height: 250, borderRadius: 10 }} />
-                  <Pressable
-                    onPress={() => startCamera()} style={{
-                      alignSelf: 'center', flexDirection: 'row', width: 40, height: 40, marginVertical: 10,
-                      backgroundColor: 'white', borderRadius: 50
-                    }} >
-                    <Icon name='camera' size={30} style={{
-                      alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN,
-                      color: 'green', borderRadius: 50, padding: 5
-                    }} />
-                  </Pressable>
-                </View>
-
-              )
-            }
-
-            {/* {
-              captureimage ? (
-                <View>
-                  <Image style={{
-                    alignSelf: 'center', borderRadius: 5,
-                    width: 80,
-                    height: 100,
-                    marginTop: 1,
-                    backgroundColor: 'silver'
-                  }} source={{ uri: captureimage }} />
-
-                  <Pressable style={{ padding: 10, backgroundColor: 'gray', borderRadius: 10, marginTop: 10, marginHorizontal: 45 }}>
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
-                  </Pressable>
-                </View>
-              ) : ('')
-            } */}
-            <View style={{paddingVertical:5}}>
-              <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
-                Please upload your UPI QR CODE</Text>
-              <Text style={{ fontSize: 14, color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
-                For Receive Online Payment We Need Your UPI QRCode</Text>
-            </View>
-
-
-          </View>
-        )}
-      </View>
 
       {/* <View style={{paddingBottom:10}}>
         <Text style={{textAlign:'center',color:'green', fontSize:28, fontWeight:'bold'}}>Rs. {receiveable_amount}</Text>
@@ -284,6 +179,147 @@ const MyDealersScreen = ({ navigation }) => {
       </View> */}
 
       <FlatList
+        ListHeaderComponent={() => {
+          return (
+
+            <View >
+              <View style={[mstyle.detailContainer, { backgroundColor: Colors.LIGHT_GREEN, paddingHorizontal: 15, paddingVertical: 25, borderRadius: 10 }]}>
+                <Pressable onPress={() => { navigation.navigate("DealerProfile"),{item:qrcode} }} style={[mstyle.titleContainer, { width: '85%' }]}>
+                  <Text style={mstyle.listListTitle} numberOfLines={1}>
+                    {user.first_name} {user.last_name}
+                  </Text>
+                  <Text style={{
+                    color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
+                  }} numberOfLines={2}>{user.mobile_no}</Text>
+                  <Text onPress={() => {  }} style={{
+                    color: 'navy', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
+                  }} numberOfLines={1}>Receiveable Amount <Text style={{ fontSize: 25, color: 'green', fontWeight: 'bold' }}> 
+                  {receiveable_amount} </Text> Rs.
+
+                  </Text>
+                </Pressable>
+                <View style={{ width: '15%' }}>
+                  <Pressable title='Check Out' onPress={() => {
+                    LogoutDealer()
+                  }} >
+
+                    <Icon name='power' size={25}
+
+                      style={{
+                        textAlign: 'center', color: 'red', backgroundColor: Colors.LIGHT_RED,
+                        paddingHorizontal: 10, paddingVertical: 10, borderRadius: 50
+                      }} />
+                    {/* <Text>Check out user</Text> */}
+                  </Pressable>
+
+
+                </View>
+
+
+
+              </View>
+              {qrcode ? (
+                <View>
+                  <Image style={{
+                    alignSelf: 'center', borderRadius: 5,
+                    width: '100%',
+                    height: 350,
+                    marginTop: 1,
+                    backgroundColor: 'silver'
+                  }} source={{ uri: `https://crop.erpgeolife.com${qrcode?.replace('/private','')}` }} />
+
+                </View>
+              ) : (
+                <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
+                  {/* <Image source={require('../../assets/images/qrscan.gif')} style={{width:'100%',height:250}}/> */}
+                  {
+                    captureimage ? (
+                      <View>
+                        <Image style={{
+                          alignSelf: 'center', borderRadius: 5,
+                          width: '100%',
+                          height: 300,
+                          marginTop: 1,
+                          backgroundColor: 'silver'
+                        }} source={{ uri: captureimage }} />
+                        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                          <Pressable style={{
+                            flexDirection: 'row', padding: 10, backgroundColor: 'red',
+                            borderRadius: 10, marginTop: 10, marginHorizontal: 5
+                          }}
+
+                            onPress={() => {
+                              setcaptureimage('')
+                            }}
+
+                          >
+                            <Icon name='trash-outline' size={18} style={{ color: 'white' }} />
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Remove Image</Text>
+                          </Pressable>
+                          <Pressable
+                            onPress={() => {
+                              UploadImage()
+                            }}
+                            style={{
+                              flexDirection: 'row', padding: 10, backgroundColor: 'green', borderRadius: 10,
+                              marginTop: 10, marginHorizontal: 5
+                            }}>
+                            <Icon name='cloud-upload-outline' size={18} style={{ color: 'white', paddingRight: 5 }} />
+
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Upload Image</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    ) : (
+
+                      <View>
+                        <Image source={require('../../assets/images/qrscan.gif')} style={{ width: '100%', height: 250, borderRadius: 10 }} />
+                        <Pressable
+                          onPress={() => startCamera()} style={{
+                            alignSelf: 'center', flexDirection: 'row', width: 40, height: 40, marginVertical: 10,
+                            backgroundColor: 'white', borderRadius: 50
+                          }} >
+                          <Icon name='camera' size={30} style={{
+                            alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN,
+                            color: 'green', borderRadius: 50, padding: 5
+                          }} />
+                        </Pressable>
+                      </View>
+
+                    )
+                  }
+
+                  {/* {
+            captureimage ? (
+              <View>
+                <Image style={{
+                  alignSelf: 'center', borderRadius: 5,
+                  width: 80,
+                  height: 100,
+                  marginTop: 1,
+                  backgroundColor: 'silver'
+                }} source={{ uri: captureimage }} />
+
+                <Pressable style={{ padding: 10, backgroundColor: 'gray', borderRadius: 10, marginTop: 10, marginHorizontal: 45 }}>
+                  <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
+                </Pressable>
+              </View>
+            ) : ('')
+          } */}
+                  <View style={{ paddingVertical: 5 }}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
+                      Please upload your UPI QR CODE</Text>
+                    <Text style={{ fontSize: 14, color: 'black', textAlign: 'center', paddingVertical: 1, paddingHorizontal: 10 }}>
+                      For Receive Online Payment We Need Your UPI QRCode</Text>
+                  </View>
+
+
+                </View>
+              )}
+            </View>
+
+          )
+        }}
         refreshing={IsLoadingData}
         onRefresh={() => {
           getGeomitraData()
@@ -297,7 +333,6 @@ const MyDealersScreen = ({ navigation }) => {
             <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route), { "item": geoMitradata } }}>
               <View
                 style={mstyle.ListContainer} >
-
                 <Icon name={item.item.icon} size={25} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
                 <View style={mstyle.detailContainer}>
                   <View style={mstyle.titleContainer}>
@@ -369,7 +404,7 @@ const MyDealersScreen = ({ navigation }) => {
         }}
       />
 
-    </ScrollView>
+    </View>
   )
 }
 

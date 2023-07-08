@@ -100,7 +100,7 @@ const Return_Stock= ()=>{
       "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
   })
   let req ={
-    dealer_mobile : item.item.subtitle,
+    dealer_mobile : item.item.mobile_number,
     cart : stock,
     mylocation: mylocation,
     type:"Sales Return"
