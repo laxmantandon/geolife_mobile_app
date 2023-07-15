@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, TextInput, Linking } from 'react-native'
+import { View, Text, FlatList, Pressable, TextInput, Linking, BackHandler } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
 import FabButton from '../../components/FabButton'
@@ -37,13 +37,15 @@ const FarmerOrdersScreen = ({ navigation }) => {
       if(user_info.user_role =='Dealer'){
         AuthenicationService.searchdealerfarmerOrdersData(req)
         .then(x => {
+          console.log(x)
+
           setserachingData(false)
           console.log(x.data)
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
               mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
-              "status": a.payment_method, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
+              "status": `(${a.docstatus==1?'Completed':a.payment_method})`, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
             })
             setdata(mapped_array)
           } else {
@@ -55,13 +57,16 @@ const FarmerOrdersScreen = ({ navigation }) => {
       }else{
         AuthenicationService.searchfarmerOrdersData(req)
         .then(x => {
+          // console.log(x)
+
           setserachingData(false)
-          // console.log(x.data[0])
+          // console.log(x.data[1].image)
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
+              console.log(a.image)
               mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
-              "status": a.payment_method, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
+              "status": `(${a.docstatus==1?'Completed':a.payment_method})`, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
             })
             setdata(mapped_array)
           } else {
@@ -79,6 +84,37 @@ const FarmerOrdersScreen = ({ navigation }) => {
   useEffect(() => {
     // getData()
     searchFilterFunction("")    
+
+    const interval = setInterval(() => {
+      
+      searchFilterFunction("")
+
+    }, 1000);
+
+
+    
+
+    const backAction = () => {
+      navigation.goBack()
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    setTimeout(() => {
+      clearTimeout(interval);
+    
+    }, 1000);
+    
+        return () => {
+          clearTimeout(interval);
+          backHandler.remove();
+          
+        };
+
+    
   }, [])
  
 

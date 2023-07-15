@@ -144,7 +144,8 @@ function HomeScreen({ navigation }) {
     { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
     { subtitle: "My former list", value: "450", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
     { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer" },
-    { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
+    // { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
+    { subtitle: "BCNP Incentive", value: "15/45", title: 'BCNP Incentive',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
   const [attendance, setattendance] = useState([])

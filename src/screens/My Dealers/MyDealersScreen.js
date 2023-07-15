@@ -170,7 +170,7 @@ const MyDealersScreen = ({ navigation }) => {
 
 
   return (
-    <View style={[mstyle.container1]}>
+    <ScrollView style={[mstyle.container1]}>
 
 
       {/* <View style={{paddingBottom:10}}>
@@ -191,12 +191,29 @@ const MyDealersScreen = ({ navigation }) => {
                   <Text style={{
                     color: 'gray', fontSize: 12, fontWeight: '600', fontFamily: Fonts.POPPINS_MEDIUM,
                   }} numberOfLines={2}>{user.mobile_no}</Text>
+
+                  <View style={{flexDirection:'row'}}>
+                  <Pressable onPress={() => {
+                    getGeomitraData()
+                  }} >
+
+                    <Icon name='refresh' size={25}
+                      style={{
+                        textAlign: 'center', color: 'green', backgroundColor: Colors.SECONDARY_WHITE,
+                        paddingHorizontal: 2, paddingVertical: 2, borderRadius: 50, margin:5
+                      }}
+                       />
+                   
+                  </Pressable>
+ 
                   <Text onPress={() => {  }} style={{
-                    color: 'navy', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
+                    color: 'navy', fontSize: 13, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
                   }} numberOfLines={1}>Receiveable Amount <Text style={{ fontSize: 25, color: 'green', fontWeight: 'bold' }}> 
                   {receiveable_amount} </Text> Rs.
 
                   </Text>
+                  </View>
+                  
                 </Pressable>
                 <View style={{ width: '15%' }}>
                   <Pressable title='Check Out' onPress={() => {
@@ -404,7 +421,7 @@ const MyDealersScreen = ({ navigation }) => {
         }}
       />
 
-    </View>
+    </ScrollView>
   )
 }
 

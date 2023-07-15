@@ -302,7 +302,6 @@ const [IsLoading, setIsLoading] = useState(false)
     for (let p of data) {
       if (p.quantity > 0) {
         s_item.push(p)
-        break;
       }
     }
     setselectedProducts(s_item)
@@ -354,6 +353,8 @@ const [booking_id, setbooking_id] = useState('')
   const SubmitOrder = () => {
   if(imageloading == false){
     setimageloading(true)
+    console.log(getSelectedproducts())
+
     let req = {
       cart: selectedProducts,
       // crop: selectedCrops.name,
@@ -369,9 +370,9 @@ const [booking_id, setbooking_id] = useState('')
     //   alert('Please Enter Valid Amount')
     //   return
     // }
-    // console.log(req)
+    console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
-      // console.log(r)
+      console.log(r)
       setiscartloading(false)
       setimageloading(false)
 
@@ -390,12 +391,12 @@ const [booking_id, setbooking_id] = useState('')
           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
       }
     })
-    // .catch(e => {
-    //   setiscartloading(false)
-    //   ToastAndroid.showWithGravityAndOffset(
-    //     'Network Error No Internet',
-    //     ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
-    // })
+    .catch(e => {
+      setiscartloading(false)
+      ToastAndroid.showWithGravityAndOffset(
+        'Network Error No Internet',
+        ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+    })
   }
   }
 

@@ -43,9 +43,7 @@ const CustomerDetailsScreen = ({ navigation, props,
     }, 1000);
 
     // Subscribe for the focus Listener
-    const unsubscribe = navigation.addListener('focus', () => {
-    });
-
+  
     getStock()
 
 setTimeout(() => {
@@ -56,10 +54,9 @@ setTimeout(() => {
     return () => {
       clearTimeout(interval);
       
-      unsubscribe;
     };
    
-  }, [navigation])
+  }, [])
   
 
   const addProductTocart = (product) => {

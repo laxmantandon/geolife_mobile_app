@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, TextInput,Image, ToastAndroid, Alert, Modal, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Pressable, TextInput,Image, ToastAndroid, Alert, Modal, StyleSheet, BackHandler } from 'react-native'
 import React, { useState } from 'react'
 import Card from '../../components/Card'
 import mstyle from '../../mstyle'
@@ -17,7 +17,7 @@ import submitReqData from '../../services/FormData'
 import Geolocation from '@react-native-community/geolocation';
 
 
-const DealerPaymentScreen = ({navigation,})  => {
+const DealerPaymentScreen = ({navigation})  => {
 
   const [data, setdata] = useState([])
   const [captureimage, setsetcaptureimage] = useState("")
@@ -85,6 +85,20 @@ const DealerPaymentScreen = ({navigation,})  => {
     //   console.log(item)
     // }
     getGeomitraData()
+
+    const backAction = () => {
+      navigation.goBack()
+      return true;
+
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+
   }, [])
 
   const startCamera = () => {
