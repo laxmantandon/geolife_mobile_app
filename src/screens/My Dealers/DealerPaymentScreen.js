@@ -85,7 +85,6 @@ const DealerPaymentScreen = ({navigation})  => {
     //   console.log(item)
     // }
     getGeomitraData()
-
     const backAction = () => {
       navigation.goBack()
       return true;
@@ -109,8 +108,6 @@ const DealerPaymentScreen = ({navigation})  => {
       mediaType: 'photo',
       saveToPhotos: true,
       quality: 0.3
-
-
     };
 
     launchCamera(options, (response) => {
@@ -165,6 +162,11 @@ const DealerPaymentScreen = ({navigation})  => {
         if (x.status) {
           setdgoName('')
           setamount('')
+          getGeomitraData()
+          geomitra['index'] =''
+          geomitra['value']=''
+          setsetcaptureimage('')
+          setnotes('')
           setModalVisible(false)
           ToastAndroid.showWithGravityAndOffset(
             x.message,
@@ -197,9 +199,13 @@ const DealerPaymentScreen = ({navigation})  => {
         let mapped_array = []
         let mapped_array2 = []
         x.data.forEach(a => {
-          mapped_array2.push(a.geo_mitra_name)
           // console.log(a.geo_mitra_name)
+          if (a.geo_mitra_cash > 0){
+            mapped_array2.push(a.geo_mitra_name)
+          
           mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`,  "geo_mitra": a.geo_mitra, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
+          }
+        
         })
         setgeoMitradata(mapped_array)
         setgeomitraoptions(mapped_array2)
@@ -339,7 +345,8 @@ const DealerPaymentScreen = ({navigation})  => {
                                     color: Colors.DEFAULT_BLACK,
                                     flex: 1,
                                   }} >
-                                  <Text style={{ color: 'black', fontSize: 15, paddingHorizontal: 5 }}> {geoMitradata[geomitra?.index]?.percent} </Text>
+                                  <Text style={{ color: 'black', fontSize: 15, paddingHorizontal: 5 }}>
+                                     {geoMitradata[geomitra?.index]?.percent} </Text>
                                 </View>
                               </View>
                             </View>

@@ -65,6 +65,7 @@ import DealerProfileScreen from './src/screens/My Dealers/DealerProfileScreen';
 import FarmerMeetingScreen from './src/screens/My Former/FarmerMeetingScreen';
 import CropProjectScreen from './src/screens/My Former/CropProjectScreen';
 import ActivityDealerDetailsScreen from './src/ActivityDealerDetailsScreen';
+import ViewImageScreen from './src/screens/My Former/ViewImageScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -228,6 +229,7 @@ function HomeScreen({ navigation }) {
   const image = { uri: 'https://media.istockphoto.com/id/1284379612/photo/indian-farmer-spreading-fertilizer-in-the-green-banana-field.jpg' }
 
   getTask = async () => {
+    getAttendance()
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
       console.log('RRRRR', r)
@@ -828,6 +830,7 @@ function App({ navigation }) {
 
               {/* <Stack.Screen name='RaiseCropAlertScreen' component={RaiseCropAlertScreen} /> */}
 
+              <Stack.Screen name='ViewImageScreen' component={ViewImageScreen} options={() => ({ headerTitle: "View Image" })} />
 
 
               {/* My Dealer screen */}

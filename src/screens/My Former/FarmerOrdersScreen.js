@@ -96,12 +96,16 @@ const FarmerOrdersScreen = ({ navigation }) => {
 
     const backAction = () => {
       navigation.goBack()
+      return true;
+
     };
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction,
     );
+
+    
 
     setTimeout(() => {
       clearTimeout(interval);
@@ -168,7 +172,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
         }} />
 
         {muser_info.user_role==='Dealer'?(null):(
- <Pressable onPress={() => { navigation.navigate('FarmerProductKit', item=false) }}>
+ <Pressable onPressIn={() => { navigation.navigate('FarmerProductKit', item=false) }}>
  <FabButton />
 </Pressable>
         )}

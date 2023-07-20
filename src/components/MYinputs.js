@@ -276,7 +276,7 @@ const getData=(i)=>{
 
                           </View>
                         ) : (
-                          <View>
+                          // <View>
 
                             <TextInput
                               placeholder={`${item.placeholder}                                                         `}
@@ -294,7 +294,7 @@ const getData=(i)=>{
                               defaultValue={item?.value}
                             />
 
-                          </View>
+                          // </View>
                         )}
 
                       </View>

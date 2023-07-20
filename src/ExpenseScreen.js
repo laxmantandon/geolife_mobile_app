@@ -84,7 +84,7 @@ const ExpenseScreen = ({navigation}) => {
               </Text></Text>
             </View>
 
-<Pressable onPress={()=>{navigation.navigate('ExpenseDetails',{item:''})}}>
+<Pressable onPressIn={()=>{navigation.navigate('ExpenseDetails',{item:''})}}>
           <FabButton />
       </Pressable>
     </View>

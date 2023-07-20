@@ -30,8 +30,8 @@ const [muser_info, setmuser_info] = useState([])
       console.log(mdata.item?.data.mdata)
       let mapped_array = []
       let mapped_array2 = []
-        let image =mdata.item.data.image
-          mapped_array.push({ "large_image": image, "title": `${mdata.item.data.name}`, "subtitle":` Product kit for (${mdata.item.data.crop})`, 
+        let image =mdata.item.data?.image
+          mapped_array.push({ "large_image": image?image:'', "title": `${mdata.item.data.name}`, "subtitle":` Product kit for (${mdata.item.data.crop})`, 
           "status": `(${mdata.item.data.docstatus==1?'Completed':mdata.item.data.payment_method})`, "percent":`Rs. ${mdata.item.data.amount}`, "date": mdata.item.data.posting_date,"data":mdata.item.data })
               
           setdata(mapped_array)
@@ -82,8 +82,17 @@ const [muser_info, setmuser_info] = useState([])
         renderItem={(item)=>{
             return(
                 <View>
-                    <Card item={item} />
+                  <Pressable onPress={() => {
+                    if(item.item?.large_image){
 
+                     navigation.navigate('ViewImageScreen',{"large_image":item.item?.large_image})
+                    }}
+                  }
+                  >
+
+                  
+                    <Card item={item} />
+                    </Pressable>
                     <FlatList
                     ListHeaderComponent={()=>{
                       return(
@@ -110,7 +119,7 @@ const [muser_info, setmuser_info] = useState([])
                     <View style={[mstyle.inputContainer,{padding:10, elevation:8,}]}>
                         <View style={{padding:10,paddingTop:1, elevation:8,}}>
                           {/* <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Crop Name : - <Text style={{fontWeight:'bold'}}> {item.item.data.crop}</Text> </Text> */}
-                          <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Farmer Name : - <Text style={{fontWeight:'bold'}}> {item.item.data.farmer_name}</Text> </Text>
+                          <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Farmer Name : - <Text style={{fontWeight:'bold'}}> {item.item.data.farmer_name} {item.item.data?.last_name}</Text> </Text>
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Farmer Mobile Number : - <Text style={{fontWeight:'bold'}}> {item.item.data.farmer}</Text> </Text>
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Dealer Name : - <Text style={{fontWeight:'bold'}}> {item.item.data.dealer_name}</Text> </Text>
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Dealer Mobile Number : - <Text style={{fontWeight:'bold'}}> {item.item.data.dealer}</Text> </Text>
@@ -118,6 +127,7 @@ const [muser_info, setmuser_info] = useState([])
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Advance Paid Amount : - <Text style={{fontWeight:'bold'}}>Rs. {item.item.data.amount}</Text> </Text>
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Booking Date : - <Text style={{fontWeight:'bold'}}> {moment(item.item.data.posting_date).format("Do MMM-yyyy")} </Text> </Text>
                           <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Expected Date of Delivery : - <Text style={{fontWeight:'bold'}}> {moment(item.item.data.booking_date).format("Do MMM-yyyy")} </Text> </Text>
+                          <Text style={{fontSize:14, paddingTop:14,color:'black'}}>Booking Completed On : - <Text style={{fontWeight:'bold'}}> {moment(item.item.data?.modified).format("Do MMM-yyyy")} </Text> </Text>
 
                           {}
 

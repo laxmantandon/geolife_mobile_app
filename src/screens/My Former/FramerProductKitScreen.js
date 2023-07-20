@@ -113,7 +113,10 @@ const [IsLoading, setIsLoading] = useState(false)
       let req = {
         "text": text
       }
-      
+      if(!selectedDelers?.id){
+        alert('Please Select Dealer')
+        return
+      }
         // req.text = selectedCrops?.id
         req.text = crop_bundle
         req.cnp_type= cnp_type
@@ -124,10 +127,7 @@ const [IsLoading, setIsLoading] = useState(false)
         //   return
         // }
 
-        if(!req.dealer){
-          alert('Please Select Dealer')
-          return
-        }
+        
       
       // console.log(req)
       AuthenicationService.searchProductKitData(req)
@@ -169,7 +169,7 @@ const [IsLoading, setIsLoading] = useState(false)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "name": `${a.first_name} ${a.last_name}`, "id": a.name, })
+            mapped_array.push({ "name": `${a.first_name} ${a.last_name} (${a.name})`, "id": a.name, })
           })
           setfarmers(mapped_array)
         } else {
@@ -299,13 +299,19 @@ const [IsLoading, setIsLoading] = useState(false)
   }
   const getSelectedproducts = () => {
     let s_item = []
+    let  m_amount =0
     for (let p of data) {
       if (p.quantity > 0) {
         s_item.push(p)
+        m_amount= m_amount+(500*p.quantity)
+        setamount(m_amount)
+       
+        console.log(m_amount)
       }
     }
     setselectedProducts(s_item)
   }
+
   const bookProductKit = () => {
     // let s_item = []
     // for (let p of data) {
@@ -343,14 +349,22 @@ const [IsLoading, setIsLoading] = useState(false)
           onPress: () => null,
           style: 'cancel',
         },
-        { text: 'YES', onPress: () => SubmitOrder() },
+        { text: 'YES', onPress: () =>{
+if(payment_method.value=="UPI"){
+  setVisible(true)
+}else{
+  SubmitOrder('')
+}
+
+        }
+      },
       ]);
     }
 
   }
 const [booking_id, setbooking_id] = useState('')
 
-  const SubmitOrder = () => {
+  const SubmitOrder = (basse64image) => {
   if(imageloading == false){
     setimageloading(true)
     console.log(getSelectedproducts())
@@ -361,7 +375,8 @@ const [booking_id, setbooking_id] = useState('')
       farmer: selectedFarmer.id,
       dealer_mobile: selectedDelers.id,
       expected_date: delivery_date.value,
-      payment_method: payment_method.value
+      payment_method: payment_method.value,
+      image:basse64image?basse64image:''
     }
     req.amount = amount
     // if (!amount) {
@@ -370,7 +385,7 @@ const [booking_id, setbooking_id] = useState('')
     //   alert('Please Enter Valid Amount')
     //   return
     // }
-    console.log(req)
+    // console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
       console.log(r)
       setiscartloading(false)
@@ -384,6 +399,10 @@ const [booking_id, setbooking_id] = useState('')
           r?.message,
           ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         setVisible(true)
+       
+          navigation.goBack()
+        
+
         // navigation.goBack()
       } else {
         ToastAndroid.showWithGravityAndOffset(
@@ -400,6 +419,8 @@ const [booking_id, setbooking_id] = useState('')
   }
   }
 
+
+  const [capturedImage, setcapturedImage] = useState('')
   const startCamera = () => {
 
     CameraPermission()
@@ -422,15 +443,19 @@ launchImageLibrary(options, (response) => {
         // const source = { uri: response.uri };
         // // console.log('response', JSON.stringify(response.assets[0].base64));
         const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
-        UploadRefrenceImage(basse64image)
+        // UploadRefrenceImage(basse64image)
+        setcapturedImage(basse64image)
+        SubmitOrder(basse64image)
       }
     });
 
   }
 
   const UploadRefrenceImage=(basse64image)=>{
-    if(imageloading==false){
+
+    // if(imageloading==false){
       setimageloading(true)
+     
     req={
       'image':basse64image,
       "ref_number":booking_id,
@@ -463,7 +488,7 @@ launchImageLibrary(options, (response) => {
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
       );
     })
-    }
+    // }
 
   }
 
@@ -585,11 +610,11 @@ if (payment_method.value == 'UPI'){
             </View>
           )}
 
-        <Text style={{ marginVertical: 10, fontSize: 20, color: 'green', fontWeight: 'bold', textAlign: 'center' }}>
+        {/* <Text style={{ marginVertical: 10, fontSize: 20, color: 'green', fontWeight: 'bold', textAlign: 'center' }}>
           Congratulations
         </Text><Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>
           Advance Booking was successfully
-        </Text>
+        </Text> */}
       </ModalPoup>
 
       <Modal
@@ -692,15 +717,20 @@ if (payment_method.value == 'UPI'){
             </Text>
             <View style={mstyle.inputContainer}>
               <View style={mstyle.inputSubContainer}>
-                <TextInput
-                  placeholder="00.00" keyboardType='numeric'
-                  placeholderTextColor={Colors.DEFAULT_GREY}
-                  selectionColor={Colors.DEFAULT_GREY}
+                <View
+                  // placeholder="00.00" keyboardType='numeric'
+                  // placeholderTextColor={Colors.DEFAULT_GREY}
+                  // selectionColor={Colors.DEFAULT_GREY}
                   style={mstyle.inputText}
-                  maxLength={10}
-                  onChangeText={text => setamount(text)}
-                  value={amount}
-                />
+                  // maxLength={19}
+                  // onChangeText={text => setamount(text)}
+                  
+                >
+                  <Text style={{fontSize:15, fontWeight:'bold', color:'black'}}>
+                  Rs. - {amount}.00
+                  </Text>
+
+                  </View>
               </View>
             </View>
           </View>
@@ -803,6 +833,7 @@ if (payment_method.value == 'UPI'){
                             // console.log(selectedFarmer)
                           }}
                           containerStyle={{ padding: 1, width: '100%' }}
+                          modalContainer
                           onRemoveItem={(item, index) => {
                             // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
                             // setselectedCrops(items)
@@ -1051,7 +1082,7 @@ if (payment_method.value == 'UPI'){
 
 
                   <Pressable onPress={() => {
-                    searchFilterFunction(selectedCrops?.id)
+                    searchFilterFunction()
                   }} style={{paddingBottom:50}}>
                     <Buttons title={'Get Crop Product Kit Now'} loading={iscartloading} />
 

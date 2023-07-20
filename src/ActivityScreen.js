@@ -57,7 +57,7 @@ const ActivityScreen = ({navigation}) => {
           </Pressable>
           )
       }} />
-      <Pressable onPress={()=>{navigation.navigate('ActivityDetails',{item:''})}}>
+      <Pressable onPressIn={()=>{navigation.navigate('ActivityDetails',{item:''})}}>
           <FabButton />
       </Pressable>
 

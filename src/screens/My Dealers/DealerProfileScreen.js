@@ -2,6 +2,8 @@ import { View, Text, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors } from '../../contants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useRoute } from '@react-navigation/native'
+import { BackHandler } from 'react-native'
 
 const DealerProfileScreen = ({navigation,  route: {
   params: item ,
@@ -9,6 +11,11 @@ const DealerProfileScreen = ({navigation,  route: {
   const [loggedIn, setloggedIn] = useState(false)
   const [user, setuser] = useState([])
   const [qrcode, setqrcode] = useState()
+
+  const route = useRoute();
+  const currentRouteName = route.name;
+
+
   if (loggedIn == false) {
     AsyncStorage.getItem("user_info").then((value) => {
       setloggedIn(true)
@@ -24,10 +31,25 @@ const DealerProfileScreen = ({navigation,  route: {
   }
 
   useEffect(() => {
+
+    
     if(item){
       // console.log(params)
       setqrcode(item?.qrcode)
     }
+
+    const backAction = () => {
+      navigation.goBack()
+      return true;
+
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
   
   
   }, [])

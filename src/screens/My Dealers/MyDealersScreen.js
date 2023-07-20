@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Alert, BackHandler, Image, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, Pressable, Alert, BackHandler, Image, ToastAndroid, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import mstyle from '../../mstyle'
 import Card from '../../components/Card'
@@ -28,6 +28,7 @@ const MyDealersScreen = ({ navigation }) => {
   const [qrcode, setqrcode] = useState('')
   const [userData, setuserData] = useState()
 
+  
 
 
 
@@ -130,6 +131,7 @@ const MyDealersScreen = ({ navigation }) => {
           })
 
           setreceiveable_amount(total_amount)
+          mapped_array.sort((a, b) => { return b.percent - a.percent; })
           setgeoMitradata(mapped_array)
           // setgeoMitradata([])
 
@@ -236,7 +238,10 @@ const MyDealersScreen = ({ navigation }) => {
 
               </View>
               {qrcode ? (
-                <View>
+                <TouchableOpacity onPress={()=>{
+                  navigation.navigate('ViewImageScreen',{"large_image":`https://crop.erpgeolife.com${qrcode?.replace('/private','')}`})
+
+                }}>
                   <Image style={{
                     alignSelf: 'center', borderRadius: 5,
                     width: '100%',
@@ -245,20 +250,26 @@ const MyDealersScreen = ({ navigation }) => {
                     backgroundColor: 'silver'
                   }} source={{ uri: `https://crop.erpgeolife.com${qrcode?.replace('/private','')}` }} />
 
-                </View>
+                </TouchableOpacity>
               ) : (
-                <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }}>
+                <View style={{ marginHorizontal: 10, backgroundColor: Colors.LIGHT_RED, borderRadius: 10 }} >
                   {/* <Image source={require('../../assets/images/qrscan.gif')} style={{width:'100%',height:250}}/> */}
                   {
                     captureimage ? (
                       <View>
-                        <Image style={{
-                          alignSelf: 'center', borderRadius: 5,
-                          width: '100%',
-                          height: 300,
-                          marginTop: 1,
-                          backgroundColor: 'silver'
-                        }} source={{ uri: captureimage }} />
+                        <TouchableOpacity  onPress={()=>{
+                          navigation.navigate('ViewImageScreen',{"large_image":captureimage})
+                        }}>
+
+                        
+                          <Image style={{
+                            alignSelf: 'center', borderRadius: 5,
+                            width: '100%',
+                            height: 300,
+                            marginTop: 1,
+                            backgroundColor: 'silver'
+                          }} source={{ uri: captureimage }} />
+                        </TouchableOpacity>
                         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                           <Pressable style={{
                             flexDirection: 'row', padding: 10, backgroundColor: 'red',
