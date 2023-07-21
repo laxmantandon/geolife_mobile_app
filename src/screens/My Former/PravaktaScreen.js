@@ -12,10 +12,11 @@ const PravaktaScreen = ({ navigation }) => {
 
   const searchFilterFunction = (text) => {
     let req = {
-      "text": text
+      "text": text,
+      "type":"pravakta"
     }
     // // console.log(text)
-    AuthenicationService.searchfarmerData(req)
+    AuthenicationService.search_pravakta_farmer(req)
       .then(x => {
         if (x.status == true) {
           let mapped_array = []

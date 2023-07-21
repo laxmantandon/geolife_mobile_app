@@ -256,16 +256,16 @@ const DealerPaymentScreen = ({navigation})  => {
       </View>
 
       <View>
-        <Pressable onPress={() => {
+        {/* <Pressable onPress={() => {
           setModalVisible(true)
           // getGeomitraData()
         }} >
           <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black', textAlign: 'center', paddingVertical: 10 }}>
             Do you wants to add new payment?
             <Text style={{ color: Colors.GOOGLE_BLUE }}> YES</Text></Text>
-        </Pressable>
+        </Pressable> */}
       </View>
-      <View style={{flexDirection:'row', alignSelf:'center'}}>
+      <View style={{flexDirection:'row', alignSelf:'center',paddingTop:10}}>
       <View style={{padding:7, backgroundColor:Colors.LIGHT_GREEN, borderRadius:50,marginEnd:10}}>
         <Text style={{color:'black'}}>Cash :- <Text style={{color:Colors.DEFAULT_GREEN}}>{cashamt} </Text> </Text>
       </View>

@@ -12,6 +12,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CameraPermission from '../../services/permissionservices'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Modal } from 'react-native';
+import { TextInput } from 'react-native';
+import Buttons from '../../components/Buttons';
+import Geolocation from '@react-native-community/geolocation';
 
 const MyDealersScreen = ({ navigation }) => {
   const [data, setdata] = useState([
@@ -27,13 +31,18 @@ const MyDealersScreen = ({ navigation }) => {
   const [user, setuser] = React.useState([])
   const [qrcode, setqrcode] = useState('')
   const [userData, setuserData] = useState()
+  const [modaldealerVisible, setmodaldealerVisible] = useState(false)
+  const [notes, setnotes] = useState('')
+  const [paid_captureimage, setpaid_captureimage] = useState('')
+  const [IsLoading, setIsLoading] = useState(false)
+  const [amount, setamount] = useState(0)
 
   
 
 
 
 
-  const startCamera = () => {
+  const startCamera = (cap_type) => {
     CameraPermission()
     let options = {
       includeBase64: true,
@@ -41,6 +50,20 @@ const MyDealersScreen = ({ navigation }) => {
       saveToPhotos: true,
       quality: 0.3
     };
+
+    if (cap_type=='paid'){
+      launchCamera(options, (response) => {
+        if (response.didCancel) {
+        } else if (response.error) {
+        } else if (response.customButton) {
+          alert(response.customButton);
+        } else {
+          const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+          setpaid_captureimage("")
+          setpaid_captureimage(basse64image)
+        }
+      });
+    }else{
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
       } else if (response.error) {
@@ -51,7 +74,10 @@ const MyDealersScreen = ({ navigation }) => {
         setcaptureimage("")
         setcaptureimage(basse64image)
       }
+
+  
     });
+  }
 
   }
 
@@ -64,6 +90,25 @@ const MyDealersScreen = ({ navigation }) => {
       },
       { text: 'YES', onPress: () => BackHandler.exitApp() },
     ]);
+  }
+
+const [geomitra, setgeomitra] = useState({})
+  const collect_Amount = (item) => {
+setgeomitra(item)
+if (item?.percent >0){
+    Alert.alert('Collect Amount', `Are you sure you want to collect amount from ${item.title}`, [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      { text: 'YES', onPress: () => {setmodaldealerVisible(true)} },
+    ]);
+  }else{
+    Alert.alert('Error !','No receiveable amount find found dgo')
+  }
+
+
   }
 
   const LogoutDealer = () => {
@@ -127,7 +172,7 @@ const MyDealersScreen = ({ navigation }) => {
             total_amount = total_amount + a.geo_mitra_cash
             // console.log(total_amount)
             geo_mitra.push(a.geo_mitra_name)
-            mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
+            mapped_array.push({ "title": `${a.geo_mitra_name}`, "subtitle": `Geo Mitra :- ${a.geo_mitra}`, "name": a.geo_mitra, "status": 'Amount in rs', "percent": a.geo_mitra_cash })
           })
 
           setreceiveable_amount(total_amount)
@@ -169,10 +214,155 @@ const MyDealersScreen = ({ navigation }) => {
   }
 
 
+  const Add_payment = () => {
+    if (IsLoading == false) {
+      
+      req = {
+        geo_mitra: geomitra.name,
+        amount: geomitra?.percent,
+        image : paid_captureimage,
+        notes:notes,
+        mylocation:""
+      }
+      Geolocation.getCurrentPosition(info =>{
+        // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
+          req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
+          "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
+      })
+      // console.log(req)
+
+      if (!req.geo_mitra) {
+        alert('Please enter Geomitra name')
+        return
+      }
+      if (!req.amount) {
+        alert('No receiveable amount')
+        return
+      }
+      setIsLoading(true)
+      AuthenicationService.Add_payment_cash_entry(req).then(x => {
+        setIsLoading(false)
+        // console.log(x)
+        if (x.status) {
+          getGeomitraData()
+          setgeomitra('') 
+          setpaid_captureimage('')
+          setnotes('')
+          setmodaldealerVisible(false)
+          ToastAndroid.showWithGravityAndOffset(
+            x.message,
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+        } else {
+          ToastAndroid.showWithGravityAndOffset(
+            'Please Try Again',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
+
+        }
+
+      }).catch(e => {
+        console.log(e)
+        setIsLoading(false)
+        ToastAndroid.showWithGravityAndOffset(
+          'No internet connection',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+        );
+      })
+    }
+  }
+
+
 
 
   return (
     <ScrollView style={[mstyle.container1]}>
+
+
+<Modal animationType="slide"
+                    // transparent={true}
+                    visible={modaldealerVisible}
+                    onRequestClose={() => {
+                      setmodaldealerVisible(!modaldealerVisible);
+                    }}>
+                      <View style={{ padding: 10, margin: 10, backgroundColor: 'white' }}>
+                          <Text style={{ textAlign: 'right', fontSize: 15, color: 'red', fontWeight: '700' }} onPress={() => { setmodaldealerVisible(false) }}>Close</Text>
+                          <Text style={{ fontSize: 25, fontWeight: '600', color: 'black' }}>Create New Payment Entry</Text>
+
+                          <View style={[mstyle.inputContainer1, { marginTop: 8 }]}>
+                            <Text style={{ color: 'black', marginHorizontal: 8, fontSize: 15 }}>
+                              Amount in Rupees 
+                            </Text>
+                            <View style={[{
+                              backgroundColor: Colors.DEFAULT_WHITE,
+                              // paddingHorizontal: 5,
+                              marginHorizontal: 8,
+                              borderRadius: 4,
+                              borderWidth: 0.5,
+                              borderColor: 'gray',
+                              justifyContent: 'center', marginTop: 8
+                            }]}>
+                              <View style={[mstyle.inputSubContainer, { backgroundColor: 'silver' }]}>
+                                <View
+                                  style={{
+                                    fontSize: 14,
+                                    backgroundColor: 'silver',
+                                    textAlignVertical: 'center',
+                                    paddingVertical: 10,
+                                    width: '100%',
+                                    // height: Display.setHeight(6),
+                                    color: Colors.DEFAULT_BLACK,
+                                    flex: 1,
+                                  }} >
+                                  <Text style={{ color: 'black', fontSize: 15, paddingHorizontal: 5 }}>
+                                     {geomitra?.percent} </Text>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+
+                          <View style={[mstyle.inputContainer1, { marginTop: 8 }]}>
+                            <Text style={{ color: 'black', marginHorizontal: 8, fontSize: 15 }}>
+                              Notes
+                            </Text>
+                            <View style={[mstyle.inputContainer, { marginTop: 8 }]}>
+                              <View style={mstyle.inputSubContainer}>
+                                <TextInput
+                                  placeholder={'note about payment'}
+                                  placeholderTextColor={Colors.DEFAULT_GREY}
+                                  selectionColor={Colors.DEFAULT_GREY}
+                                  style={mstyle.inputText}
+                                  multiline={true}
+                                  numberOfLines={5}
+                                  onChangeText={text => {
+                                    setnotes(text)
+                                  }}
+                                  value={notes}
+                                />
+                              </View>
+                            </View>
+                          </View>
+
+                          <View style={{ marginHorizontal: 10 }}>
+                            {
+                              paid_captureimage ? (
+                              <Image style={{ width: 80, height: 100, marginTop: 10, backgroundColor: 'silver' }} 
+                              source={{ uri: paid_captureimage }} />
+                              ) : ('')
+                            }
+                            <Pressable onPress={() => startCamera('paid')} style={{ width: '100%', height: 40, marginTop: 15, backgroundColor: Colors.LIGHT_GREEN, borderRadius: 50 }} >
+                              <Icon name='camera' size={33} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
+                              {/* <Image style={{ width: 50, height: 50 }}
+                              source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
+                            /> */}
+                                </Pressable>
+                          </View>
+                          <Pressable onPress={() => { Add_payment() }}>
+                            <Buttons title={'Submit Payment'} loading={IsLoading} />
+
+                          </Pressable>
+                      </View>
+                    </Modal>
 
 
       {/* <View style={{paddingBottom:10}}>
@@ -358,7 +548,7 @@ const MyDealersScreen = ({ navigation }) => {
         contentContainerStyle={{ flex: 1 }}
         renderItem={(item) => {
           return (
-            <Pressable style={{ flex: 1, }} onPress={() => { navigation.navigate(item.item.route), { "item": geoMitradata } }}>
+            <Pressable style={{ flex: 1, paddingTop:5}} onPress={() => { navigation.navigate(item.item.route), { "item": geoMitradata } }}>
               <View
                 style={mstyle.ListContainer} >
                 <Icon name={item.item.icon} size={25} style={{ paddingTop: 5, paddingLeft: 20, color: item.item.color }} />
@@ -395,13 +585,18 @@ const MyDealersScreen = ({ navigation }) => {
                         </View>
 
                       </View>
-                      <View style={{ backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto' }} >
+                      <Pressable 
+                      onPressIn={()=>{
+                        collect_Amount(item.item)
+                      }}
+                      style={{ backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto' }} >
                         <View style={{ padding: 10 }}>
                           <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{item.item.percent}</Text>
                           <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>Receiveable Amount</Text>
                         </View>
-                      </View>
+                      </Pressable>
 
+                      
                     </View>
                   )
                 }}

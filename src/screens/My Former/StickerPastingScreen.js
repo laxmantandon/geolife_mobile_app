@@ -1,4 +1,4 @@
-import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid } from 'react-native'
+import { View, StyleSheet,  Pressable,  FlatList, ScrollView, ToastAndroid,Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MYinputs from '../..//components/MYinputs';
 import mstyle from '../../mstyle';
@@ -6,6 +6,7 @@ import Buttons from '../../components/Buttons';
 import submitReqData from '../../services/FormData';
 import { AuthenicationService } from '../../services';
 import SearchableDropDown from 'react-native-searchable-dropdown';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const StickerPastingScreen = ({navigation}) => {
@@ -14,7 +15,7 @@ const StickerPastingScreen = ({navigation}) => {
     // { label: 'Select Farmer', placeholder:'Note : About Alert', key: 'farmer', value:'',
     //  type: 'select', options:data },
 
-      { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
+      // { label: 'Farmer name', value: '', type: 'text', key: 'farmer_name', },
       { label: 'Capture sticker picture with farmer', value: [], type: 'image', key: 'image', },
   ])
 
@@ -98,17 +99,29 @@ const StickerPastingScreen = ({navigation}) => {
 
   return (
     <View style={mstyle.container1}>
-       
+       <View style={mstyle.inputContainer1}>
+      {selectedItems?(
+        <View style={{
+          padding: 8, marginTop: 2, flexDirection: 'row',
+          backgroundColor: 'white', borderColor: 'silver',
+          borderWidth: 1, borderRadius: 5, width: '100%'
+          }}>
+
+          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {selectedItems.name}</Text>
+          <Icon onPress={() => { setselectedItems() }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+
+        </View>
+      ):(
           <SearchableDropDown
             onItemSelect={(item) => {
-              formdata[0].value = item.name
+              // formdata[0].value = item.name
               // console.log(formdata[0].value)
               // const items = this.state.selectedItems;
               // items.push(item)
               setselectedItems(item)
               // this.setState({ selectedItems: items });
             }}
-            containerStyle={mstyle.inputContainer1}
+            containerStyle={{}}
             onRemoveItem={(item, index) => {
               const items = selectedItems.filter((sitem) => sitem.id !== item.id);
               setselectedItems(items)
@@ -147,7 +160,7 @@ const StickerPastingScreen = ({navigation}) => {
                         if (x.status == true) {
                           let mapped_array = []
                           x.data.forEach(a => {
-                            mapped_array.push({ "name": `${a.first_name} ${a.last_name}` , "id": a.mobile_number })
+                            mapped_array.push({ "name": `${a.first_name} ${a.last_name} (${a.mobile_number})` , "id": a.mobile_number })
                           })
                           setdata(mapped_array)
                         } else {
@@ -165,7 +178,8 @@ const StickerPastingScreen = ({navigation}) => {
               }
             }
         />
-      
+      )}
+      </View>
       
       <FlatList
         data={formdata}

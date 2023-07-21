@@ -97,7 +97,7 @@ const sendOTP = async user => {
     );
     return loginResponse?.data.message;
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response);
     return {status: false, message: error, url:`${base_url}.generate_otp?mobile_no=${user?.username}`
 };
   }
@@ -164,6 +164,27 @@ const searchfarmerData = async req => {
   }
 };
 
+
+const search_pravakta_farmer = async req => {
+  try {
+    gettoken()
+    
+    let Response = await AuthRequest.post(
+      `${base_url}.search_pravakta_farmer`, req, {headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+
+  }
+};
+
 const searchfarmerOrdersData = async req => {
   try {
     gettoken()
@@ -192,7 +213,7 @@ const searchdealerfarmerOrdersData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -547,7 +568,7 @@ const create_expenses = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response?.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -566,7 +587,7 @@ const door_to_door_awareness = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -939,5 +960,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
-  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry
+  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer
 };

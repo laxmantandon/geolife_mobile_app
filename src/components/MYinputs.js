@@ -277,14 +277,27 @@ const getData=(i)=>{
                           </View>
                         ) : (
                           // <View>
-
+                          item?.len?(<TextInput
+                            placeholder={`${item.placeholder}                                                         `}
+                            keyboardType={item?.keyboard ? item?.keyboard : ''}
+                            placeholderTextColor={'gray'}
+                            selectionColor={Colors.DEFAULT_GREY}
+                            style={mstyle.inputText}
+                            maxLength={item?.len}
+                            multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
+                            onChangeText={text => {
+                              item.value = text
+                              // // console.log(item)
+                            }}
+                            // value={item?.value}
+                            defaultValue={item?.value}
+                          />):(
                             <TextInput
                               placeholder={`${item.placeholder}                                                         `}
                               keyboardType={item?.keyboard ? item?.keyboard : ''}
                               placeholderTextColor={'gray'}
                               selectionColor={Colors.DEFAULT_GREY}
                               style={mstyle.inputText}
-                              // maxLength={10}
                               multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
                               onChangeText={text => {
                                 item.value = text
@@ -293,6 +306,8 @@ const getData=(i)=>{
                               // value={item?.value}
                               defaultValue={item?.value}
                             />
+                          )
+                            
 
                           // </View>
                         )}

@@ -34,6 +34,7 @@ import {
   startOtpListener,
   useOtpVerify,
 } from 'react-native-otp-verify';
+import OneSignal from 'react-native-onesignal';
 
 
 const LoginScreen = ({ navigation, setToken }) => {
@@ -126,7 +127,7 @@ const LoginScreen = ({ navigation, setToken }) => {
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
         // console.log(user)
-        // console.log(response)
+        console.log(response)
         // setToken(response?.data);
         if (response?.status == true) {
           setotp(true)
@@ -155,6 +156,7 @@ const LoginScreen = ({ navigation, setToken }) => {
           setErrorMessage(response?.message);
         }
       }).catch(e=>{
+        console.log(e)
         setIsLoading(false)
         ToastAndroid.showWithGravityAndOffset(
           'Please check your internet connection',
@@ -191,6 +193,35 @@ const LoginScreen = ({ navigation, setToken }) => {
         setIsLoading(false);
         AsyncStorage.clear()
         if (response?.status == true) {
+
+          // OneSignal.setExternalUserId(username);
+          OneSignal.setSMSNumber(username);
+          OneSignal.setExternalUserId(username, (results) => {
+            // The results will contain push and email success statuses
+            console.log('Results of setting external user id');
+            console.log(results);
+            
+            // Push can be expected in almost every situation with a success status, but
+            // as a pre-caution its good to verify it exists
+            if (results.push && results.push.success) {
+              console.log('Results of setting external user id push status:');
+              console.log(results.push.success);
+            }
+            
+            // Verify the email is set or check that the results have an email success status
+            if (results.email && results.email.success) {
+              console.log('Results of setting external user id email status:');
+              console.log(results.email.success);
+            }
+          
+            // Verify the number is set or check that the results have an sms success status
+            if (results.sms && results.sms.success) {
+              console.log('Results of setting external user id sms status:');
+              console.log(results.sms.success);
+            }
+          });
+
+
 
           AsyncStorage.setItem('user_info', JSON.stringify(response.data));
           // navigation.navigate('Home')

@@ -65,9 +65,9 @@ const [FarmerShowModal, setFarmerShowModal] = useState(false)
 const [newForm, setnewForm] = useState([
   { label: 'Farmer First Name', placeholder:'Ex. - Rama', key: 'first_name', value:'', keyboard:'text' },
   { label: 'Farmer Last Name', placeholder:'Ex. - Dash', key: 'last_name', value:'', keyboard:'text' },
-  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric' },
+  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric', len:6 },
   { label: 'City', placeholder:'Ex. - Pune', key: 'city', value:'', keyboard:'text' },
-  { label: 'Mobile Number', placeholder:'Ex. - 1234567890', key: 'mobile_no', value:'', keyboard:'numeric' },
+  { label: 'Mobile Number', placeholder:'Ex. - 9876543210', key: 'mobile_no', value:'', keyboard:'numeric', len:10 },
   { label: 'Farm In Acres', placeholder:'Ex. - 15', key: 'acre', value:'', keyboard:'numeric' },
   
 ])

@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "1092236643424",
+    "firebase_url": "https://the-farm-people-default-rtdb.firebaseio.com",
+    "project_id": "the-farm-people",
+    "storage_bucket": "the-farm-people.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092236643424:android:00970f482bb02d3ee4c705",
+        "android_client_info": {
+          "package_name": "com.erpgeolife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092236643424-704n9oelfp81cgdr2q1uve66r4hl5mrn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwtjl1zdoCNigmt__RIUw6QauoOPcuDVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092236643424-704n9oelfp81cgdr2q1uve66r4hl5mrn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092236643424-7e9kmenqhn0kpbeg6qhogu490q5ifbum.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nirmitee.theFarmPeople",
+                "app_store_id": "163929873"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092236643424:android:2c79cec223444be4e4c705",
+        "android_client_info": {
+          "package_name": "com.nirmitee.the_farm_people"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092236643424-mfm8j986iv3ngc0g8peaa5b8s5fdc2j8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nirmitee.the_farm_people",
+            "certificate_hash": "ecb77b8d4b07e615ad5c82ad39740702437a66b8"
+          }
+        },
+        {
+          "client_id": "1092236643424-704n9oelfp81cgdr2q1uve66r4hl5mrn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwtjl1zdoCNigmt__RIUw6QauoOPcuDVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092236643424-704n9oelfp81cgdr2q1uve66r4hl5mrn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092236643424-7e9kmenqhn0kpbeg6qhogu490q5ifbum.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nirmitee.theFarmPeople",
+                "app_store_id": "163929873"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

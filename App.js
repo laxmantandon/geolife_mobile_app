@@ -247,7 +247,9 @@ function HomeScreen({ navigation }) {
         dashboarddata1[3].value = r.dashboard?.tft_downloads?r.dashboard?.tft_downloads:'0'
         dashboarddata1[4].value = r.dashboard?.farmer_connected?r.dashboard?.farmer_connected:'0'
         dashboarddata1[5].value = r.dashboard?.new_dealer?r.dashboard?.new_dealer:'0'
-        dashboarddata1[6].value = r.dashboard?.target_achievement?r.dashboard?.target_achievement:'0'
+        // dashboarddata1[6].value = r.dashboard?.target_achievement?r.dashboard?.target_achievement:'0'
+        dashboarddata1[6].value = r.dashboard?.incentive?r.dashboard?.incentive:'0'
+
         setdashboarddata(dashboarddata1)
         setloading(false)
         console.log(r.dashboard?.dealer_not_visit)

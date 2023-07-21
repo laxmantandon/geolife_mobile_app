@@ -97,9 +97,9 @@ const [FarmerShowModal, setFarmerShowModal] = useState(false)
 const [newForm, setnewForm] = useState([
   { label: 'Farmer First Name', placeholder:'Ex. - Rama', key: 'first_name', value:'', keyboard:'text' },
   { label: 'Farmer Last Name', placeholder:'Ex. - Dash', key: 'last_name', value:'', keyboard:'text' },
-  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric' },
+  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric', len:6 },
   { label: 'City', placeholder:'Ex. - Pune', key: 'city', value:'', keyboard:'text' },
-  { label: 'Mobile Number', placeholder:'Ex. - 1234567890', key: 'mobile_no', value:'', keyboard:'numeric' },
+  { label: 'Mobile Number', placeholder:'Ex. - 1234567890', key: 'mobile_no', value:'', keyboard:'numeric', len:10 },
   { label: 'Farm In Acres', placeholder:'Ex. - 15', key: 'acre', value:'', keyboard:'numeric' },
   
 ])
@@ -249,7 +249,7 @@ const [IsLoading, setIsLoading] = useState(false)
       // console.log(farmerData)
       setselectedFarmer(farmerData)
     }
-    searchFilterFunctionFarmer(' ')
+    // searchFilterFunctionFarmer(' ')
     getDealers()
     getCrops()
     getData()
@@ -421,7 +421,7 @@ const [booking_id, setbooking_id] = useState('')
 
 
   const [capturedImage, setcapturedImage] = useState('')
-  const startCamera = () => {
+  const startCamera = (cap_type) => {
 
     CameraPermission()
     let options = {
@@ -430,6 +430,8 @@ const [booking_id, setbooking_id] = useState('')
       saveToPhotos: true,
       quality: 0.3
     };
+if(cap_type=='gallery'){
+
 
 launchImageLibrary(options, (response) => {
       if (response.didCancel) {
@@ -448,6 +450,29 @@ launchImageLibrary(options, (response) => {
         SubmitOrder(basse64image)
       }
     });
+
+  }else{
+
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        // console.log('User cancelled image picker');
+      } else if (response.error) {
+        // console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        // console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        // const source = { uri: response.uri };
+        // // console.log('response', JSON.stringify(response.assets[0].base64));
+        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+        // UploadRefrenceImage(basse64image)
+        setcapturedImage(basse64image)
+        SubmitOrder(basse64image)
+      }
+    });
+
+
+  }
 
   }
 
@@ -585,14 +610,29 @@ if (payment_method.value == 'UPI'){
 
            )} 
 
+            <View style={{flexDirection:'row'}}>
+            <Pressable
+              onPress={() => startCamera('gallery')} style={{
+                alignSelf: 'center',  marginVertical: 10,
+                backgroundColor: 'white', borderRadius: 50,paddingHorizontal:10
+              }} >
+              <Icon name='image-outline' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
+              <Text style={{color:'black'}}>Gallery</Text>
+
+            </Pressable>
+
             <Pressable
               onPress={() => startCamera()} style={{
                 alignSelf: 'center',  marginVertical: 10,
-                backgroundColor: 'white', borderRadius: 50
+                backgroundColor: 'white', borderRadius: 50,paddingHorizontal:10
               }} >
               <Icon name='camera' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
-             <Text style={{color:'red'}}>Upload payment receipt</Text>
+              <Text style={{color:'black'}}>Camera</Text>
+
             </Pressable>
+            </View>
+            <Text style={{color:'red'}}>Upload payment receipt</Text>
+
             {/* <Image
           source={require('../../assets/images/check.png')}
           style={{height: 50, width: 50, marginVertical: 10}}

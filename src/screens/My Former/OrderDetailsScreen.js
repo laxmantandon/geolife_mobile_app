@@ -31,7 +31,7 @@ const [muser_info, setmuser_info] = useState([])
       let mapped_array = []
       let mapped_array2 = []
         let image =mdata.item.data?.image
-          mapped_array.push({ "large_image": image?image:'', "title": `${mdata.item.data.name}`, "subtitle":` Product kit for (${mdata.item.data.crop})`, 
+          mapped_array.push({ "large_image": image?image:'', "title": `${mdata.item.data.name}`, "subtitle":` Product kit for (${mdata.item.data?.crop_bundle})`, 
           "status": `(${mdata.item.data.docstatus==1?'Completed':mdata.item.data.payment_method})`, "percent":`Rs. ${mdata.item.data.amount}`, "date": mdata.item.data.posting_date,"data":mdata.item.data })
               
           setdata(mapped_array)
@@ -39,7 +39,7 @@ const [muser_info, setmuser_info] = useState([])
           let m = mdata.item?.data.mdata
           m.forEach(a=>{
             console.log(a)
-            mapped_array2.push({ "title": `${a.product_kit}`, "subtitle":` Product kit for (${a.product_kit})`, 
+            mapped_array2.push({ "title": `${a.product_kit}`, "subtitle":` Product kit type (${mdata.item.data?.kit_type})`, 
             "status": 'Quantity', "percent":a.qty })
           })
           setproductkitData(mapped_array2)

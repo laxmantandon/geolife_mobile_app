@@ -44,7 +44,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
-              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
+              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a?.crop_bundle})`, 
               "status": `(${a.docstatus==1?'Completed':a.payment_method})`, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
             })
             setdata(mapped_array)
@@ -65,7 +65,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
             let mapped_array = []
             x.data.forEach(a => {
               console.log(a.image)
-              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a.crop})`, 
+              mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a?.crop_bundle})`, 
               "status": `(${a.docstatus==1?'Completed':a.payment_method})`, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
             })
             setdata(mapped_array)
