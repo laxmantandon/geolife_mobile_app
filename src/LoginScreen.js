@@ -47,10 +47,10 @@ const LoginScreen = ({ navigation, setToken }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [otp, setotp] = useState(false)
   const { hash, motp, message, timeoutError, stopListener, startListener } = useOtpVerify({numberOfDigits: 4});
-
   const [otpCode, setOTPCode] = useState("");
   const [isPinReady, setIsPinReady] = useState(false);
   const maximumCodeLength = 4;
+  const [myhashCode, setmyhashCode] = useState('')
 
   useEffect(() => {
     // RNOtpVerify.getHash().then(// console.log).catch(// console.log)
@@ -60,7 +60,8 @@ const LoginScreen = ({ navigation, setToken }) => {
 
 
     getHash().then(hash => {
-      // console.log(hash)
+      // console.log(hash[0])
+      setmyhashCode(hash[0])
     }).catch(// console.log
     );
 
@@ -123,6 +124,7 @@ const LoginScreen = ({ navigation, setToken }) => {
     } else {
       let user = {
         username,
+        'hashcode':myhashCode
       };
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
@@ -133,13 +135,16 @@ const LoginScreen = ({ navigation, setToken }) => {
           setotp(true)
           setIsLoading(false)
           startOtpListener(message => {
-            // // console.log(message)
+            console.log(' started otp listner')
+            console.log(message)
             // const otpCode = /(\d{4})/g.exec(message)[1];
             if(message){
               setOTPCode(/(\d{4})/g.exec(message)[1])
               signIn()
             }
-          }); 
+          }).catch((e)=>{
+            console.log(e)
+          }) 
           // startOtpListener(message => {
           //   // console.log(message)
           //   const motp = /(\d{4})/g.exec(message)[1];

@@ -104,6 +104,10 @@ const [newForm, setnewForm] = useState([
   
 ])
 const [IsLoading, setIsLoading] = useState(false)
+const [transaction_id, settransaction_id] = useState({ label: 'Payment Transaction Id', value:'', type: 'text', key: 'transaction_id' })
+
+
+
 
   const searchFilterFunction = (text) => {
     // if (selectedCrops?.id) {
@@ -368,7 +372,10 @@ const [booking_id, setbooking_id] = useState('')
   if(imageloading == false){
     setimageloading(true)
     console.log(getSelectedproducts())
-
+if (transaction_id==''){
+  Alert.alert('Please add transaction ID')
+  return
+}
     let req = {
       cart: selectedProducts,
       // crop: selectedCrops.name,
@@ -376,7 +383,10 @@ const [booking_id, setbooking_id] = useState('')
       dealer_mobile: selectedDelers.id,
       expected_date: delivery_date.value,
       payment_method: payment_method.value,
-      image:basse64image?basse64image:''
+      image:basse64image?basse64image:'',
+      transaction_id:transaction_id,
+      
+      
     }
     req.amount = amount
     // if (!amount) {
@@ -606,12 +616,18 @@ if (payment_method.value == 'UPI'){
               <Text style={{color:'red', fontSize:17}} >
 
               </Text>
-              </View>
+            </View>
 
            )} 
 
+           <View>
+
+            <MYinputs item={transaction_id} />
+
+           </View>
+
             <View style={{flexDirection:'row'}}>
-            <Pressable
+            {/* <Pressable
               onPress={() => startCamera('gallery')} style={{
                 alignSelf: 'center',  marginVertical: 10,
                 backgroundColor: 'white', borderRadius: 50,paddingHorizontal:10
@@ -619,7 +635,7 @@ if (payment_method.value == 'UPI'){
               <Icon name='image-outline' size={30} style={{ alignSelf: 'center', backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 5 }} />
               <Text style={{color:'black'}}>Gallery</Text>
 
-            </Pressable>
+            </Pressable> */}
 
             <Pressable
               onPress={() => startCamera()} style={{

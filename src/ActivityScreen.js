@@ -26,10 +26,11 @@ const ActivityScreen = ({navigation}) => {
         
         mapped_array=[]
         response.data.forEach(a=> {
+          console.log(a?.icon,"icon")
           let m ={
             title:a.activity_name,
             subtitle:a.activity_type,
-            image:a?.image?a.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
+            image:`https://crop.erpgeolife.com${a?.icon}`,
           }
           mapped_array.push(m)
         })
