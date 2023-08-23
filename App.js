@@ -139,14 +139,14 @@ function HomeScreen({ navigation }) {
 
   const [dashboarddata, setdashboarddata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    { subtitle: "In A Month", value: "15/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
-    { subtitle: "Total Done", value: "12", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' ,route:"FarmerOrdersScreen" },
-    { subtitle: "In 15 Days", value: "03/25", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"ActivityDealerDetails" },
-    { subtitle: "Total app downloads", value: "50", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
-    { subtitle: "My former list", value: "450", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
-    { subtitle: "All dealer appointed by me", value: "15", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer" },
+    { subtitle: "In A Month", value: "0/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
+    { subtitle: "Total Done", value: "0", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' ,route:"FarmerOrdersScreen" },
+    { subtitle: "In 15 Days", value: "0/0", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"ActivityDealerDetails" },
+    { subtitle: "Total app downloads", value: "0", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
+    { subtitle: "My former list", value: "0", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
+    { subtitle: "All dealer appointed by me", value: "0", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer" },
     // { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
-    { subtitle: "BCNP Incentive", value: "15/45", title: 'BCNP Incentive',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
+    { subtitle: "BCNP Incentive", value: "0/0", title: 'BCNP Incentive',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
   ])
   const [loggedIn, setloggedIn] = React.useState(false)
   const [attendance, setattendance] = useState([])
@@ -189,7 +189,14 @@ function HomeScreen({ navigation }) {
       AsyncStorage.getItem("user_session").then((value) => {
         // setsession(JSON.parse(value))
         let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
-        setsessionTime(duration.asHours())
+        if (duration){
+          setsessionTime(duration.asHours())
+        if(duration.asHours() >=12){
+          navigation.navigate('SessionScreen')
+        }
+      }else{
+        navigation.navigate('SessionScreen')
+      }
       })
       getcurrentTime()
       // // console.log('session', value)
@@ -219,6 +226,7 @@ function HomeScreen({ navigation }) {
     );
 
     getTask()
+    getTask()
     getAttendance()
     return () => backHandler.remove();
 
@@ -232,7 +240,7 @@ function HomeScreen({ navigation }) {
     getAttendance()
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      console.log('RRRRR', r)
+      // console.log('RRRRR', r)
 
       let my_tasks = []
       if (r.status == true) {
@@ -250,9 +258,20 @@ function HomeScreen({ navigation }) {
         // dashboarddata1[6].value = r.dashboard?.target_achievement?r.dashboard?.target_achievement:'0'
         dashboarddata1[6].value = r.dashboard?.incentive?r.dashboard?.incentive:'0'
 
+       
+
         setdashboarddata(dashboarddata1)
-        setloading(false)
-        console.log(r.dashboard?.dealer_not_visit)
+        // setloading(false)
+        // console.log(r.dashboard?.dealer_not_visit)
+
+        if (dashboarddata[4].value){
+          setloading(false)
+        }else{
+          setTimeout(async () => {
+            setloading(false)
+          },4000)
+          
+        }
 
       } else {
         setloading(false)
@@ -286,7 +305,7 @@ function HomeScreen({ navigation }) {
   getAttendance = async () => {
     setloading(true)
     AuthenicationService.get_users_Attendance(null).then(r => {
-      console.log('RRRRR', r)
+      // console.log('attendance', r)
       setloading(false)
       if (r.status == true) {
         setattendance(r.data)
@@ -479,20 +498,24 @@ function HomeScreen({ navigation }) {
             ListFooterComponent={() => {
               return (
                 <View>
-                  <View style={mstyle.ListContainer}>
-            <BarChart data={attendance}
-              frontColor="#177AD5"
-              barBorderRadius={4}
-              barWidth={22}
-              noOfSections={5}
-              yAxisThickness={0}
-              xAxisThickness={0}
-              labelWidth={18}
-              labelsExtraHeight={15}
-              spacing={20}
-            />
+                  {attendance ?(
+                    <View style={mstyle.ListContainer}>
+                    <BarChart data={attendance}
+                      frontColor="#177AD5"
+                      barBorderRadius={4}
+                      barWidth={22}
+                      noOfSections={5}
+                      yAxisThickness={0}
+                      xAxisThickness={0}
+                      labelWidth={18}
+                      labelsExtraHeight={15}
+                      spacing={20}
+                    />
 
-          </View>
+                  </View>
+                  ):(
+                    ''
+                  )}
 
                 <View style={{ backgroundColor: 'white', borderRadius: 4, margin: 8, elevation: 5, paddingBottom: 10 }} >
                 <Text style={mstyle.title}>Current Task</Text>

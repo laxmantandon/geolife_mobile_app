@@ -27,7 +27,7 @@ const [muser_info, setmuser_info] = useState([])
       })
 
 
-      console.log(mdata.item?.data.mdata)
+      // console.log(mdata.item?.data.mdata)
       let mapped_array = []
       let mapped_array2 = []
         let image =mdata.item.data?.image
@@ -38,7 +38,7 @@ const [muser_info, setmuser_info] = useState([])
           
           let m = mdata.item?.data.mdata
           m.forEach(a=>{
-            console.log(a)
+            // console.log(a)
             mapped_array2.push({ "title": `${a.product_kit}`, "subtitle":` Product kit type (${mdata.item.data?.kit_type})`, 
             "status": 'Quantity', "percent":a.qty })
           })
@@ -54,7 +54,7 @@ const [muser_info, setmuser_info] = useState([])
           "products":productkitData
 
         }
-        console.log(req)
+        // console.log(req)
         AuthenicationService.CompleteOrder(req).then((r)=>{
           setIsLoading(false)
           if (r.status){

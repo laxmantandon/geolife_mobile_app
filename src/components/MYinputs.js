@@ -81,12 +81,12 @@ const [multi_value, setmulti_value] = useState([])
     if (item?.type === 'multi_checkbox'){
       let v= i
       
-      console.log(v)
+      // console.log(v)
       // item.value =[]
       if (item?.value){
         item.value.push(v)
         setmulti_value(item.value)
-        console.log(item.value)
+        // console.log(item.value)
       }else{
         item.value=[]
         item.value.push(v)
@@ -96,7 +96,7 @@ const [multi_value, setmulti_value] = useState([])
     setgivedans(i)
     item.gived_ans = i
     item.value = i
-    console.log(item.gived_ans)
+    // console.log(item.gived_ans)
     }
   }
 
@@ -104,11 +104,11 @@ const [multi_value, setmulti_value] = useState([])
   const removeData=(i)=>{
     for (let [index, p] of multi_value.entries()) {
     if (i==p){
-      console.log(p, i)
+      // console.log(p, i)
       setgivedans(i)
       item.gived_ans = i
       multi_value.splice(index, 1)
-      console.log(multi_value)
+      // console.log(multi_value)
 
     }
     }
@@ -296,7 +296,7 @@ const [multi_value, setmulti_value] = useState([])
                               rowTextStyle={{ fontSize: 14 }}
 
                               onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index)
+                                // console.log(selectedItem, index)
                                 item.value = selectedItem
                                 item.index = index
 

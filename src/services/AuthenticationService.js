@@ -92,7 +92,7 @@ const sendOTP = async user => {
   }
   try {
     let loginResponse = await AuthRequest.get(
-      `${base_url}.generate_otp?mobile_no=${user?.username}`
+      `${base_url}.generate_otp?mobile_no=${user?.username}&hashcode=${user?.hashcode}`
       
     );
     return loginResponse?.data.message;
@@ -434,7 +434,7 @@ const farmer_meeting = async req => {
     // console.log(Response)
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    // console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -510,7 +510,7 @@ const create_activity = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -870,17 +870,27 @@ const get_seminar_masters = async req => {
 
 
 const get_users_task = async req => {
-  try {         
-        let Response = await AuthRequest.get(
-          `${base_url}.get_user_task`,{headers:gettoken()}
-          
-        );
-        return Response?.data.message
+  try {
+    gettoken()
+    console.log('FROM AUTH SERVICE', gettoken())
+    
+    let Response = await AuthRequest.get(
+      `${base_url}.get_user_task`,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
   } catch (error) {
-    console.log('API ERROR ', error.response.data);
-    return { status: false, message: 'Oops! Something went wrong ' };
+    // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ',headers:gettoken() };
+
   }
 };
+
+
 
 const farmerCropData = async req => {
   try {         
@@ -939,6 +949,18 @@ const CompleteOrder = async req => {
   }
 };
 
+const Checkuser = async req => {
+  try {         
+        let Response = await AuthRequest.post(
+          `${base_url}.checkuser`,req,{headers:gettoken()}
+        );
+        return Response?.data.message
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
 const get_users_Attendance = async req => {
   try {         
         let Response = await AuthRequest.get(
@@ -960,5 +982,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
-  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer
+  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser
 };

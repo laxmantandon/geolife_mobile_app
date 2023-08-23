@@ -129,21 +129,21 @@ const LoginScreen = ({ navigation, setToken }) => {
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
         // console.log(user)
-        console.log(response)
+        // console.log(response)
         // setToken(response?.data);
         if (response?.status == true) {
           setotp(true)
           setIsLoading(false)
           startOtpListener(message => {
-            console.log(' started otp listner')
-            console.log(message)
+            // console.log(' started otp listner')
+            // console.log(message)
             // const otpCode = /(\d{4})/g.exec(message)[1];
             if(message){
               setOTPCode(/(\d{4})/g.exec(message)[1])
               signIn()
             }
           }).catch((e)=>{
-            console.log(e)
+            // console.log(e)
           }) 
           // startOtpListener(message => {
           //   // console.log(message)

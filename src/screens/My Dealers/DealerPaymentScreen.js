@@ -77,7 +77,11 @@ const DealerPaymentScreen = ({navigation})  => {
         }
       })
   }
+  const backAction = () => {
+    navigation.goBack()
+    return true;
 
+  };
 
   useEffect(() => {
     searchFilterFunction("")
@@ -85,11 +89,7 @@ const DealerPaymentScreen = ({navigation})  => {
     //   console.log(item)
     // }
     getGeomitraData()
-    const backAction = () => {
-      navigation.goBack()
-      return true;
-
-    };
+   
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',

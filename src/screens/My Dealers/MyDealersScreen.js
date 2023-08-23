@@ -262,7 +262,7 @@ if (item?.percent >0){
         }
 
       }).catch(e => {
-        console.log(e)
+        // console.log(e)
         setIsLoading(false)
         ToastAndroid.showWithGravityAndOffset(
           'No internet connection',

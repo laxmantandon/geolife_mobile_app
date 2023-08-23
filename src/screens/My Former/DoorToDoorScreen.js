@@ -69,7 +69,7 @@ const DoorToDoorScreen = ({navigation}) => {
       return
     }
     AuthenicationService.door_to_door_awareness(req).then(r => {
-      console.log(r)
+      // console.log(r)
       if (r.status == true) {
         setloading(false)
         navigation.goBack()
@@ -87,7 +87,7 @@ const DoorToDoorScreen = ({navigation}) => {
 
       }
     }).catch(e => {
-      console.log(e);
+      // console.log(e);
       setloading(false)
     })
 

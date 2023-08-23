@@ -55,6 +55,12 @@ if (!req.notes){
     );
        
       }
+    }).catch((e)=>{
+      ToastAndroid.showWithGravityAndOffset(
+      ' Something went wrong check internet connection',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+      )
+
     })
   }
 

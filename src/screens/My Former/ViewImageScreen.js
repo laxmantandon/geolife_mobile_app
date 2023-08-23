@@ -12,7 +12,7 @@ const ViewImageScreen = ({navigation,route: {
     const imageWidth = screenWidth * 0.8; // Adjust the percentage as per your requirement
   
 
-    console.log('large image',large_image)
+    // console.log('large image',large_image)
 
 
     useEffect(() => {

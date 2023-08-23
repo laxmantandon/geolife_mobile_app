@@ -30,17 +30,17 @@ const FarmerOrdersScreen = ({ navigation }) => {
       "from_date":moment(mj.from_date).format('yyyy-MM-DD'),
       "to_date":moment(mj.to_date).format('yyyy-MM-DD')
     }
-    console.log(req)
+    // console.log(req)
     AsyncStorage.getItem("user_info").then((value) => {
       const user_info =JSON.parse(value)
       setmuser_info(user_info)
       if(user_info.user_role =='Dealer'){
         AuthenicationService.searchdealerfarmerOrdersData(req)
         .then(x => {
-          console.log(x)
+          // console.log(x)
 
           setserachingData(false)
-          console.log(x.data)
+          // console.log(x.data)
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
@@ -64,7 +64,7 @@ const FarmerOrdersScreen = ({ navigation }) => {
           if (x.status == true) {
             let mapped_array = []
             x.data.forEach(a => {
-              console.log(a.image)
+              // console.log(a.image)
               mapped_array.push({ "title": `${a.name}`, "subtitle":` Product kit for (${a?.crop_bundle})`, 
               "status": `(${a.docstatus==1?'Completed':a.payment_method})`, "percent":`Rs. ${a.amount}`, "date": a.posting_date,"data":a })
             })

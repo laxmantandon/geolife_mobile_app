@@ -222,7 +222,7 @@ const Update_Stock= ()=>{
   }
   // console.log(req)
   AuthenicationService.update_stock(req).then(r=>{
-    console.log(r)
+    // console.log(r)
     setisloading(false)
 
     if(r.status==true){

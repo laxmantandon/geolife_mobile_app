@@ -98,13 +98,13 @@ const QuizScreen = ({ navigation, props,
         if (e.ans == e.value) {
           points += 10/formdata.length
         }
-        console.log(e)
-         console.log(points)
+        // console.log(e)
+        //  console.log(points)
       });
       req = {
         "points": points
       }
-      console.log(req,)
+      // console.log(req,)
       setisLoading(true);
 
       AuthenicationService.submit_quiz(req).then(response => {
@@ -133,7 +133,7 @@ const QuizScreen = ({ navigation, props,
 
   getRefreshData =()=>{
     setTimeout(() => {
-      console.log(formdata)
+      // console.log(formdata)
       setLoading(false)
       
     }, 1000);
@@ -221,7 +221,7 @@ const QuizScreen = ({ navigation, props,
         renderItem={({ item, index }) => {
           return (
             <Pressable onPress={()=>{
-              console.log(item)
+              // console.log(item)
 
             }}>
               <MYinputs item={item} />

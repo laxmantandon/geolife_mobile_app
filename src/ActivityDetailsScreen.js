@@ -24,9 +24,9 @@ const ActivityDetailsScreen = ({ navigation, props,
   ])
   const [isLoading, setisLoading] = useState(false)
   if (item) {
-    console.log(item)
+    // console.log(item)
     AuthenicationService.activity_for(req).then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       if (res?.status == true) {
         mapped_array = []
         res.data.forEach(a => {

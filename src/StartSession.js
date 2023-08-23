@@ -26,6 +26,7 @@ const StartSession = ({props, navigation }) => {
 
   useEffect(() => {
     // getcall_Logs()
+    Checkuser()
     AuthenicationService.get_users_task(null).then(r => {
     }).catch(e => {
     })
@@ -45,7 +46,6 @@ const StartSession = ({props, navigation }) => {
     }).catch(e=>{
       
     })
-    getcurrentTime()
     AsyncStorage.getItem("user_session").then((value) => {
       // console.log('session', value)
       const a_session = JSON.parse(value)
@@ -57,15 +57,61 @@ const StartSession = ({props, navigation }) => {
 
       }
     })
+    getcurrentTime()
+
   }, [props, useIsFocused])
 
-  const [sessionTime, setsessionTime] = useState(0)
+  const [sessionTime, setsessionTimes] = useState(0)
+
+  const Checkuser=()=>{
+    if (session){
+          let req = {
+            activity_type: 'End Day',
+            activity_name: 'End Day',
+            session:session,
+            image: '',
+            notes: '',
+            calllogs:''
+          }
+          AuthenicationService.Checkuser(req).then(r => {
+            // console.log(r)
+            if (r.status){
+              navigation.navigate('Home')
+
+              return true
+
+            }
+            if (r.status ==false){
+              endSession()
+              return false
+            }
+
+          }).catch(e=>{
+            return false
+          })
+
+  }
+
+  }
  
   const getcurrentTime=()=>{
    setTimeout(() => {
-    let duration = moment.duration(moment(new Date()).diff(moment(session).add(1, 'second')))
-    setsessionTime(duration.asHours())
+    AsyncStorage.getItem("user_session").then((value) => {
+      // setsession(JSON.parse(value))
+      let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
+      if (duration){
+        if (duration.asHours() >12){
+          endSession()
+        }else{
+          setsessionTimes(duration.asHours())
+        }
+      }
+      
+
+      // console.log(sessionTime)
+    })
     getcurrentTime()
+  
    }, 10000);
   }
 
@@ -219,6 +265,9 @@ const StartSession = ({props, navigation }) => {
           ToastAndroid.showWithGravityAndOffset(
             'Your session end',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+
+            navigation.goBack()
+
         }
       }).catch(e=>{
         ToastAndroid.showWithGravityAndOffset(
@@ -263,7 +312,7 @@ const logOut=()=>{
         </View>
         <Text onPress={()=>{
           // getcall_Logs()
-        }} style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name}`}</Text>
+        }} style={{ fontSize: 18, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Hello {`${user?.first_name} ${user?.last_name?user?.last_name:''}`}</Text>
         <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
           {session_started ? (`Session started from ${moment(session).format('MMMM Do YYYY, h:mm:ss a')}`) : 'Start Your Session'}
           {/* {moment(session).format('LTS')} */}
@@ -286,7 +335,9 @@ const logOut=()=>{
         {session_started == true ? (
           <Pressable onPress={() => {
             if (session_started == true) {
-              navigation.navigate('Home')
+              // console.log(Checkuser())
+              Checkuser()
+               
             }
           }}>
             <Buttons title={"Go To Home"}  bgcolor={'green'}/>

@@ -104,7 +104,7 @@ const [newForm, setnewForm] = useState([
   
 ])
 const [IsLoading, setIsLoading] = useState(false)
-const [transaction_id, settransaction_id] = useState({ label: 'Payment Transaction Id', value:'', type: 'text', key: 'transaction_id' })
+const [transaction_id, settransaction_id] = useState({ label: 'Payment Transaction Id',placeholder:'Transaction id', value:'', type: 'text', key: 'transaction_id' })
 
 
 
@@ -310,7 +310,7 @@ const [transaction_id, settransaction_id] = useState({ label: 'Payment Transacti
         m_amount= m_amount+(500*p.quantity)
         setamount(m_amount)
        
-        console.log(m_amount)
+        // console.log(m_amount)
       }
     }
     setselectedProducts(s_item)
@@ -397,7 +397,8 @@ if (transaction_id==''){
     // }
     // console.log(req)
     AuthenicationService.checkoutProductKit(req).then(r => {
-      console.log(r)
+      // console.log(r)
+      // console.log(r?.msg?.template?.components[0]?.parameters)
       setiscartloading(false)
       setimageloading(false)
 
@@ -589,13 +590,13 @@ launchImageLibrary(options, (response) => {
         <View style={{ alignItems: 'center' }}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => {
-if (payment_method.value == 'UPI'){
+              if (payment_method.value == 'UPI') {
 
-}else{
-  setVisible(false)
-  navigation.goBack()
-}
-              
+              } else {
+                setVisible(false)
+                navigation.goBack()
+              }
+
             }}>
               <Icon name='close-circle-outline' style={{ color: 'red', fontWeight: 'bold' }} size={30} />
             </TouchableOpacity>
@@ -605,17 +606,19 @@ if (payment_method.value == 'UPI'){
           <View style={{ alignItems: 'center' }}>
             {/* <Icon name='checkmark-circle-outline' style={{color:'green', fontWeight:'bold'}} size={150} /> */}
            {selectedDelers?.qr_code?(
-           <Image
-            source={{ uri: selectedDelers?.qr_code.replace('/private','') }}
-            style={{ maxHeight: 450, minHeight: 350, width: '100%', }}
-          />
+                      <Image
+                        source={{ uri: selectedDelers?.qr_code.replace('/private','') }}
+                        style={{ height: 350, width:250, }}
+                        resizeMode='contain'
+                      />
 
            ):(
-
             <View>
-              <Text style={{color:'red', fontSize:17}} >
-
-              </Text>
+               <Image
+                    source={require('../../assets/images/noimg.jpg')}
+                    style={{ height: 350, width: 250, }}
+                    resizeMode='contain'
+              />
             </View>
 
            )} 

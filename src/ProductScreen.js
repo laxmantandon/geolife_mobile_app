@@ -67,7 +67,7 @@ const ProductScreen = ({ navigation, props,
     setsearchable(true)
 setTimeout(() => {
   setserachingData(false)
-console.log(cart)
+// console.log(cart)
 }, 500);
 
 
@@ -103,7 +103,7 @@ console.log(cart)
     setsearchable(true)
     setTimeout(() => {
       setserachingData(false)
-    console.log(cart)
+    // console.log(cart)
     }, 500);
 
 

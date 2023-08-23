@@ -92,7 +92,7 @@ const Create_Farmer = () => {
    setIsLoading(true)
    AuthenicationService.create_farmer(req).then(x => {
      setIsLoading(false)
-    //  console.log(x)
+     console.log(x)
      if (x.status) {
        setFarmerShowModal(false)
        ToastAndroid.showWithGravityAndOffset(
@@ -180,10 +180,9 @@ const Create_Farmer = () => {
                       setFarmerShowModal(true)
                     }} >
                       <Text style={{color:Colors.GOOGLE_BLUE,fontSize:15, fontWeight:'bold',textAlign:'center'}}>
-                      <Icon name={'add-circle-outline'} size={20}  style={{paddingTop:15,paddingRight:10,color:Colors.GOOGLE_BLUE,fontWeight:'bold',}}/>
-
-
-
+                      <Icon name={'add-circle-outline'} size={20}  
+                      style={{paddingTop:15,paddingRight:10,color:Colors.GOOGLE_BLUE,
+                        fontWeight:'bold',}}/>
                         Add New Farmer</Text>
                     </Pressable>
 

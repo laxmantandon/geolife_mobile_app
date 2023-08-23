@@ -54,7 +54,7 @@ const AddPaymentScreen = ({ navigation, props,
 
 
       AuthenicationService.Add_payment_entry(req).then(r => {
-        console.log(r)
+        // console.log(r)
         setisLoading(false)
         if (r.status == true) {
           navigation.goBack()

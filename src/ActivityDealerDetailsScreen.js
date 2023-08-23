@@ -89,9 +89,10 @@ const ActivityDealerDetailsScreen = ({ navigation}) => {
     // // console.log(formdata)
     let req = submitReqData(formdata);
     setisLoading(true);
-    console.log(req)
+    // console.log(req)
     req.dealer = selectedDelers?.id
 
+  
     if(!req.image){
 req.image=''
     }
@@ -111,7 +112,7 @@ req.image=''
 
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);
-      console.log(response)
+      // console.log(response)
       if (response?.status == true) {
         ToastAndroid.showWithGravityAndOffset(
           response?.message,
