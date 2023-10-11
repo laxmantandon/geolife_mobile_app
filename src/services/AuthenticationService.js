@@ -434,7 +434,7 @@ const farmer_meeting = async req => {
     // console.log(Response)
     return Response?.data.message
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -471,6 +471,25 @@ const dayplan_list = async req => {
     return Response?.data.message
   } catch (error) {
     // console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+
+  }
+};
+
+
+const dayplan_post_list = async req => {
+  try {
+    let Response = await AuthRequest.post(
+      `${base_url}.dayplan_list`,req,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -531,7 +550,7 @@ const submit_quiz = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -545,12 +564,11 @@ const expenses_list = async req => {
   try {
     
     let Response = await AuthRequest.get(
-      `${base_url}.expenses`,{headers:gettoken()}
-      
+      `${base_url}.expenses?from_date=${req.from_date}& to_date=${req.to_date}`,{headers:gettoken()}
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response?.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -563,6 +581,23 @@ const expenses_list = async req => {
 const create_expenses = async req => {
   try {
     let Response = await AuthRequest.post(
+      `${base_url}.expenses`,
+      req,{headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response?.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong '};
+  }
+};
+
+const update_expenses = async req => {
+  try {
+    let Response = await AuthRequest.put(
       `${base_url}.expenses`,
       req,{headers:gettoken()}
     );
@@ -784,7 +819,7 @@ const create_farmer = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -961,6 +996,76 @@ const Checkuser = async req => {
   }
 };
 
+
+
+
+
+const update_farmer_meeting = async req => {
+  try {         
+        let Response = await AuthRequest.put(
+          `${base_url}.farmer_meeting`,req,{headers:gettoken()}
+        );
+        return Response?.data.message
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
+const GetDoctypeData = async req => {
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url2}/${req?.doctype}?fields=["name"]`,{headers:gettoken()}
+        );
+        return Response?.data
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
+const GetDoctypefilterData = async req => {
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url2}/${req?.doctype}?filters={"${req.filter}":["like","%${req.text}%"]}&fields=["name"]&limit=2`,{headers:gettoken()}
+        );
+        return Response?.data
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+const GetAllDoctypeData = async req => {
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url2}/${req?.doctype}?fields=["*"]`,{headers:gettoken()}
+        );
+        return Response?.data
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
+const GetFarmerMeeting = async req => {
+  try {         
+    let Response = await AuthRequest.get(
+      `${base_url}.getfarmer_meeting`,{headers:gettoken()}
+      
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log('API ERROR ', error.response.data ,gettoken());
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
+
 const get_users_Attendance = async req => {
   try {         
         let Response = await AuthRequest.get(
@@ -975,6 +1080,20 @@ const get_users_Attendance = async req => {
 };
 
 
+const get_villages = async req => {
+  try {         
+        let Response = await AuthRequest.get(
+          `${base_url}.get_villages`,{headers:gettoken()}
+          
+        );
+        return Response?.data.message
+  } catch (error) {
+    console.log('API ERROR ', error.response.data);
+    return { status: false, message: 'Oops! Something went wrong ' };
+  }
+};
+
+
 export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_seminar, update_crop_seminar, 
   crop_alert, activity_list, create_activity, activity_type, expenses_list, create_expenses, whatsapp_templates,
   door_to_door_awareness , sticker_pasting, create_free_sample, update_status_free_sample,get_seminar_masters, 
@@ -982,5 +1101,6 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   checkoutProduct, update_stock, get_stock, Add_payment_entry,searchProductKitData,searchCropData,checkoutProductKit,
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
-  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser
+  checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser,GetDoctypeData,
+  get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,update_expenses
 };

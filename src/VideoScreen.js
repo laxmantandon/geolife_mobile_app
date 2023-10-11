@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, StyleSheet, Pressable } from 'react-native'
+import { View, Text, Dimensions, StyleSheet, Pressable, BackHandler, Alert } from 'react-native'
 import React from 'react'
 import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
 import { useRef } from 'react';
@@ -18,7 +18,27 @@ const VideoScreen = ({navigation,
     const playerRef = useRef();//yotube player ka hai
     const [loading, setloading] = useState(true)
 
+    const backButtonPressd = () => {
+      // Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+      //   {
+      //     text: 'Cancel',
+      //     onPress: () => null,
+      //     style: 'cancel',
+      //   },
+      //   { text: 'YES', onPress: () => BackHandler.exitApp() },
+      // ]);
+      console.log('hjj')
+    }
+
     useEffect(() => {
+      const backAction = () => {
+        backButtonPressd()
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
 
     }, [])
     

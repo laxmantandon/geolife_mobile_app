@@ -129,7 +129,7 @@ const LoginScreen = ({ navigation, setToken }) => {
       AuthenicationService.sendOTP(user).then(response => {
         setIsLoading(false);
         // console.log(user)
-        // console.log(response)
+        console.log(response)
         // setToken(response?.data);
         if (response?.status == true) {
           setotp(true)
@@ -156,6 +156,10 @@ const LoginScreen = ({ navigation, setToken }) => {
         } else {
           setotp(false)
           setIsLoading(false)
+          ToastAndroid.showWithGravityAndOffset(
+            response?.message,
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+          );
 
           // setErrorMessage(response?.msg);
           setErrorMessage(response?.message);

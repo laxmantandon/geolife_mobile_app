@@ -20,16 +20,18 @@ const DayplanScreen = ({navigation}) => {
     req=null
     setloading(true)
     AuthenicationService.dayplan_list(req).then(response => {
-      // console.log(response)
+      console.log(response)
       setloading(false)
       if (response?.status== true) {
         
         mapped_array=[]
         response.data.forEach(a=> {
           let m ={
-            title:a.activity_name,
-            subtitle:a.activity_type,
-            image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
+            title:`Sales(In lakhs) - ${a.sales}`,
+            subtitle:`Collections (In lakhs) - ${a.collections}`,
+            date:a.posting_date,
+            percent:a.number_of_dealer_appointment,
+            status:'Dealers'
           }
           mapped_array.push(m)
         })
@@ -57,7 +59,7 @@ const DayplanScreen = ({navigation}) => {
           </Pressable>
           )
       }} />
-      <Pressable onPress={()=>{navigation.navigate('DayplanDetailsScreen',{item:''})}}>
+      <Pressable onPressIn={()=>{navigation.navigate('DayplanDetailsScreen',{item:''})}}>
           <FabButton />
       </Pressable>
 

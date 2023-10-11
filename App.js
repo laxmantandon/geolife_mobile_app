@@ -66,8 +66,14 @@ import FarmerMeetingScreen from './src/screens/My Former/FarmerMeetingScreen';
 import CropProjectScreen from './src/screens/My Former/CropProjectScreen';
 import ActivityDealerDetailsScreen from './src/ActivityDealerDetailsScreen';
 import ViewImageScreen from './src/screens/My Former/ViewImageScreen';
+import FarmerMeetingListScreen from './src/screens/My Former/FarmerMeetingListScreen';
+import FarmerMeetingAttendanceScreen from './src/screens/My Former/FarmerMeetingAttendanceScreen';
+import LocationPermission from './src/services/LocationPermission';
 // SplashScreen.hide();
 CameraPermission()
+
+LocationPermission()
+
 
 const Drawer = createDrawerNavigator();
 
@@ -139,7 +145,7 @@ function HomeScreen({ navigation }) {
 
   const [dashboarddata, setdashboarddata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
-    { subtitle: "In A Month", value: "0/30", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
+    { subtitle: "In A Month", value: "0/0", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
     { subtitle: "Total Done", value: "0", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' ,route:"FarmerOrdersScreen" },
     { subtitle: "In 15 Days", value: "0/0", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"ActivityDealerDetails" },
     { subtitle: "Total app downloads", value: "0", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
@@ -225,9 +231,9 @@ function HomeScreen({ navigation }) {
       backAction,
     );
 
+    // getTask()
     getTask()
-    getTask()
-    getAttendance()
+    // getAttendance()
     return () => backHandler.remove();
 
 
@@ -302,10 +308,10 @@ function HomeScreen({ navigation }) {
   ]
 
 
-  getAttendance = async () => {
+const getAttendance = async () => {
     setloading(true)
     AuthenicationService.get_users_Attendance(null).then(r => {
-      // console.log('attendance', r)
+      console.log('attendance', r)
       setloading(false)
       if (r.status == true) {
         setattendance(r.data)
@@ -382,7 +388,7 @@ function HomeScreen({ navigation }) {
               </View>
               <View style={{ width: '15%' }}>
                 <Pressable title='Check Out' onPress={() => {
-                  // AsyncStorage.clear()
+                  // getTask()
                   navigation.navigate('SessionScreen')
                 }} >
 
@@ -418,7 +424,7 @@ function HomeScreen({ navigation }) {
                   numColumns={4}
                   renderItem={(item) => {
                     return (
-                      <Pressable style={{ flex: 1, }} onPress={() => { if (item.item?.route){
+                      <Pressable style={{ flex: 1, }}  onPressIn={() => { if (item.item?.route){
                         navigation.navigate(item.item?.route)
                       } }}>
                       
@@ -507,7 +513,7 @@ function HomeScreen({ navigation }) {
                       noOfSections={5}
                       yAxisThickness={0}
                       xAxisThickness={0}
-                      labelWidth={18}
+                      labelWidth={30}
                       labelsExtraHeight={15}
                       spacing={20}
                     />
@@ -823,7 +829,9 @@ function App({ navigation }) {
                 })}
               />
               <Stack.Screen name='DealerProfile' component={DealerProfileScreen} options={() => ({ headerTitle: "My profile" })} />
-              <Stack.Screen name='FarmerMeetingScreen' component={FarmerMeetingScreen} options={() => ({ headerTitle: "Farmer Meeting" })} />
+              <Stack.Screen name='FarmerMeetingScreen' component={FarmerMeetingScreen} options={() => ({ headerTitle: "New Farmer Meeting" })} />
+              <Stack.Screen name='FarmerMeetingList' component={FarmerMeetingListScreen} options={() => ({ headerTitle: "Farmer Meeting List" })} />
+              <Stack.Screen name='FarmerMeetingAttendanceScreen' component={FarmerMeetingAttendanceScreen} options={() => ({ headerTitle: "Farmer Attendance List" })} />
               {/* My farmer screen */}
               <Stack.Screen name='CropProject' component={CropProjectScreen} options={() => ({ headerTitle: "Crop project" })} />
               <Stack.Screen name='Myfarmer' component={MyFarmerScreen} options={() => ({ headerTitle: "My Farmer" })} />

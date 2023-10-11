@@ -14,9 +14,9 @@ const DayplanDetailsScreen = ({ navigation, props,
 }) => {
  
   const [formdata, setformdata] = useState([
-    { label: 'Sales in Lakhs', placeholder: '....................', key: 'sales_in_lakhs', value: '', type: 'numaric' },
-    { label: 'Collections in Lakhs', placeholder: '....................', key: 'collections_n_lakhs', value: '', type: 'text' },
-    { label: 'Number of Dealer Appointment', placeholder: '....................', key: 'num_dealer', value: '', type: 'text' },
+    { label: 'Sales in Lakhs', placeholder: '....................', key: 'sales_in_lakhs', value: '', keyboard: 'numeric' },
+    { label: 'Collections in Lakhs', placeholder: '....................', key: 'collections_n_lakhs', value: '', keyboard: 'numeric' },
+    { label: 'Number of Dealer Appointment', placeholder: '....................', key: 'num_dealer', value: '', keyboard: 'numeric' },
   ])
   const [isLoading, setisLoading] = useState(false)
  
@@ -25,20 +25,29 @@ const DayplanDetailsScreen = ({ navigation, props,
     // // console.log(formdata)
     let req = submitReqData(formdata);
     setisLoading(true);
+    req.activity_type='Day Plan'
+    req.activity_name='Day Plan'
+    if(!req.sales_in_lakhs){
+      alert('Please enter Sales in Sales (in Lakhs)')
+      setisLoading(false);
 
-    // if (req.activity_type=='' || req.activity_type==null){
-    //   Alert.alert('Please Select Activity type ')
-    //   setisLoading(false);
-    //   return
-    // }
+      return
+    }
+    if(!req.collections_n_lakhs){
+      alert('Please enter Collections in Lakhs')
+      setisLoading(false);
 
-    // if (req.activity_name=='' || req.activity_name==null){
-    //   setisLoading(false);
-    //   Alert.alert('Please Enter Activity Name')
-    //   return
-    // }
+      return
+    }
 
-    AuthenicationService.create_activity(req).then(response => {
+    if(!req.num_dealer){
+      alert('Please enter Number of Dealer Appointment')
+      setisLoading(false);
+
+      return
+    }
+
+    AuthenicationService.dayplan_post_list(req).then(response => {
       setisLoading(false);
       // console.log(response)
       if (response?.status == true) {
@@ -81,7 +90,7 @@ const DayplanDetailsScreen = ({ navigation, props,
 
       {item.item ? (<Pressable onPress={() => { update() }}>
         <Buttons title={'Update'} loading={isLoading} />
-      </Pressable>) : (<Pressable onPress={() => { submit() }}>
+      </Pressable>) : (<Pressable style={{paddingVertical:20}} onPress={() => { submit() }}>
         <Buttons title={'Submit'} loading={isLoading} />
       </Pressable>)}
 

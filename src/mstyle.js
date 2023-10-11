@@ -5,7 +5,7 @@ import { Display } from "./utils";
 
 export default mstyle = StyleSheet.create({
   container: {
-      paddingTop:15,
+      paddingTop:10,
       flex: 1,
       backgroundColor: '#f0f8fe',
     },

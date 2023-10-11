@@ -95,13 +95,16 @@ const [cnp_type, setcnp_type] = useState('')
 const [qrcode, setqrcode] = useState('')
 const [FarmerShowModal, setFarmerShowModal] = useState(false)
 const [newForm, setnewForm] = useState([
-  { label: 'Farmer First Name', placeholder:'Ex. - Rama', key: 'first_name', value:'', keyboard:'text' },
-  { label: 'Farmer Last Name', placeholder:'Ex. - Dash', key: 'last_name', value:'', keyboard:'text' },
-  { label: 'Pincode', placeholder:'Ex. - 492001', key: 'pincode', value:'', keyboard:'numeric', len:6 },
-  { label: 'City', placeholder:'Ex. - Pune', key: 'city', value:'', keyboard:'text' },
-  { label: 'Mobile Number', placeholder:'Ex. - 1234567890', key: 'mobile_no', value:'', keyboard:'numeric', len:10 },
-  { label: 'Farm In Acres', placeholder:'Ex. - 15', key: 'acre', value:'', keyboard:'numeric' },
-  
+  { label: 'Farmer First Name', placeholder: 'Ex. - Rama', key: 'first_name', value: '', keyboard: 'text' },
+  { label: 'Farmer Last Name', placeholder: 'Ex. - Dash', key: 'last_name', value: '', keyboard: 'text' },
+  { label: 'Pincode', placeholder: 'Ex. - 492001', key: 'pincode', value: '', keyboard: 'numeric', len: 6 },
+  { label: 'City', placeholder: 'Ex. - Pune', key: 'city', value: '', keyboard: 'text' },
+  { label: 'Nearest Market Where Farmer Purchase', type:'select',options:[], link_doctype:'Geo Market', key: 'market', value: '', keyboard: 'text' },
+  { label: 'Mobile Number', placeholder: 'Ex. - 9876543210', key: 'mobile_no', value: '', keyboard: 'numeric', len: 10 },
+  { label: 'Select Crop', placeholder: '',type:'select',options:[], link_doctype:'Crop', key: 'crop', value: '', keyboard: 'text' },
+  { label: 'Date Of Sowing', placeholder: '', key: 'data_of_sowing', type:'date', value:new Date(), keyboard: 'text' },
+  { label: 'Farm In Acres', placeholder: 'Ex. - 15', key: 'acre', value: '', keyboard: 'numeric' },
+
 ])
 const [IsLoading, setIsLoading] = useState(false)
 const [transaction_id, settransaction_id] = useState({ label: 'Payment Transaction Id',placeholder:'Transaction id', value:'', type: 'text', key: 'transaction_id' })
@@ -683,7 +686,7 @@ launchImageLibrary(options, (response) => {
         onRequestClose={() => {
           setFarmerShowModal(!FarmerShowModal);
         }}>
-        <View style={{ padding: 10,  backgroundColor: 'white' }}>
+        <ScrollView style={{ padding: 10,  backgroundColor: 'white' }}>
           <Text style={{ textAlign: 'right', fontSize: 15, color: 'red', fontWeight: '700' }} 
           onPress={() => { setFarmerShowModal(false) }}>X</Text>
           <Text style={{ fontSize: 20,textAlign:'center', fontWeight: '600', color: 'black' }}>Create New Farmer</Text>
@@ -707,7 +710,7 @@ launchImageLibrary(options, (response) => {
           
          
 
-        </View>
+        </ScrollView>
       </Modal>
 
       {/* <Button title="Open Modal" onPress={() => setVisible(true)} /> */}

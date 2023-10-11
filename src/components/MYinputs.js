@@ -4,7 +4,7 @@ import mstyle from '../mstyle'
 import { Colors } from '../contants'
 import Separator from './Separator'
 import CameraPermission from '../services/permissionservices'
-import { launchCamera } from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import ImageView from "react-native-image-viewing";
 import SelectDropdown from 'react-native-select-dropdown'
 // import Feather from 'react-native-vector-icons/Feather';
@@ -14,6 +14,10 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import DatePicker from 'react-native-date-picker'
 import Card from './Card'
 import moment from 'moment'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { AuthenicationService } from '../services'
+import { useEffect } from 'react'
+import SearchableDropDown from 'react-native-searchable-dropdown'
 
 
 
@@ -23,7 +27,146 @@ const MYinputs = ({ item }) => {
   const [visible, setIsVisible] = useState(false);
   const [captureimage, setcaptureimage] = useState([])
   const [open, setOpen] = useState(false)
+  const [LinkedDoctypeData, setLinkedDoctypeData] = useState([])
+  const [loading, setloading] = useState(false)
+  const [givedans, setgivedans] = useState('')
+  const [realans, setrealans] = useState(item.ans)
+  const [multi_value, setmulti_value] = useState([])
 
+
+  useEffect(() => {
+    if(item?.link_doctype){
+      getLinkedDoctype('a')
+    }
+  }, [])
+
+
+  const getfiltersdata=(text)=>{
+    if(item.filter){
+      let req={
+        'doctype':item?.link_doctype,
+        'filter':item?.filter,
+        'text':text
+  
+      }
+      AuthenicationService.GetDoctypefilterData(req).then((result)=>{
+        console.log(result)
+        mapped_data=[]
+        if (result.data){
+          if(item.type=='searchable'){
+            result.data.forEach(a => {
+              if (item?.options.includes(a.name)) {
+              } else {
+                if (a.name){
+                  mapped_data.push(a)
+                  setLinkedDoctypeData(mapped_data)
+                  item?.options.push({'name':a.name,'id':a.name,'data':a})
+                }
+              }
+            })
+          }
+        }
+  
+      })
+  
+    }
+  }
+  
+
+  const getLinkedDoctype = (text) => {
+    let req={
+      'doctype':item?.link_doctype
+
+    }
+    AuthenicationService.GetDoctypeData(req).then((result)=>{
+      console.log(result)
+      // let mdata = JSON.parse(result)
+          mapped_data=[]
+          if(item.type=='searchable'){
+            item.options=[]
+            result.data.forEach(a => {
+              if (item?.options.includes(a.name)) {
+              } else {
+                if (a.name){
+                  mapped_data.push(a)
+                  setLinkedDoctypeData(mapped_data)
+                  item?.options.push({'name':a.name,'id':a.name,'data':a})
+                }
+              }
+            })
+          }else{
+            result.data.forEach(a => {
+              if (item?.options.includes(a.name)) {
+              } else {
+                if (a.name){
+                  mapped_data.push(a)
+                  setLinkedDoctypeData(mapped_data)
+                  item?.options.push(a.name)
+                }
+              }
+            })
+          }
+
+    }).catch((e)=>{
+      console.log(e)
+    })
+
+
+
+
+    // var myHeaders = new Headers();
+    // var requestOptions = {
+    //   method: 'GET',
+    //   headers: myHeaders,
+    //   redirect: 'follow'
+    // };
+    // fetch(`https://dbh.erevive.cloud/api/resource/${item?.link_doctype}?fields=["name"]`, requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => {
+    //     let mdata = JSON.parse(result)
+    //     mapped_data=[]
+    //     mdata.data.forEach(a => {
+    //       if (item?.options.includes(a.name)) {
+    //       } else {
+    //         if (a.name){
+    //           mapped_data.push(a)
+    //           setLinkedDoctypeData(mapped_data)
+    //           item?.options.push(a.name)
+    //         }
+    //       }
+    //     });
+    //   })
+    //   .catch(error => console.log('error', error));
+  }
+const OpenGallery=()=>{
+  CameraPermission()
+  let options = {
+    includeBase64: true,
+    mediaType: 'photo',
+    saveToPhotos: true,
+    quality: 0.3
+  };
+
+  launchImageLibrary(options, (response) => {
+    if (response.didCancel) {
+      // console.log('User cancelled image picker');
+    } else if (response.error) {
+      // console.log('ImagePicker Error: ', response.error);
+    } else if (response.customButton) {
+      // console.log('User tapped custom button: ', response.customButton);
+      alert(response.customButton);
+    } else {
+      const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+      setcaptureimage([])
+    
+      item.value.push(basse64image)
+
+      setcaptureimage(item.value)
+
+    }
+  });
+
+}
   const startCamera = () => {
 
     CameraPermission()
@@ -34,49 +177,32 @@ const MYinputs = ({ item }) => {
       quality: 0.3
     };
 
-    launchCamera(options, (response) => {
-      // // console.log(response.assets);
+   
+      launchCamera(options, (response) => {
+        if (response.didCancel) {
+          // console.log('User cancelled image picker');
+        } else if (response.error) {
+          // console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          // console.log('User tapped custom button: ', response.customButton);
+          alert(response.customButton);
+        } else {
+          const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
+          setcaptureimage([])
+        
+          item.value.push(basse64image)
+  
+          setcaptureimage(item.value)
+  
+        }
+      });
 
-      if (response.didCancel) {
-        // console.log('User cancelled image picker');
-      } else if (response.error) {
-        // console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        // console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
-      } else {
-        // const source = { uri: response.uri };
-        // // console.log('response', JSON.stringify(response.assets[0].base64));
-        const basse64image = 'data:image/jpeg;base64,' + JSON.stringify(response?.assets[0].base64)
-        setcaptureimage([])
-        // item?.value=basse64image
-        // captureimage=basse64image
+    
 
-        // captureimage=basse64image
-
-        item.value.push(basse64image)
-        // // console.log(''item.value)
-
-        setcaptureimage(item.value)
-
-
-        // console.table(JSON.stringify(response))
-
-        // this.setState({
-        //   filePath: response,
-        //   fileData: response.data,
-        //   fileUri: response.uri
-        // });
-      }
-    });
+    
 
   }
-  const [loading, setloading] = useState(false)
 
-
-  const [givedans, setgivedans] = useState('')
-  const [realans, setrealans] = useState(item.ans)
-const [multi_value, setmulti_value] = useState([])
   const getData = (i) => {
     if (item?.type === 'multi_checkbox'){
       let v= i
@@ -112,6 +238,25 @@ const [multi_value, setmulti_value] = useState([])
 
     }
     }
+  }
+
+  const removeImage=(img,index)=>{
+    setloading(true)
+    item.value.splice(captureimage.indexOf(img),1)
+    
+    console.log('clicked')
+
+    setTimeout(() => {
+      setloading(false)
+    }, 500);
+
+  }
+
+  const refreshGetData=()=>{
+    setTimeout(() => {
+      setloading(false)
+    }, 1000);
+
   }
 
   return (
@@ -215,7 +360,7 @@ const [multi_value, setmulti_value] = useState([])
                           <View style={mstyle.detailContainer}>
                             <View style={[mstyle.titleContainer, { width: '90%' }]}>
                               <Text style={[mstyle.listListTitle, { fontWeight: '600' }]} numberOfLines={4}>
-                                {item} {index}
+                                {item}
                               </Text>
 
                             </View>
@@ -245,12 +390,13 @@ const [multi_value, setmulti_value] = useState([])
 
                         renderItem={({ img, index }) => {
                           return (
-                            <Pressable style={{ margin: 2 }}
-                              onPress={() => { setIsVisible(true) }}
+                            <View style={{ margin: 2 }}
+                              // onPress={() => { setIsVisible(true) }}
                             >
+                              <Icon name='close-circle-outline' onPress={()=>{ removeImage(item.value[index],index)}} size={22} style={{ color:'red'}} />
                               <Image style={{ width: 80, height: 100, backgroundColor: 'silver' }} source={{ uri: item.value[index] }} />
 
-                            </Pressable>
+                            </View>
                           )
                         }}
 
@@ -267,12 +413,23 @@ const [multi_value, setmulti_value] = useState([])
 
                     <Separator width={10} />
 
+                    <View style={{flexDirection:'row'}}>
+
                     <Pressable onPress={() => startCamera()} style={{ width: 50, height: 50, marginTop: 10 }} >
-                      <Icon name='camera' size={30} style={{ backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 10 }} />
-                      {/* <Image style={{ width: 50, height: 50 }}
-              source={{ uri: 'https://www.nicepng.com/png/detail/127-1276180_photo-album-icon-png-icon-logo-png-album.png' }}
-            /> */}
+                      <Icon name={'camera'} size={30} style={{ backgroundColor: Colors.LIGHT_GREEN, color: 'green', borderRadius: 50, padding: 10 }} />
+                    
                     </Pressable>
+
+                    {item?.source=='Gallery'?(
+                      <Pressable onPress={() => OpenGallery()} style={{marginHorizontal:15, width: 50, height: 50, marginTop: 10 }} >
+                      <Icon name={'images-outline'} size={30} style={{ backgroundColor: Colors.LIGHT_GREEN, color: 'green',
+                       borderRadius: 50, padding: 10 }} />
+                    </Pressable>
+
+                    ):(null)}
+
+                      </View>
+
                   </View>
                 ) : (
                   <View>
@@ -284,21 +441,41 @@ const [multi_value, setmulti_value] = useState([])
 
                             <SelectDropdown
                               data={item?.options}
-                              defaultValue={item?.value}
+                              onChangeSearchInputText={(text)=>{
+                                // console.log(text)
+                                      if(item?.link_doctype){
+                                        getLinkedDoctype(text)
+                                      }
+                              }}
+                              defaultValue={item.value}
                               defaultButtonText={item?.label}
                               buttonStyle={{
                                 backgroundColor: 'white',
                                 width: '100%', height: Display.setHeight(6)
                               }}
                               buttonTextStyle={{ fontSize: 14, }}
+                              renderDropdownIcon={isOpened => {
+                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                              }}
+
+                              dropdownIconPosition={'right'}
+
                               dropdownStyle={[mstyle.inputContainer]}
-                              selectedRowStyle={{ backgroundColor: Colors.DEFAULT_WHITE }}
+                              selectedRowStyle={{ backgroundColor: Colors.LIGHT_GREEN }}
                               rowTextStyle={{ fontSize: 14 }}
 
                               onSelect={(selectedItem, index) => {
                                 // console.log(selectedItem, index)
                                 item.value = selectedItem
                                 item.index = index
+
+                                if(item?.link_doctype){
+                                  LinkedDoctypeData.forEach(a => {
+                                    if(a.name==selectedItem){
+                                      item.fetch= a
+                                    }
+                                  });
+                                }
 
                               }}
                               buttonTextAfterSelection={(selectedItem, index) => {
@@ -307,10 +484,21 @@ const [multi_value, setmulti_value] = useState([])
                                 return selectedItem
                               }}
                               rowTextForSelection={(item, index) => {
-                                // text represented for each item in dropdown
-                                // if data array is an array of objects then return item.property to represent item in dropdown
                                 return item
                               }}
+
+
+                              search
+                            searchInputStyle={{
+                              backgroundColor: 'white',
+                              borderBottomWidth: 1,
+                              borderBottomColor: '#FFF',
+                            }}
+                            searchPlaceHolder={'Search here'}
+                            searchPlaceHolderColor={'darkgrey'}
+                            renderSearchInputLeftIcon={() => {
+                              return <FontAwesome name={'search'} color={'#444'} size={18} />;
+                            }}
                             />
 
                             {/* <Feather
@@ -319,83 +507,184 @@ const [multi_value, setmulti_value] = useState([])
                     color={Colors.DEFAULT_GREY}
                   /> */}
                           </View>
-                        ) : (
+                        ):(
+                          <View style={{flex:1}}>
+                            {item?.type=='searchable'?(
+                                      <View style={{marginBottom:1}}>
+                                        {item.value ? (
+                                          <View style={{
+                                            padding: 6, marginTop: 2, flexDirection: 'row',
+                                            backgroundColor: 'white', borderColor: 'silver',
+                                            borderWidth: 0, borderRadius: 5, width: '100%'
+                                          }}>
 
-                          <View style={{ flex: 1, flexDirection: 'row' }}>
-                            {item?.type === 'date' || item?.type === 'time' ? (
+                                            <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> 
+                                            {item.value}</Text>
+                                            <Icon onPress={() => {
+                                              item.value = ''
+                                              item.data = {}
+                                              setloading(true)
+                                              refreshGetData()
+
+                                            }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+
+                                          </View>
+                                        ) : (
+
+                                          <SearchableDropDown zIndex={999}
+                                            onItemSelect={(kitem) => {
+                                              // alert('select dealer')
+                                              // console.log('clicked',kitem)
+                                              item.value = kitem.id
+                                              item.data = kitem
+                                              console.log('clicked', item.data)
+                                              setloading(true)
+                                              refreshGetData()
+
+
+                                            }}
+
+                                            containerStyle={{ padding: 3, width: '100%' }}
+                                            onRemoveItem={(item, index) => {
+                                              // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
+                                              // setselectedDelers(items)
+                                            }}
+                                            itemStyle={{
+                                              padding: 10,
+                                              marginTop: 2,
+                                              backgroundColor: 'white',
+                                              borderColor: 'silver',
+                                              borderWidth: 1,
+                                              borderRadius: 5,
+                                            }}
+                                            itemTextStyle={{ color: '#222' }}
+                                            itemsContainerStyle={{ maxHeight: 140 }}
+                                            items={item.options}
+                                            // defaultIndex={2}
+                                            resetValue={false}
+                                            textInputProps={
+                                              {
+                                                placeholder: item.label,
+                                                underlineColorAndroid: "transparent",
+                                                style: {
+                                                  // padding: 8,
+                                                  borderWidth: .3,
+                                                  borderColor: '#ccc',
+                                                  borderRadius: 5,
+                                                  color: "black"
+                                                },
+                                                onTextChange: text => {
+                                                  getfiltersdata(text)
+
+                                                }
+                                              }
+                                            }
+                                            listProps={
+                                              {
+                                                nestedScrollEnabled: true,
+                                              }
+                                            }
+                                          />
+                                        )}
+
+                                      </View>
+                             ) : (
+
                               <View style={{ flex: 1, flexDirection: 'row' }}>
-                                {/* <Button title="Open" onPress={() => setOpen(true)} style={mstyle.PrimaryButton} /> */}
-                                <DatePicker
-                                  mode={item?.type == 'date' ? 'date' : 'time'}
-                                  modal
-                                  open={open}
-                                  date={item?.value}
-                                  onConfirm={text => {
-                                    item.value = text
-                                    // console.log(item)
-                                    setOpen(false)
-                                  }}
-                                  onCancel={() => {
-                                    setOpen(false)
-                                  }}
-                                />
+                                {item?.type === 'date' || item?.type === 'time' ? (
+                                  <View style={{ flex: 1, flexDirection: 'row' }}>
+                                    {/* <Button title="Open" onPress={() => setOpen(true)} style={mstyle.PrimaryButton} /> */}
+                                    <DatePicker
+                                      mode={item?.type == 'date' ? 'date' : 'time'}
+                                      modal
+                                      open={open}
+                                      date={item?.value ? item?.value : moment().toDate()}
+                                      onConfirm={text => {
+                                        item.value = text
+                                        // console.log(item)
+                                        setOpen(false)
+                                      }}
+                                      onCancel={() => {
+                                        setOpen(false)
+                                      }}
+                                    />
 
-                                <Icon
-                                  onPress={() => setOpen(true)}
-                                  name={item?.type == 'date' ? "calendar-outline" : "alarm-outline"}
-                                  size={32}
-                                  color={Colors.DEFAULT_GREEN}
-                                  style={{ paddingVertical: 8, paddingRight: 8 }}
-                                />
+                                    <Icon
+                                      onPress={() => setOpen(true)}
+                                      name={item?.type == 'date' ? "calendar-outline" : "alarm-outline"}
+                                      size={32}
+                                      color={Colors.DEFAULT_GREEN}
+                                      style={{ paddingVertical: 8, paddingRight: 8 }}
+                                    />
 
-                                {item?.type == 'time' ? (
-                                  <Text onPress={() => setOpen(true)}
-                                    style={mstyle.inputText}>{moment(item.value).format('hh:mm a')}</Text>
+                                    {item?.type == 'time' ? (
+                                      <Text onPress={() => setOpen(true)}
+                                        style={mstyle.inputText}>{moment(item.value).format('hh:mm a')}</Text>
+                                    ) : (
+                                      <Text onPress={() => setOpen(true)}
+                                        style={mstyle.inputText}>{moment(item.value).format('Do MMM-YYYY')}</Text>
+                                    )}
+
+                                  </View>
                                 ) : (
-                                  <Text onPress={() => setOpen(true)}
-                                    style={mstyle.inputText}>{moment(item.value).format('Do MMM-YYYY')}</Text>
+                                  // <View>
+                                  item?.len ? (<TextInput
+                                    placeholder={`${item.placeholder}                                                         `}
+                                    keyboardType={item?.keyboard ? item?.keyboard : ''}
+                                    placeholderTextColor={'gray'}
+                                    selectionColor={Colors.DEFAULT_GREY}
+                                    style={mstyle.inputText}
+                                    maxLength={item?.len}
+                                    multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
+
+                                    onChangeText={text => {
+                                      refreshGetData()
+
+                                      if (item?.len == 10) {
+                                        let num = text.replace("/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/", '')
+                                        if (isNaN(num)) {
+                                          alert(`Enter Valid ${item.label}`)
+                                        } else {
+                                          if (text.split('', 1) > 5) {
+                                            item.value = text
+                                          } else {
+                                            alert(`Enter Valid ${item.label}`)
+                                          }
+                                        }
+                                      }
+                                    }
+                                    }
+                                    onFocus={text => {
+
+                                    }}
+                                    // value={item?.value}
+                                    defaultValue={item?.value}
+                                  />) : (
+                                    <TextInput
+                                      placeholder={`${item.placeholder}                                                         `}
+                                      keyboardType={item?.keyboard ? item?.keyboard : ''}
+                                      placeholderTextColor={'gray'}
+                                      selectionColor={Colors.DEFAULT_GREY}
+                                      style={mstyle.inputText}
+                                      multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
+                                      onChangeText={text => {
+                                        item.value = text
+                                        refreshGetData()
+                                        // // console.log(item)
+                                      }}
+                                      // value={item?.value}
+                                      defaultValue={item?.value}
+                                    />
+                                  )
+
+
+                                  // </View>
                                 )}
 
                               </View>
-                            ) : (
-                              // <View>
-                              item?.len ? (<TextInput
-                                placeholder={`${item.placeholder}                                                         `}
-                                keyboardType={item?.keyboard ? item?.keyboard : ''}
-                                placeholderTextColor={'gray'}
-                                selectionColor={Colors.DEFAULT_GREY}
-                                style={mstyle.inputText}
-                                maxLength={item?.len}
-                                multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
-                                onChangeText={text => {
-                                  item.value = text
-                                  // // console.log(item)
-                                }}
-                                // value={item?.value}
-                                defaultValue={item?.value}
-                              />) : (
-                                <TextInput
-                                  placeholder={`${item.placeholder}                                                         `}
-                                  keyboardType={item?.keyboard ? item?.keyboard : ''}
-                                  placeholderTextColor={'gray'}
-                                  selectionColor={Colors.DEFAULT_GREY}
-                                  style={mstyle.inputText}
-                                  multiline={item?.type == 'textarea' ? true : false} numberOfLines={item?.type === 'textarea' ? 6 : 1}
-                                  onChangeText={text => {
-                                    item.value = text
-                                    // // console.log(item)
-                                  }}
-                                  // value={item?.value}
-                                  defaultValue={item?.value}
-                                />
-                              )
 
-
-                              // </View>
                             )}
-
-                          </View>
-
+                            </View>
                         )}
 
                       </View>

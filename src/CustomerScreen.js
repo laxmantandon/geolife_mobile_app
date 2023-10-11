@@ -22,7 +22,7 @@ const CustomerScreen = ({ navigation }) => {
     AuthenicationService.searchdealerData(req)
       .then(x => {
         setserachingData(false)
-        // console.log(x)
+        console.log(x)
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {

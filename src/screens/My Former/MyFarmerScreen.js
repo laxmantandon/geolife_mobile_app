@@ -13,7 +13,7 @@ const MyFarmerScreen = ({navigation}) => {
         // {title:'Sticker Pasting', route:'StickerPastingScreen',icon:'clipboard-outline',icon_color:'black'},
         {title:'WhatsApp to Farmer', route:'WhatsappFarmerScreen',icon:'logo-whatsapp',icon_color:'green'},
         {title:'Door to Door Visit for App Download ', route:'DoortoDoor',icon:'logo-google-playstore',icon_color:'skyblue'},
-        {title:'Farmer Meeting', route:'FarmerMeetingScreen' ,icon:'people-circle-outline',icon_color:'gray'},
+        {title:'Farmer Meeting', route:'FarmerMeetingList' ,icon:'people-circle-outline',icon_color:'gray'},
         // {title:'Call to Farmer', route:'CallFarmerScreen'},
         // {title:'Crop Seminar', route:'CropSeminar',icon:'layers-outline',icon_color:'black'},
         {title:'Pravakta Kisan', route:'PravaktaScreen',icon:'person-outline',icon_color:'green'},

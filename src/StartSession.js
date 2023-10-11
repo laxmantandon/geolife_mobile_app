@@ -74,7 +74,7 @@ const StartSession = ({props, navigation }) => {
             calllogs:''
           }
           AuthenicationService.Checkuser(req).then(r => {
-            // console.log(r)
+            console.log(r)
             if (r.status){
               navigation.navigate('Home')
 

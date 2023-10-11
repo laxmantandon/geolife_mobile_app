@@ -93,15 +93,12 @@ const DoorToDoorScreen = ({navigation}) => {
 
   }
 
-  const update =()=>{
-    // // console.log(formdata)
-  }
-
-
 
   return (
     <View style={mstyle.container1}>
       <View style={mstyle.inputContainer1}>
+      <Text style={{fontSize:15, color:'black',paddingBottom:5, fontWeight:'500'}}>Select Farmer</Text>
+
       {selectedItems?(
          <View style={{
           padding: 8, marginTop: 2, flexDirection: 'row',
