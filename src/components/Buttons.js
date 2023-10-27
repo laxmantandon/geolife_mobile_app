@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Colors, Fonts, Images } from '../contants'
 import LottieView from 'lottie-react-native';
 import { Display } from '../utils';
+import Frappe_Model from '../Frappe_Model';
 
 const Buttons = ({title,loading,bgcolor}) => {
     const [isLoading, setisLoading] = useState(false)
@@ -10,6 +11,8 @@ const Buttons = ({title,loading,bgcolor}) => {
     <View
           style={[styles.Button,{backgroundColor: bgcolor?bgcolor:Colors.DARK_ONE}]}
           activeOpacity={0.8}>
+          <Frappe_Model loading={loading} />
+
           {loading ? (
             <LottieView source={Images.LOADING} autoPlay />
           ) : (

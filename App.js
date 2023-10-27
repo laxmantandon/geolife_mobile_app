@@ -69,6 +69,7 @@ import ViewImageScreen from './src/screens/My Former/ViewImageScreen';
 import FarmerMeetingListScreen from './src/screens/My Former/FarmerMeetingListScreen';
 import FarmerMeetingAttendanceScreen from './src/screens/My Former/FarmerMeetingAttendanceScreen';
 import LocationPermission from './src/services/LocationPermission';
+import DeaalerTreeViewScreen from './src/DeaalerTreeViewScreen';
 // SplashScreen.hide();
 CameraPermission()
 
@@ -135,6 +136,8 @@ function MyDGODrawer({navigation}) {
 }
 function HomeScreen({ navigation }) {
   SplashScreen.hide();
+  const [isLoading, setisLoading] = useState(false)
+  const [Loading, setLoading] = useState(false)
   const [data, setdata] = React.useState([
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
     // { title: 'My Self', route: 'Myday', icon: 'ios-sunny-outline', color: 'gold' },
@@ -877,6 +880,7 @@ function App({ navigation }) {
               <Stack.Screen name="Expense" component={ExpenseScreen} options={() => ({ headerTitle: "Expenses" })} />
               <Stack.Screen name="ExpenseDetails" component={ExpenseDetailsScreen} options={() => ({ headerTitle: "Add Expenses" })} />
               <Stack.Screen name="Customer" component={CustomerScreen} options={() => ({ headerTitle: "Customer" })} />
+              <Stack.Screen name="Dealertree" component={DeaalerTreeViewScreen} options={() => ({ headerTitle: "My Team Tree" })} />
               <Stack.Screen name="CustomerDetails" component={CustomerDetailsScreen} options={() => ({ headerTitle: "Customer Details" })} />
               <Stack.Screen name="AddPayment" component={AddPaymentScreen} options={() => ({ headerTitle: "Add Payment Details" })} />
               <Stack.Screen name="ProductScreen" component={ProductScreen} options={() => ({ headerTitle: "Products" })} />

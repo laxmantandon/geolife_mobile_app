@@ -66,7 +66,7 @@ const StartSession = ({props, navigation }) => {
   const Checkuser=()=>{
     if (session){
           let req = {
-            activity_type: 'End Day',
+            activity_type: ['End Day'],
             activity_name: 'End Day',
             session:session,
             image: '',
@@ -75,6 +75,8 @@ const StartSession = ({props, navigation }) => {
           }
           AuthenicationService.Checkuser(req).then(r => {
             console.log(r)
+            setloading(false)
+
             if (r.status){
               navigation.navigate('Home')
 
@@ -87,6 +89,8 @@ const StartSession = ({props, navigation }) => {
             }
 
           }).catch(e=>{
+            setloading(false)
+
             return false
           })
 
@@ -100,7 +104,7 @@ const StartSession = ({props, navigation }) => {
       // setsession(JSON.parse(value))
       let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
       if (duration){
-        if (duration.asHours() >12){
+        if (duration.asHours() >15){
           endSession()
         }else{
           setsessionTimes(duration.asHours())
@@ -126,7 +130,7 @@ const StartSession = ({props, navigation }) => {
       let stime = `${current_time.toISOString().split('T')[0]} ${current_time.toTimeString().slice(0, 5)}`
 
       let req = {
-        activity_type: 'Start Day',
+        activity_type: ['Start Day'],
         activity_name: 'Start Day',
         image: '',
         notes: ''
@@ -139,7 +143,7 @@ const StartSession = ({props, navigation }) => {
       })
 
       AuthenicationService.create_activity(req).then(r => {
-        // console.log(r)
+        console.log(r)
         setloading(false)
 
         if (r.status == true) {
@@ -152,13 +156,16 @@ const StartSession = ({props, navigation }) => {
             navigation.navigate('VideoScreen', {item:r.video})
 
           }else{
-            navigation.navigate('Home',)
+            navigation.navigate('Home')
 
           }
           ToastAndroid.showWithGravityAndOffset(
             'Your session started',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         }
+      }).catch(e=>{
+        setloading(false)
+
       })
 
     }
@@ -243,7 +250,7 @@ const StartSession = ({props, navigation }) => {
       // })
       AsyncStorage.removeItem('user_session')
       let req = {
-        activity_type: 'End Day',
+        activity_type: ['End Day'],
         activity_name: 'End Day',
         session:session,
         image: '',
@@ -270,6 +277,8 @@ const StartSession = ({props, navigation }) => {
 
         }
       }).catch(e=>{
+        setloading(false)
+
         ToastAndroid.showWithGravityAndOffset(
           'No Internet Connection',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)

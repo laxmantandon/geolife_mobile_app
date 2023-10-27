@@ -11,7 +11,7 @@ const AddPaymentScreen = ({ navigation, props,
   route: {
     params: { item },
   }, }) => {
-  const [payment_type, setpayment_type] = useState(["UPI", "Cash", "Cheque"])
+  const [payment_type, setpayment_type] = useState(["Cheque","RTGS", "NEFT"])
   const [formdata, setformdata] = useState([
     { label: 'Select Payment Method', key: 'type', value: '', options: payment_type, type: 'select', },
     { label: 'Refrence Number', placeholder: 'Enter Refrence Number', key: 'ref_number', value: '', type: 'text' },

@@ -5,8 +5,9 @@ import { useState } from 'react';
 import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
-const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
+const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api2'
 const base_url2 ='https://crop.erpgeolife.com/api/resource'
+const base_url3 ='https://crop.erpgeolife.com/api/method'
 // const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
 
 // const [user, setuser] = useState([])
@@ -269,7 +270,7 @@ const searchdealerData = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -451,7 +452,7 @@ const activity_list = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
@@ -520,7 +521,7 @@ const activity_for = async req => {
 
 const create_activity = async req => {
   gettoken()
-  // console.log('gettoken()', gettoken())
+  console.log('gettoken()', gettoken())
   try {
     // console.log(req)
     let Response = await AuthRequest.post(
@@ -1026,6 +1027,22 @@ const GetDoctypeData = async req => {
 };
 
 
+const GetTreeData = async req => {
+ 
+    try {         
+      let Response = await AuthRequest.get(
+        `${base_url3}/geo_mitra_tree`,{headers:gettoken()}
+      );
+
+      return Response?.data
+} catch (error) {
+  console.log('API ERROR ', error.response.data ,gettoken());
+  return { status: false, message: 'Oops! Something went wrong ' };
+}
+  
+};
+
+
 const GetDoctypefilterData = async req => {
   try {         
         let Response = await AuthRequest.get(
@@ -1102,5 +1119,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
   checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser,GetDoctypeData,
-  get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,update_expenses
+  get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,update_expenses,GetTreeData
 };

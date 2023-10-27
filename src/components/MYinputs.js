@@ -21,9 +21,9 @@ import SearchableDropDown from 'react-native-searchable-dropdown'
 
 
 
-const MYinputs = ({ item }) => {
+const MYinputs = ({ item,refreshinput }) => {
   // // console.log('FROM MY INPUT',  item)
-
+ 
   const [visible, setIsVisible] = useState(false);
   const [captureimage, setcaptureimage] = useState([])
   const [open, setOpen] = useState(false)
@@ -276,8 +276,14 @@ const OpenGallery=()=>{
                   <Pressable onPressIn={() => {
                     if(multi_value.includes(item)){
                      removeData(item)
+                     if(refreshinput){
+                      refreshinput()
+                      }
                     }else{
                        getData(item)
+                        if(refreshinput){
+                      refreshinput()
+                      }
                     }
                      
 
@@ -290,7 +296,7 @@ const OpenGallery=()=>{
                        
                             
                               <Icon name={multi_value.includes(item) ? 'ios-checkmark-circle' : 'ios-ellipse-outline'}
-                                size={20} style={{ padding: 8, color: givedans === realans ? (multi_value.includes(item) ? 'green' : 'red') : 'green' }} />
+                                size={20} style={{padding: 8, color: givedans === realans ? (multi_value.includes(item) ? 'green' : 'red') : 'green' }} />
                               
 
                          
@@ -466,6 +472,9 @@ const OpenGallery=()=>{
 
                               onSelect={(selectedItem, index) => {
                                 // console.log(selectedItem, index)
+                                if(refreshinput){
+                                  refreshinput()
+                                  }
                                 item.value = selectedItem
                                 item.index = index
 
@@ -475,6 +484,7 @@ const OpenGallery=()=>{
                                       item.fetch= a
                                     }
                                   });
+                                  
                                 }
 
                               }}
@@ -511,35 +521,102 @@ const OpenGallery=()=>{
                           <View style={{flex:1}}>
                             {item?.type=='searchable'?(
                                       <View style={{marginBottom:1}}>
-                                        {item.value ? (
-                                          <View style={{
-                                            padding: 6, marginTop: 2, flexDirection: 'row',
-                                            backgroundColor: 'white', borderColor: 'silver',
-                                            borderWidth: 0, borderRadius: 5, width: '100%'
-                                          }}>
+                                        {item.disable_input==1 ? (
+                                          <View>
+                                            {item.value?(
+                                              <View style={{
+                                                padding: 6, marginTop: 2, flexDirection: 'row',
+                                                backgroundColor: 'white', borderColor: 'silver',
+                                                borderWidth: 0, borderRadius: 5, width: '100%'
+                                              }}>
+    
+                                                <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> 
+                                                {item.value}</Text>
+                                                <Icon onPress={() => {
+                                                  item.value = ''
+                                                  item.data = {}
+                                                  setloading(true)
+                                                  refreshGetData()
+    
+                                                }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+    
+                                              </View>
+                                            ):('')}
 
-                                            <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> 
-                                            {item.value}</Text>
-                                            <Icon onPress={() => {
-                                              item.value = ''
-                                              item.data = {}
-                                              setloading(true)
-                                              refreshGetData()
-
-                                            }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
-
-                                          </View>
+                                            
+                                            </View>
+                                          
                                         ) : (
 
-                                          <SearchableDropDown zIndex={999}
+                                          <View>
+                                            {item.values?(
+                                              <View style={{
+                                                padding: 6, marginTop: 2,
+                                                backgroundColor: 'white', borderColor: 'silver',
+                                                borderWidth: 0, borderRadius: 5
+                                              }}>
+
+                                                {item.values.map((itm, index)=>{
+                                                  return(
+                                                    <View style={{flexDirection:'row', borderColor:'silver', borderWidth:.5,borderRadius:5, padding:3, marginBottom:5}}>
+                                                      <Text style={{ color: 'black', fontSize: 12, fontWeight: 'bold', marginRight:10,width:'90%'}}> 
+                                                {itm}</Text>
+                                                <Icon onPress={() => {
+                                                  console.log(index)
+                                                  item.values.splice(index,1)
+                                                  
+
+                                                  setloading(true)
+                                                  refreshGetData()
+    
+                                                }} name='close-circle-outline' size={20} style={{ color: 'red' }}></Icon>
+                                                      </View>
+                                                  )
+                                                })}
+    
+                                                {/* <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> 
+                                                {item.value}</Text>
+                                                <Icon onPress={() => {
+                                                  item.value = ''
+                                                  item.data = {}
+                                                  setloading(true)
+                                                  refreshGetData()
+    
+                                                }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+     */}
+                                              </View>
+                                            ):('')}
+
+<SearchableDropDown zIndex={999}
                                             onItemSelect={(kitem) => {
                                               // alert('select dealer')
                                               // console.log('clicked',kitem)
-                                              item.value = kitem.id
-                                              item.data = kitem
-                                              console.log('clicked', item.data)
-                                              setloading(true)
-                                              refreshGetData()
+                                              if(item.multi_select){
+                                                if(item?.values){
+                                                }else{
+                                                  item.values=[]
+                                                }
+                                                  if (item.values.includes(kitem.id)){
+
+                                                  }else{
+                                                  item.values.push(kitem.id)
+                                                  item.data = kitem
+                                                  console.log('clicked', item.data)
+                                                  setloading(true)
+                                                  refreshGetData()
+                                                  }
+
+                                                
+
+                                              }else{
+                                                item.value = kitem.id
+                                                item.data = kitem
+                                                item.disable_input = 1
+                                                console.log('clicked', item.data)
+                                                setloading(true)
+                                                refreshGetData()
+                                              }
+                                             
 
 
                                             }}
@@ -585,6 +662,9 @@ const OpenGallery=()=>{
                                               }
                                             }
                                           />
+                                            </View>
+
+                                         
                                         )}
 
                                       </View>

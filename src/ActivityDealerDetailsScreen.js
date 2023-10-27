@@ -89,10 +89,10 @@ const ActivityDealerDetailsScreen = ({ navigation}) => {
     // // console.log(formdata)
     let req = submitReqData(formdata);
     setisLoading(true);
-    // console.log(req)
     req.dealer = selectedDelers?.id
 
-  
+      console.log(req)
+
     if(!req.image){
 req.image=''
     }
@@ -137,7 +137,7 @@ req.image=''
 
 
   return (
-    <SafeAreaView style={mstyle.container1}>
+    <ScrollView style={mstyle.container1} keyboardShouldPersistTaps="handled">
     {isFormLoading?(
 
 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -163,7 +163,7 @@ req.image=''
 
                         </View>
                       ) : (
-                        <SearchableDropDown
+                        <SearchableDropDown zIndex={999}
                           onItemSelect={(item) => {
                             // const items = selectedCrops;
                             // items.push(item)
@@ -233,24 +233,26 @@ req.image=''
     
               )
             }}
-            ListFooterComponent={()=>{
-              return(
-                <Pressable style={{marginBottom:10}} onPress={() => { submit() }}>
-                <Buttons title={'Submit'} loading={isLoading} />
-              </Pressable>
-              )
-            }}
+            // ListFooterComponent={()=>{
+            //   return(
+            //     <Pressable style={{marginBottom:10}} onPress={() => { submit() }}>
+            //     <Buttons title={'Submit'} loading={isLoading} />
+            //   </Pressable>
+            //   )
+            // }}
             
             
             />
     
         
-    
+    <Pressable style={{marginBottom:10}} onPress={() => { submit() }}>
+                <Buttons title={'Submit'} loading={isLoading} />
+              </Pressable>
     
         </View>
     )}
 
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 

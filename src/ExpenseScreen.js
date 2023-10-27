@@ -51,8 +51,11 @@ const ExpenseScreen = ({navigation}) => {
           let m ={
             title:a.expense_type,
             subtitle:`Expense in Rs. ${a.amount}`,
-            image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
+            // image:a?.image?a?.image :'https://winaero.com/blog/wp-content/uploads/2019/11/Photos-new-icon.png',
             data:a,
+            date:a.creation,
+            status: moment(a.creation).format('A'),
+            percent: moment(a.creation).format('hh:mm')
           }
           total_expense = total_expense+a.amount
           mapped_array.push(m)

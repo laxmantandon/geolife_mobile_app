@@ -82,7 +82,7 @@ const Card = ({ item }) => {
 
           <View style={styles.detailContainer}>
             <View style={styles.titleContainer}>
-              <Text style={styles.listListTitle} numberOfLines={2}>
+              <Text style={[styles.listListTitle]} numberOfLines={2}>
                 {data?.title}
               </Text>
               
@@ -94,8 +94,8 @@ const Card = ({ item }) => {
           {data?.status ?
             <View style={{ backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto' }} >
               <View style={{ padding: 10 }}>
-                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>{data.percent}</Text>
-                <Text style={{ color: 'green', fontWeight: '600', fontSize: 12, textAlign: 'center' }}>{data.status}</Text>
+                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 15, textAlign: 'center' }}>{data.percent}</Text>
+                <Text style={{ color: 'green', fontWeight: '700', fontSize: 12, textAlign: 'center' }}>{data.status}</Text>
               </View>
             </View> : ''}
 
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   listListTitle: {
     color: 'black',
     fontFamily: Fonts.POPPINS_MEDIUM,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
     letterSpacing: 0.1,
     // width: '100%',

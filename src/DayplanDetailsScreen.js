@@ -63,6 +63,8 @@ const DayplanDetailsScreen = ({ navigation, props,
 
       }
     }).catch(e=>{
+      setisLoading(false);
+
       // console.log(e)
     })
 

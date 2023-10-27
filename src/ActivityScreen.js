@@ -4,6 +4,7 @@ import Card from '../src/components/Card'
 import FabButton from './components/FabButton';
 import { useEffect } from 'react';
 import { AuthenicationService } from './services';
+import moment from 'moment';
 
 const ActivityScreen = ({navigation}) => {
   const [data, setdata] = useState( [
@@ -20,7 +21,7 @@ const ActivityScreen = ({navigation}) => {
     req=null
     setloading(true)
     AuthenicationService.activity_list(req).then(response => {
-      // console.log(response)
+      console.log(response)
       setloading(false)
       if (response?.status== true) {
         
@@ -28,9 +29,12 @@ const ActivityScreen = ({navigation}) => {
         response.data.forEach(a=> {
           console.log(a?.icon,"icon")
           let m ={
-            title:a.activity_name,
+            title:a.activity_type,
             subtitle:a.activity_type,
-            image:`https://crop.erpgeolife.com${a?.icon}`,
+            // image:`https://crop.erpgeolife.com${a?.icon}`,
+            date:a.creation,
+            status: moment(a.creation).format('A'),
+            percent: moment(a.creation).format('hh:mm')
           }
           mapped_array.push(m)
         })

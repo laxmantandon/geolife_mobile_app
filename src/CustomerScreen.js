@@ -8,15 +8,26 @@ import { useEffect } from 'react'
 import { AuthenicationService } from './services'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const CustomerScreen = ({ navigation }) => {
+const CustomerScreen = ({navigation, props,
+  route: {
+    params: { item },
+  }, }) => {
 
   const [data, setdata] = useState([])
   const [serachingData, setserachingData] = useState(true)
 
+ 
   const searchFilterFunction = (text) => {
     setserachingData(true)
     let req = {
       "text": text
+    }
+    if(item){
+      if(item.name){
+        console.log(item.name,'Child name')
+        req.child_geo_mitra=item.name
+
+      }
     }
     // // console.log(text)
     AuthenicationService.searchdealerData(req)
@@ -26,7 +37,7 @@ const CustomerScreen = ({ navigation }) => {
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.dealer_name}`,"mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number })
+            mapped_array.push({ "title": `${a.dealer_name}`, "subtitle": `${a.sales_person_name}`, "mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number })
           })
           setdata(mapped_array)
         } else {
@@ -37,9 +48,14 @@ const CustomerScreen = ({ navigation }) => {
 
   useEffect(() => {
     // getData()
+    if(item){
+      console.log(item,'router item')
+    }
     searchFilterFunction("")    
   }, [])
  
+ 
+
 
   return (
     <View style={mstyle.container1}>
@@ -58,7 +74,6 @@ const CustomerScreen = ({ navigation }) => {
           />
         </View>
       </View>
-
 
       <FlatList
        refreshing={serachingData}

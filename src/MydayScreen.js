@@ -12,7 +12,8 @@ const MydayScreen = ({navigation}) => {
   const [data, setdata] = useState([
     {title:'Activities', route:'Activity'},
     {title:'Expense', route:'Expense'},
-    {title:'Customer/ Dealer', route:'Customer'},
+    {title:'Customer/ Dealer', route:'Customer', value:'1'},
+    {title:'My Team Tree', route:'Dealertree'},
     {title:'Day Plan', route:'Dayplan'},
     {title:'Dealer Visit', route:'ActivityDealerDetails'}
   ])
@@ -51,7 +52,12 @@ const MydayScreen = ({navigation}) => {
         return (
           <Pressable
              onPress={() => {
-               navigation.navigate(item.item.route)
+              if(item.item.value){
+               navigation.navigate(item.item.route, {item})
+              }else{
+                navigation.navigate(item.item.route)
+
+              }
              }} 
              >
           <Card item={item} />
