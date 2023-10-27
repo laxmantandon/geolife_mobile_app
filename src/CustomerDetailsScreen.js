@@ -11,6 +11,7 @@ import activitysubmitReqData from './services/activityFromData'
 import Geolocation from '@react-native-community/geolocation'
 import { useEffect } from 'react'
 import { Colors } from './contants'
+import moment from 'moment'
 
 
 const CustomerDetailsScreen = ({ navigation, props,
@@ -269,17 +270,28 @@ const getStock= ()=>{
   return (
     <ScrollView style={mstyle.container1}>
       <View style={[mstyle.inputContainer,{paddingVertical:18,paddingHorizontal:10, elevation:8}]}>
-        <Text style={{color:'black', fontSize:15,}} >
-           Customer name :-
+       <View>
+       <Text style={{color:'black', fontSize:15, textAlign:'center'}} >
+           {/* Customer name :- */}
            <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.title} </Text> </Text>
-        <Text style={{color:'black', fontSize:15}} >
-           Customer Mobile :- 
-        <Text style={{color:'black', fontSize:15, fontWeight:'bold'}}> {item.item.mobile_number} </Text> </Text>
+        <Text style={{color:'grey', fontSize:15, textAlign:'center'}} >
+           {/* Customer Mobile :-  */}
+        <Text style={{color:'grey', fontSize:13, fontWeight:'bold'}}> Contact- {item.item.mobile_number} </Text> </Text>
+       </View>
+
+       <View style={{ alignItems:'center', elevation:4, padding:10,margin:5, borderRadius:5,
+       backgroundColor:item.item.data.activity[0].count==0?Colors.LIGHT_RED:Colors.LIGHT_GREEN}}>
+       <Text style={{color:'black', fontSize:15, fontWeight:'700'}}> {item.item.data.activity[0].count==0?'No':item.item.data.activity[0].count} DGO Visits </Text>
+{item.item.data.activity[0].count==0?(''):(
+         <Text style={{color:'black', fontSize:13, fontWeight:'500'}}> Last visited by {item.item.data.activity[0].geo_mitra_name} on {moment(item.item.data.activity[0].posting_date).format('DD MMM-yy')}  </Text>
+
+)}
+       </View>
       </View>
 
 
       <View style={[mstyle.inputContainer,{marginTop:5,paddingHorizontal:0, paddingBottom:10, elevation:8}]}>
-      <Text style={mstyle.title}>Dealer Stock Details:-</Text>
+      <Text style={[mstyle.title, {fontSize:15, fontWeight:'700'}]}>Dealer Stock Details :-</Text>
       <FlatList
         refreshing={loading}
         onRefresh={() => {
@@ -345,7 +357,7 @@ const getStock= ()=>{
 
 {selectedProducts?(
 <View style={[mstyle.inputContainer,{marginTop:10, paddingBottom:10,elevation:8}]}>
-      <Text style={mstyle.title}>New Order Details:-</Text>
+      <Text style={[mstyle.title,{fontSize:15, fontWeight:'700'}]}>New Order Details:-</Text>
       <FlatList
         refreshing={loading}
         onRefresh={() => {
@@ -397,26 +409,26 @@ const getStock= ()=>{
 
       <View style={{flex:1,flexDirection:'row',paddingVertical:10 , marginHorizontal:10}}>
         <Pressable
-        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+        style={{backgroundColor:Colors.DEFAULT_GREEN, 
         flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:5, paddingVertical:5,marginRight:3}}
          onPress={() => { navigation.navigate('ProductScreen', { item }) }}>
           <Icon name='add-circle-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>New Order</Text>
+          <Text style={{color:'white', fontSize:13, fontWeight:'bold',textAlign:'center'}}>New Order</Text>
         </Pressable>
 
         <Pressable
-        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+        style={{backgroundColor:Colors.SECONDARY_GREEN, 
           flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:5,marginRight:3}}
            onPress={() => { navigation.navigate('AddPayment', { item }) }}>
                       <Icon name='cash-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>Payment Entry</Text>
+          <Text style={{color:'white', fontSize:13, fontWeight:'bold',textAlign:'center'}}>Payment Entry</Text>
         </Pressable>
 
         <Pressable
-        style={{backgroundColor:Colors.GOOGLE_BLUE, 
+        style={{backgroundColor:Colors.SECONDARY_RED, 
           flex:1, borderWidth:.5, borderRadius:5, paddingHorizontal:10, paddingVertical:5,marginRight:1}} onPress={() => { navigation.navigate('ReturnOrder', { item }) }}>
                                 <Icon name='refresh-outline' size={22} style={{color:'white',alignSelf:'center'}}/>
-          <Text style={{color:'white', fontSize:15, fontWeight:'bold',textAlign:'center'}}>Return order</Text>
+          <Text style={{color:'white', fontSize:13, fontWeight:'bold',textAlign:'center'}}>Return order</Text>
         </Pressable>
       
       </View>

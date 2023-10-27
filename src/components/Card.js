@@ -43,7 +43,7 @@ const Card = ({ item }) => {
         <View style={{ flex: 1, flexDirection: 'row' }}>
           {data?.icon ? (<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8,alignSelf:'center' }} >
             <Icon name={data.icon}
-              size={25} style={{ padding: 10, paddingRight: 1, color: data.icon_color ? data.icon_color : 'black' }} />
+              size={data.icon_size?data.icon_size:22} style={{ paddingLeft: 10, color: data.icon_color ? data.icon_color : 'black' }} />
           </View>) : ('')}
 
           {data?.checkbox ?
@@ -103,17 +103,17 @@ const Card = ({ item }) => {
 
           {data?.whatsapp ? <View style={{
             backgroundColor: '#f0f8fe', borderTopRightRadius: 8, borderBottomRightRadius: 8, marginLeft: 'auto',
-            padding: 10, flexDirection: 'row'
+            paddingLeft: 10, flexDirection: 'row', 
           }}>
             <Icon onPress={() => {
               Linking.openURL(`whatsapp://send?phone=91${data.whatsapp}`)
             }}
-              name={'logo-whatsapp'} size={25} color='green' style={{ paddingTop: 8, color: 'green' }} />
+              name={'logo-whatsapp'} size={22} color='green' style={{ paddingTop: 1, color: 'green',alignSelf:'center' }} />
 
             <Icon onPress={() => {
               Linking.openURL(`tel:${data.call}`)
             }}
-              name={'ios-call'} size={25} color='black' style={{ padding: 8, color: 'black' }} />
+              name={'ios-call'} size={22} color='black' style={{ padding: 8, color: 'black',alignSelf:'center' }} />
           </View>
             : ''}
 

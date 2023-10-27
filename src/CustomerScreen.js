@@ -37,7 +37,11 @@ const CustomerScreen = ({navigation, props,
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            mapped_array.push({ "title": `${a.dealer_name}`, "subtitle": `${a.sales_person_name}`, "mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number })
+            console.log(a.activity)
+            
+            mapped_array.push({"icon_size":22,"icon":a.activity[0].count==0?"close-circle-outline":"checkmark-done-circle-outline",
+            "icon_color":a.activity[0].count==0?"red":"green", "title": `${a.dealer_name}`, "subtitle": `${a.sales_person_name}`, 
+            "mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number, "data":a })
           })
           setdata(mapped_array)
         } else {
