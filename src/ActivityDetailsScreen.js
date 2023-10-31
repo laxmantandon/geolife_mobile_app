@@ -19,7 +19,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Type', key: 'type', options: ["Farmer", "Retailer", "Dealer", "Other"], type: 'select', },
+    { label: 'Please Select Type', key: 'type', options: ["Farmer","Dealer"], type: 'select', },
     { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'searchable',multi_select:true },
     { label: 'Name', placeholder: 'Enter Name', key: 'party', link_doctype: 'My Farmer' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
@@ -32,58 +32,68 @@ const ActivityDetailsScreen = ({ navigation, props,
 
   const [farmer_options, setfarmer_options] = useState([])
   const [dealer_options, setdealer_options] = useState([])
-  if (item) {
-    // console.log(item)
-    AuthenicationService.activity_for(req).then(res => {
-      // console.log(res.data)
-      if (res?.status == true) {
-        mapped_array = []
-        res.data.forEach(a => {
-          mapped_array.push({ "json": `${a.json}` })
-        })
-        setformdata(JSON.parse(mapped_array))
-      } else {
-      }
-    })
-
-    // for (let i in formdata) {
-    //   for (let n in item.item) {
-    //     // console.log('item value', item.item[n])
-    //     if (formdata[i].key === n) {
-    //       formdata[i].value = item.item[n]
-    //     }
-    //   }
-    // }
+  const [visible, setvisible] = useState('auto')
 
 
-
-
-  }
-
-  if (activity_type.length === 0) {
-    // console.log(activity_type.length)
-    AuthenicationService.activity_type(req).then(res => {
-      // // console.log(res.data)
-      if (res?.status == true) {
-        mapped_array = []
-        setall_activity_type(res.data)
-        res.data.forEach(a => {
-          // console.log(a)
-          if(a.activity_for==formdata[0].value){
-          // mapped_array.push(a.name)
-          mapped_array.push({id:a.name ,name:a.name})
-          }
-        })
-        formdata[1].options = mapped_array
-        setactivity_type(mapped_array)
-      } else {
-      }
-    })
-
+  if(!item){
+    if (activity_type.length === 0) {
+      // console.log(activity_type.length)
+      AuthenicationService.activity_type(req).then(res => {
+        // // console.log(res.data)
+        if (res?.status == true) {
+          mapped_array = []
+          setall_activity_type(res.data)
+          res.data.forEach(a => {
+            // console.log(a)
+            if(a.activity_for==formdata[0].value){
+            // mapped_array.push(a.name)
+            mapped_array.push({id:a.name ,name:a.name})
+            }
+          })
+          formdata[1].options = mapped_array
+          setactivity_type(mapped_array)
+        } else {
+        }
+      })
+  
+    }
   }
 useEffect(() => {
+  // console.log(item)
+  if(item){
+    setvisible('none')
+    mdata= item.item.data
+    console.log(item.item.data.activity_type)
+    if(mdata.activity_name){
+     console.log('Type',mdata.activity_name.replace(" Visit",''))
+     formdata[0].value=mdata.activity_name.replace(" Visit",'')
+    }
+    formdata[1].values=mdata.activity_type
+
+    formdata[3].value=mdata.notes
+    if(mdata.activity_name.includes('Farmer')){
+      formdata[2].value=mdata.farmer
+      formdata[2].value_name=mdata.farmer
+      // console.log('Farmaer hai')
+    }
+    if(mdata.activity_name.includes('Dealer')){
+      // console.log('Dealer hai')
+      formdata[2].value=mdata.dealer
+      formdata[2].value_name=mdata.dealer
+    }
+    if(mdata.image){
+      let images=[]
+      images.push(mdata.image)
+      formdata[4].value=images
+
+
+
+    }
+
+  }else{
   searchFilterFunctionFarmer('a')
   searchFilterFunctionDealer('a')
+  }
 }, [])
 
 const onRefresh = React.useCallback(() => {
@@ -108,15 +118,7 @@ const onRefresh = React.useCallback(() => {
     let req = submitReqData(formdata);
     setisLoading(true);
     req.activity_type= formdata[1]?.values
-    // if(req.activity_type){
-    //   mapped=[]
-    //   req.activity_type.forEach(a => {
-    //     mapped.push({activity_type:a})
-        
-    //   });
-    // }
-
-
+   
     req.multiactivity_type= formdata[1]?.values
 
     if (req.activity_type == '' || req.activity_type == null) {
@@ -130,7 +132,9 @@ const onRefresh = React.useCallback(() => {
       Alert.alert('Please Enter Party Name')
       return
     }
-    console.log(req)
+    // console.log(req.latitude)
+    
+    // setisLoading(false);
 
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);
@@ -149,7 +153,6 @@ const onRefresh = React.useCallback(() => {
       }
     }).catch(e => {
       setisLoading(false);
-
       // console.log(e)
     })
 
@@ -242,7 +245,6 @@ const onRefresh = React.useCallback(() => {
       })
   }
 
-
   return (
     <SafeAreaView style={mstyle.container1}>
             <Frappe_Model loading={isLoading} />
@@ -250,6 +252,8 @@ const onRefresh = React.useCallback(() => {
       <ScrollView keyboardShouldPersistTaps="handled"  refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
+<View pointerEvents={visible}>
+
 
         {formdata.map(item => {
           return (
@@ -355,13 +359,11 @@ const onRefresh = React.useCallback(() => {
           )
         })}
 
-        {item.item ? (<Pressable onPress={() => { update() }}>
-          <Buttons title={'Update'} loading={isLoading} />
-        </Pressable>) : (<Pressable style={{ paddingBottom: 20 }} onPress={() => { submit() }}>
+        {item.item ? ('') : (<Pressable style={{ paddingBottom: 20 }} onPress={() => { submit() }}>
           <Buttons title={'Submit'} loading={isLoading} />
         </Pressable>)}
 
-
+        </View>
       </ScrollView>
     </SafeAreaView>
   )

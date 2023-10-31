@@ -267,6 +267,12 @@ const scrollViewRef = useRef()
                             borderWidth: 1, borderRadius: 5, width: '100%'
                           }}>
                             <Text style={{ color: 'black', width: '90%', fontSize: 15, paddingVertical: 4, fontWeight: '600' }}> {item?.pincode}</Text>
+                            <Pressable onPress={()=>{item.pincode =''
+                          setPincode('')
+                          setloading(true)
+                          getData()}}>
+                              <Icon name='close-circle-outline' size={25} style={{ color: 'red' }} />
+                            </Pressable>
 
                           </View>
                         ) : null}

@@ -447,7 +447,7 @@ const farmer_meeting = async req => {
 const activity_list = async req => {
   try {
     let Response = await AuthRequest.get(
-      `${base_url}.activity_list`,{headers:gettoken()}
+      `${base_url}.activity_list?from_date=${req.from_date}& to_date=${req.to_date}`,{headers:gettoken()}
       
     );
     return Response?.data.message

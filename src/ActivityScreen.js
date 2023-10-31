@@ -5,6 +5,8 @@ import FabButton from './components/FabButton';
 import { useEffect } from 'react';
 import { AuthenicationService } from './services';
 import moment from 'moment';
+import DateInput from './components/DateInput';
+import { Colors } from './contants';
 
 const ActivityScreen = ({navigation}) => {
   const [data, setdata] = useState( [
@@ -12,29 +14,36 @@ const ActivityScreen = ({navigation}) => {
     // {title:'jkdh kjdfkjdff',image:'' ,subtitle:'subtitle'} 
   ])
   const [loading, setloading] = useState(true)
+  const [from_date, setfrom_date] = useState({ label: 'From Date', value: new Date(), type: 'date', key: 'from_date'  })
+  const [to_date, setto_date] = useState({ label: 'To Date', value: new Date(), type: 'date', key: 'to_date'  })
+
 
   useEffect(() => {
     getData()    
   }, [])
  
   const getData = ()=>{
-    req=null
+    req={
+      'from_date':moment(from_date.value).format('yyyy-MM-DD'),
+      'to_date':moment(to_date.value).format('yyyy-MM-DD')
+    }
     setloading(true)
     AuthenicationService.activity_list(req).then(response => {
-      console.log(response)
+      // console.log(response)
       setloading(false)
       if (response?.status== true) {
         
         mapped_array=[]
         response.data.forEach(a=> {
-          console.log(a?.icon,"icon")
+          // console.log(a,"icon")
           let m ={
             title:a.activity_type,
             subtitle:a.activity_type,
             // image:`https://crop.erpgeolife.com${a?.icon}`,
             date:a.creation,
             status: moment(a.creation).format('A'),
-            percent: moment(a.creation).format('hh:mm')
+            percent: moment(a.creation).format('hh:mm'),
+            data:a
           }
           mapped_array.push(m)
         })
@@ -46,6 +55,22 @@ const ActivityScreen = ({navigation}) => {
   }
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
+ 
+ 
+      <View style={{flexDirection:'row', paddingTop:6}}>
+  <View style={{flex:1}}>
+  <DateInput item={from_date} />
+  </View>
+  <Text style={{color:'green', fontSize:14, fontWeight:'bold', paddingVertical:7}}>TO</Text>
+  <View style={{flex:1}}>
+  <DateInput item={to_date} />
+  </View>
+  <Pressable onPress={()=>{ getData() }}>
+          <Text style={{color:'white',fontWeight:'bold',fontSize: 15, borderRadius:8,backgroundColor:Colors.DEFAULT_GREEN,
+          padding:9,paddingHorizontal:10,marginRight:10}}>GO</Text>
+        </Pressable>
+</View>
+
       <FlatList
       refreshing={loading}
       onRefresh={()=>{
@@ -55,7 +80,7 @@ const ActivityScreen = ({navigation}) => {
       renderItem={(item) =>{
         return (
           <Pressable
-          // onPress={() => navigation.navigate('ActivityDetails',{item})}
+          onPress={() => navigation.navigate('ActivityDetails',{item})}
           >
           <Card item={item} />
 

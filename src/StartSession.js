@@ -14,10 +14,13 @@ import  MydealersScreen from './../src/screens/My Dealers/DealerPaymentScreen'
 // import { PermissionsAndroid } from 'react-native';
 // import CallLogs from 'react-native-call-log';
 import Geolocation from '@react-native-community/geolocation';
+import LocationPermission from './services/LocationPermission'
 
 
 const StartSession = ({props, navigation }) => {
   SplashScreen.hide();
+  LocationPermission()
+
 
   const [user, setuser] = useState([])
   const [session, setsession] = useState(Date)
@@ -78,8 +81,7 @@ const StartSession = ({props, navigation }) => {
             setloading(false)
 
             if (r.status){
-              navigation.navigate('Home')
-
+              // navigation.navigate('Home')
               return true
 
             }
@@ -328,7 +330,7 @@ const logOut=()=>{
         </Text>
   
         <Text style={{ fontSize: 14, color: 'gray', fontWeight: '600', textAlign: 'center' }}>
-          {session_started ? `Working Time ${(Math.round(sessionTime * 100) / 100).toFixed(2)} hours` : ''}
+          {session_started ? `Working Time ${sessionTime.toString().substring(0, sessionTime>=10?3:2)}${(((sessionTime.toString().substring(2, 4))*.60).toFixed(2)).toString().substring(0, 2)} hours` : ''}
           {/* {moment(session).format('LTS')} */}
         </Text>
         
@@ -345,7 +347,10 @@ const logOut=()=>{
           <Pressable onPress={() => {
             if (session_started == true) {
               // console.log(Checkuser())
-              Checkuser()
+              if(Checkuser()){
+                navigation.navigate('Home')
+
+              }
                
             }
           }}>

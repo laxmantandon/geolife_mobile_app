@@ -76,6 +76,7 @@ CameraPermission()
 LocationPermission()
 
 
+
 const Drawer = createDrawerNavigator();
 
 function MyDGODrawer({navigation}) {
@@ -136,6 +137,8 @@ function MyDGODrawer({navigation}) {
 }
 function HomeScreen({ navigation }) {
   SplashScreen.hide();
+  LocationPermission()
+
   const [isLoading, setisLoading] = useState(false)
   const [Loading, setLoading] = useState(false)
   const [data, setdata] = React.useState([
@@ -200,7 +203,7 @@ function HomeScreen({ navigation }) {
         let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
         if (duration){
           setsessionTime(duration.asHours())
-        if(duration.asHours() >=12){
+        if(duration.hours() >=12){
           navigation.navigate('SessionScreen')
         }
       }else{
@@ -385,7 +388,7 @@ const getAttendance = async () => {
                 }} numberOfLines={2}>{user.mobile_no}</Text>
                 <Text onPress={() => { getcurrentTime() }} style={{
                   color: 'green', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
-                }} numberOfLines={1}>Working time <Text style={{ fontSize: 25, fontWeight: 'bold' }}> {(Math.round(sessionTime * 100) / 100).toFixed(2)} </Text> Hours
+                }} numberOfLines={1}>Working time <Text style={{ fontSize: 25, fontWeight: 'bold' }}> {sessionTime.toString().substring(0, sessionTime>=10?3:2)}{(((sessionTime.toString().substring(2, 4))*.60).toFixed(2)).toString().substring(0, 2)} </Text> Hours
 
                 </Text>
               </View>

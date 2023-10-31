@@ -14,9 +14,9 @@ const LocationPermission = () => {
          }
          );
          if (grantedlocation === PermissionsAndroid.RESULTS.GRANTED) {
-           // console.log("Camera permission given");
+           // console.log("Location permission given");
          } else {
-           // console.log("Camera permission Already have");
+           // console.log("Location permission Already have");
          }
        } catch (err) {
         BackHandler.exitApp()
