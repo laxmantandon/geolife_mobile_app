@@ -153,10 +153,10 @@ function HomeScreen({ navigation }) {
     // { title: 'My Tasks', route: 'Myday', icon: 'ios-list-outline', color: 'red' },
     { subtitle: "In A Month", value: "0/0", title: 'Present Days',  icon: 'ios-sunny-outline', color: '#90EE90' , },
     { subtitle: "Total Done", value: "0", title: 'BCNP Kit Booking',  icon: 'ios-person-outline', color: 'skyblue' ,route:"FarmerOrdersScreen" },
-    { subtitle: "In 15 Days", value: "0/0", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"ActivityDealerDetails" },
+    { subtitle: "In 15 Days", value: "0/0", title: 'Dealer Not Visit',  icon: 'ios-list', color: Colors.LIGHT_GREEN ,route:"Activity" },
     { subtitle: "Total app downloads", value: "0", title: 'TFP Downloads',  icon: 'ios-list', color: Colors.LIGHT_RED ,route:"DoortoDoor" },
-    { subtitle: "My former list", value: "0", title: 'Farmer Connected',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
-    { subtitle: "All dealer appointed by me", value: "0", title: 'New Dealer Appointed',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer" },
+    { subtitle: "My former list", value: "0", title: 'My Farmers',  icon: 'ios-list', color: '#B0E0E6' ,route:"Myfarmerlist" },
+    { subtitle: "All dealer appointed by me", value: "0", title: 'My Dealers',  icon: 'ios-list', color: Colors.LIGHT_GREY ,route:"Customer", value:1 },
     // { subtitle: "My Performance", value: "15/45", title: 'Target vs Achievement ',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
     { subtitle: "BCNP Incentive", value: "0/0", title: 'BCNP Incentive',  icon: 'ios-list', color: Colors.LIGHT_YELLOW , },
   ])
@@ -252,7 +252,7 @@ function HomeScreen({ navigation }) {
     getAttendance()
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      // console.log('RRRRR', r)
+      console.log('RRRRR', r)
 
       let my_tasks = []
       if (r.status == true) {
@@ -388,7 +388,7 @@ const getAttendance = async () => {
                 }} numberOfLines={2}>{user.mobile_no}</Text>
                 <Text onPress={() => { getcurrentTime() }} style={{
                   color: 'green', fontSize: 15, fontWeight: '700', fontFamily: Fonts.POPPINS_MEDIUM,
-                }} numberOfLines={1}>Working time <Text style={{ fontSize: 25, fontWeight: 'bold' }}> {sessionTime.toString().substring(0, sessionTime>=10?3:2)}{(((sessionTime.toString().substring(2, 4))*.60).toFixed(2)).toString().substring(0, 2)} </Text> Hours
+                }} numberOfLines={1}>Working time <Text style={{ fontSize: 25, fontWeight: 'bold' }}> {sessionTime.toString().substring(0, sessionTime>=10?3:2)}{(((sessionTime.toString().substring(2, 4))*.60).toFixed(2)).toString().substring(0, (((sessionTime.toString().substring(2, 4))*.60).toFixed(2))>=10 ?2:1 )} </Text> Hours
 
                 </Text>
               </View>
@@ -431,7 +431,13 @@ const getAttendance = async () => {
                   renderItem={(item) => {
                     return (
                       <Pressable style={{ flex: 1, }}  onPressIn={() => { if (item.item?.route){
-                        navigation.navigate(item.item?.route)
+                        if(item.item.value){
+                          navigation.navigate(item.item?.route, {item:1})
+
+                        }else{
+                          navigation.navigate(item.item?.route)
+
+                        }
                       } }}>
                       
                         <View style={{flex: 1,

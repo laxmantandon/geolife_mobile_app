@@ -5,7 +5,7 @@ import { useState } from 'react';
 import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
-const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api2'
+const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
 const base_url2 ='https://crop.erpgeolife.com/api/resource'
 const base_url3 ='https://crop.erpgeolife.com/api/method'
 // const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
@@ -916,7 +916,7 @@ const get_users_task = async req => {
     );
     return Response?.data.message
   } catch (error) {
-    // console.log(error.response.data);
+    console.log(error.response.data);
     // ToastAndroid.showWithGravityAndOffset(
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50

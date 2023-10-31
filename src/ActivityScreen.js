@@ -37,8 +37,8 @@ const ActivityScreen = ({navigation}) => {
         response.data.forEach(a=> {
           // console.log(a,"icon")
           let m ={
-            title:a.activity_type,
-            subtitle:a.activity_type,
+            title:a.activity_name,
+            subtitle:a.activity_type[0],
             // image:`https://crop.erpgeolife.com${a?.icon}`,
             date:a.creation,
             status: moment(a.creation).format('A'),

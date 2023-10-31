@@ -147,7 +147,7 @@ const DeaalerTreeViewScreen = ({ navigation }) => {
                 <View style={{}}>
                 <Text
                   style={{
-                    color:'black', fontSize:14, fontWeight:'600'
+                    color:'black', fontSize:13, fontWeight:'600'
                   }}
                 >
                    {node.sales_person_name} <Text>({node.name})</Text>
@@ -155,10 +155,10 @@ const DeaalerTreeViewScreen = ({ navigation }) => {
 {
   node.children?(<Text
     style={{
-      color:'grey', fontSize:12,fontWeight:'400', paddingTop:4
+      color:'grey', fontSize:11,fontWeight:'400', paddingTop:4
     }}
   >
-   Get Children {`-->`}
+   Get Hierarchy {`-->`}
   </Text>):('')
 }
                 

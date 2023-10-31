@@ -115,27 +115,50 @@ const onRefresh = React.useCallback(() => {
 
   const submit = () => {
     // // console.log(formdata)
+    let validform=true
     let req = submitReqData(formdata);
     setisLoading(true);
     req.activity_type= formdata[1]?.values
    
     req.multiactivity_type= formdata[1]?.values
-
+console.log(req)
     if (req.activity_type == '' || req.activity_type == null) {
       Alert.alert('Please Select Activity type ')
       setisLoading(false);
+      validform=false
       return
     }
 
     if (req.party == '' || req.party == null) {
       setisLoading(false);
+      validform=false
       Alert.alert('Please Enter Party Name')
+      return
+    }
+
+    if (req.type == '' || req.type == null) {
+      setisLoading(false);
+      validform=false
+      Alert.alert('Please Enter Select Type')
+      return
+    }
+    if (req.notes == '' || req.notes == null) {
+      setisLoading(false);
+      validform=false
+      Alert.alert('Please Enter Notes')
+      return
+    }
+
+    if (!req.image || req.image == '' || req.image == []) {
+      setisLoading(false);
+      validform=false
+      Alert.alert('Please Capture Activity Image')
       return
     }
     // console.log(req.latitude)
     
     // setisLoading(false);
-
+if (validform==true){
     AuthenicationService.create_activity(req).then(response => {
       setisLoading(false);
       // console.log(response)
@@ -155,6 +178,7 @@ const onRefresh = React.useCallback(() => {
       setisLoading(false);
       // console.log(e)
     })
+  }
 
   }
 
@@ -224,7 +248,7 @@ const onRefresh = React.useCallback(() => {
     // setserachingData(true)
     let req = {
       "text": text,
-      "all_farmer": 1
+      // "all_farmer": 1
     }
     if (text == '') {
       req.text = false

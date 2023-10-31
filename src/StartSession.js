@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ToastAndroid, Image } from 'react-native'
+import { View, Text, Pressable, ToastAndroid, Image, Alert } from 'react-native'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -15,6 +15,7 @@ import  MydealersScreen from './../src/screens/My Dealers/DealerPaymentScreen'
 // import CallLogs from 'react-native-call-log';
 import Geolocation from '@react-native-community/geolocation';
 import LocationPermission from './services/LocationPermission'
+import submitReqData from './services/FormData'
 
 
 const StartSession = ({props, navigation }) => {
@@ -26,6 +27,7 @@ const StartSession = ({props, navigation }) => {
   const [session, setsession] = useState(Date)
   const [session_started, setsession_started] = useState(false)
   const [loading, setloading] = useState(false)
+  const [validsession, setvalidsession] = useState(false)
 
   useEffect(() => {
     // getcall_Logs()
@@ -76,26 +78,36 @@ const StartSession = ({props, navigation }) => {
             notes: '',
             calllogs:''
           }
+          let req1=submitReqData()
+          req.longitude=req1.longitude
+          req.latitude=req1.latitude
           AuthenicationService.Checkuser(req).then(r => {
             console.log(r)
             setloading(false)
 
             if (r.status){
+              setvalidsession(true)
               // navigation.navigate('Home')
               return true
 
             }
             if (r.status ==false){
               endSession()
+              setvalidsession(false)
+
               return false
             }
 
           }).catch(e=>{
             setloading(false)
+            setvalidsession(false)
 
             return false
           })
 
+  }else{
+    setvalidsession(false)
+    return false
   }
 
   }
@@ -137,12 +149,17 @@ const StartSession = ({props, navigation }) => {
         image: '',
         notes: ''
       }
+      let req1=submitReqData()
+          req.longitude=req1.longitude
+          req.latitude=req1.latitude
 
       Geolocation.getCurrentPosition(info =>{
         // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
           req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
           "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
       })
+      console.log(req)
+      setloading(false)
 
       AuthenicationService.create_activity(req).then(r => {
         console.log(r)
@@ -259,13 +276,15 @@ const StartSession = ({props, navigation }) => {
         notes: '',
         calllogs:call_logs
       }
-      
+      let req1=submitReqData()
+          req.longitude=req1.longitude
+          req.latitude=req1.latitude
       Geolocation.getCurrentPosition(info =>{
         // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
           req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
           "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
       })
-      // console.log(req)
+      console.log(req)
       AuthenicationService.create_activity(req).then(r => {
         // console.log(r)
         setloading(false)
@@ -336,22 +355,29 @@ const logOut=()=>{
         
         <Pressable onPress={() => {
           if (session_started == true) {
-            endSession()
+            Alert.alert('Please Confirm!', 'Are you sure you want to END Day?', [
+              {
+                text: 'Cancel',
+                onPress: () => null,
+                style: 'cancel',
+              },
+              { text: 'YES', onPress: () => endSession() },
+            ]);
+            
           } else {
             startMYSession()
           }
         }}>
-          <Buttons title={session_started == false ? 'Start Session' : 'End Session'} loading={loading} />
+          <Buttons title={session_started == false ? 'Start Day' : 'End Day'} loading={loading} />
         </Pressable>
         {session_started == true ? (
           <Pressable onPress={() => {
-            if (session_started == true) {
-              // console.log(Checkuser())
-              if(Checkuser()){
-                navigation.navigate('Home')
+            Checkuser()
 
+            if (session_started == true) {
+              if(validsession){
+                navigation.navigate('Home')
               }
-               
             }
           }}>
             <Buttons title={"Go To Home"}  bgcolor={'green'}/>
@@ -360,12 +386,11 @@ const logOut=()=>{
   
   
         <Pressable onPress={()=>{
-          logOut()
           
+          logOut()
         }}>
           <Buttons title={'Logout'} loading={loading} bgcolor={'red'}/>
         </Pressable>
-  
         </View>
       ):('')}
       </View>

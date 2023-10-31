@@ -281,11 +281,17 @@ const getStock= ()=>{
 
        <View style={{ alignItems:'center', elevation:4, padding:10,margin:5, borderRadius:5,
        backgroundColor:item.item.data.activity[0].count==0?Colors.LIGHT_RED:Colors.LIGHT_GREEN}}>
-       <Text style={{color:'black', fontSize:15, fontWeight:'700'}}> {item.item.data.activity[0].count==0?'No':item.item.data.activity[0].count} DGO Visits </Text>
+       <Text style={{color:'black', fontSize:15, fontWeight:'700'}}> DGO Visits : {item.item.data.activity[0].count==0?'No':item.item.data.activity[0].count}</Text>
 {item.item.data.activity[0].count==0?(''):(
+  <View>
          <Text style={{color:'black', fontSize:13, fontWeight:'500'}}> Last visited by {item.item.data.activity[0].geo_mitra_name} on {moment(item.item.data.activity[0].posting_date).format('DD MMM-yy')}  </Text>
-
+         {item.item.data.activity[0]?.last_visit?(
+         <Text style={{color:'black',textAlign:'center', fontSize:13, fontWeight:'500'}}> Last visit for {item.item.data.activity[0].last_visit}   </Text>
+):('')}
+</View>
 )}
+
+
        </View>
       </View>
 
