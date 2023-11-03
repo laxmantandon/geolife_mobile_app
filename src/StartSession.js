@@ -69,6 +69,7 @@ const StartSession = ({props, navigation }) => {
   const [sessionTime, setsessionTimes] = useState(0)
 
   const Checkuser=()=>{
+    setloading(true)
     if (session){
           let req = {
             activity_type: ['End Day'],
@@ -106,6 +107,7 @@ const StartSession = ({props, navigation }) => {
           })
 
   }else{
+    setloading(false)
     setvalidsession(false)
     return false
   }
@@ -118,7 +120,7 @@ const StartSession = ({props, navigation }) => {
       // setsession(JSON.parse(value))
       let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
       if (duration){
-        if (duration.asHours() >15){
+        if (duration.asHours() >23){
           endSession()
         }else{
           setsessionTimes(duration.asHours())
@@ -152,17 +154,14 @@ const StartSession = ({props, navigation }) => {
       let req1=submitReqData()
           req.longitude=req1.longitude
           req.latitude=req1.latitude
+          req.mylocation=req1.mylocation
 
-      Geolocation.getCurrentPosition(info =>{
-        // // console.log('Location hai', info.coords.longitude,info.coords.latitude)
-          req.mylocation = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"point_type":"circlemarker","radius":10},
-          "geometry":{"type":"Point","coordinates":[info.coords.longitude,info.coords.latitude]}}]}
-      })
+     
       console.log(req)
-      setloading(false)
+      // setloading(false)
 
       AuthenicationService.create_activity(req).then(r => {
-        console.log(r)
+        console.warn(r)
         setloading(false)
 
         if (r.status == true) {
@@ -176,13 +175,25 @@ const StartSession = ({props, navigation }) => {
 
           }else{
             navigation.navigate('Home')
-
           }
           ToastAndroid.showWithGravityAndOffset(
             'Your session started',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+        }else{
+
+          // Alert.alert('Error',r.message)
+          console.warn(r.message)
+          // ToastAndroid.showWithGravityAndOffset(
+          //   r.message?r.message:'no msg',
+          //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         }
       }).catch(e=>{
+        console.warn(e)
+        // Alert.alert('Error', JSON.stringify(e))
+        ToastAndroid.showWithGravityAndOffset(
+          'No Internet Connection',
+          ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+
         setloading(false)
 
       })
@@ -286,7 +297,7 @@ const StartSession = ({props, navigation }) => {
       })
       console.log(req)
       AuthenicationService.create_activity(req).then(r => {
-        // console.log(r)
+        console.log(r)
         setloading(false)
         if (r.status == true) {
           setsession_started(false)
@@ -296,10 +307,16 @@ const StartSession = ({props, navigation }) => {
 
             navigation.goBack()
 
+        }else{
+          console.log(r.message)
+
+          ToastAndroid.showWithGravityAndOffset(
+            'Something wrong please try again',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         }
       }).catch(e=>{
         setloading(false)
-
+        console.log(e)
         ToastAndroid.showWithGravityAndOffset(
           'No Internet Connection',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -353,7 +370,7 @@ const logOut=()=>{
           {/* {moment(session).format('LTS')} */}
         </Text>
         
-        <Pressable onPress={() => {
+        <Pressable onPressIn={() => {
           if (session_started == true) {
             Alert.alert('Please Confirm!', 'Are you sure you want to END Day?', [
               {
@@ -376,7 +393,11 @@ const logOut=()=>{
 
             if (session_started == true) {
               if(validsession){
+                console.log(validsession)
                 navigation.navigate('Home')
+              }else{
+                console.log(validsession)
+
               }
             }
           }}>

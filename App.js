@@ -203,7 +203,7 @@ function HomeScreen({ navigation }) {
         let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
         if (duration){
           setsessionTime(duration.asHours())
-        if(duration.hours() >=12){
+        if(duration.hours() >=23){
           navigation.navigate('SessionScreen')
         }
       }else{
@@ -252,7 +252,7 @@ function HomeScreen({ navigation }) {
     getAttendance()
     setloading(true)
     AuthenicationService.get_users_task(null).then(r => {
-      console.log('RRRRR', r)
+      // console.log('RRRRR', r)
 
       let my_tasks = []
       if (r.status == true) {

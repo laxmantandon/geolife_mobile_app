@@ -168,7 +168,9 @@ const DeaalerTreeViewScreen = ({ navigation }) => {
                   <Pressable onPressIn={()=>{
                     navigation.navigate('Customer',{item:node})
                   }} style={{marginLeft:'auto'}}>
-                    <Text>
+                    <Text style={{
+      color:'grey', fontSize:12,fontWeight:'400', paddingTop:4
+    }}>
                      Get Dealers
                     </Text>
                   </Pressable>

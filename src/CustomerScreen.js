@@ -37,11 +37,19 @@ const CustomerScreen = ({navigation, props,
         if (x.status == true) {
           let mapped_array = []
           x.data.forEach(a => {
-            console.log(a.activity)
+            // console.log(a.activity)
+            let activity=a.activity[0]
+            console.log(a.activity[0])
+            let count=activity.count
+            let name=activity.name
+            let geo_mitra=activity.geo_mitra
+            let geo_mitra_name=activity.geo_mitra_name
+            let last_visit=activity.last_visit
             
             mapped_array.push({"icon_size":22,"icon":a.activity[0].count==0?"close-circle-outline":"checkmark-done-circle-outline",
             "icon_color":a.activity[0].count==0?"red":"green", "title": `${a.dealer_name}`, "subtitle": `${a.sales_person_name}`, 
-            "mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number, "data":a })
+            "mobile_number":a.mobile_number,  "whatsapp": a.mobile_number, "call": a.mobile_number, 
+            "count":count, "name":name, "geo_mitra_name":geo_mitra_name, "geo_mitra":geo_mitra, "last_visit":last_visit})
           })
           setdata(mapped_array)
         } else {

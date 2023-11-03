@@ -19,7 +19,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Type', key: 'type', options: ["Farmer","Dealer"], type: 'select', },
+    { label: 'Please Select Type', key: 'type', options: ["Farmer","Dealer","Retailer","Other"], type: 'select', },
     { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'searchable',multi_select:true },
     { label: 'Name', placeholder: 'Enter Name', key: 'party', link_doctype: 'My Farmer' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
@@ -242,6 +242,51 @@ if (validform==true){
         // console.log(error)
       })
   }
+
+
+  const [retailers, setretailers] = useState([])
+  const searchFilterFunctionRetailer = () => {
+    let req = {
+      "text": ''
+    }
+    AuthenicationService.searchretailerData(req)
+      .then(x => {
+        // console.log("kjh sakfsj",x.data)
+        if (x.status == true) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({ "name": `${a.name}`, "id": a.mobile_number })
+          })
+          setretailers(mapped_array)
+        } else {
+        }
+      })
+      .catch(error => {
+        // console.log(error)
+      })
+  }
+
+  const [others, setothers] = useState([])
+  const searchFilterFunctionOther = () => {
+    let req = {
+      "text": ''
+    }
+    AuthenicationService.searchotherData(req)
+      .then(x => {
+        // console.log("kjh sakfsj",x.data)
+        if (x.status == true) {
+          let mapped_array = []
+          x.data.forEach(a => {
+            mapped_array.push({ "name": `${a.name}`, "id": a.mobile_number})
+          })
+          setothers(mapped_array)
+        } else {
+        }
+      })
+      .catch(error => {
+        // console.log(error)
+      })
+  }
   const [farmers, setfarmers] = useState([])
   const searchFilterFunctionFarmer = (text) => {
     // setloading(true)
@@ -343,7 +388,7 @@ if (validform==true){
                         }}
                         itemTextStyle={{ color: '#222' }}
                         itemsContainerStyle={{ maxHeight: 140 }}
-                        items={formdata[0].value=='Farmer'?farmers:dealers}
+                        items={formdata[0].value=='Farmer'?farmers:formdata[0].value=='Dealer'?dealers:formdata[0].value=='Retailer'?retailers:others}
                         // defaultIndex={2}
                         resetValue={false}
                         textInputProps={
@@ -354,8 +399,12 @@ if (validform==true){
                             onTextChange: text => {
                               if (formdata[0].value == 'Farmer') {
                                 searchFilterFunctionFarmer(text)
-                              } else {
+                              } else if (formdata[0].value == 'Dealer'){
                                 searchFilterFunctionDealer(text)
+                              }else if (formdata[0].value == 'Retailer'){
+                                searchFilterFunctionRetailer(text)
+                              }else if (formdata[0].value == 'Other'){
+                                searchFilterFunctionOther(text)
                               }
                             }
                           }

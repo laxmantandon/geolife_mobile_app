@@ -5,7 +5,8 @@ import { useState } from 'react';
 import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
-const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
+const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api2'
+// const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
 const base_url2 ='https://crop.erpgeolife.com/api/resource'
 const base_url3 ='https://crop.erpgeolife.com/api/method'
 // const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
@@ -279,6 +280,41 @@ const searchdealerData = async req => {
   }
 };
 
+const searchotherData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.post(
+      `${base_url}.search_other`, req, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+  }
+};
+
+
+const searchretailerData = async req => {
+  try {
+    gettoken()
+    let Response = await AuthRequest.post(
+      `${base_url}.search_retailer`, req, {headers:gettoken()}
+    );
+    return Response?.data.message
+  } catch (error) {
+    console.log(error.response.data);
+    // ToastAndroid.showWithGravityAndOffset(
+    //   'Oops! Something went wrong check internet connection',
+    //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
+    // );
+    return {status: false, message: 'Oops! Something went wrong ', jj:headers};
+  }
+};
+
 
 const searchgeomitraData = async req => {
   try {
@@ -535,7 +571,7 @@ const create_activity = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: 'Oops! Something went wrong '};
+    return {status: false, message: error.response.data};
   }
 };
 
@@ -1091,7 +1127,7 @@ const get_users_Attendance = async req => {
         );
         return Response?.data.message
   } catch (error) {
-    // console.log('API ERROR ', error.response.data);
+    console.log('API ERROR ', error.response.data);
     return { status: false, message: 'Oops! Something went wrong ' };
   }
 };
@@ -1119,5 +1155,6 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   create_farmer,searchfarmerOrdersData,submit_quiz,get_users_Attendance,searchdealerfarmerOrdersData, 
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
   checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser,GetDoctypeData,
-  get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,update_expenses,GetTreeData
+  get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,
+  update_expenses,GetTreeData,searchotherData,searchretailerData
 };

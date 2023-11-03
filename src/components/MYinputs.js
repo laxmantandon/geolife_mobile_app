@@ -50,8 +50,9 @@ const MYinputs = ({ item,refreshinput }) => {
   
       }
       AuthenicationService.GetDoctypefilterData(req).then((result)=>{
-        console.log(result)
+        // console.log(result)
         mapped_data=[]
+        mapped_data2=[]
         if (result.data){
           if(item.type=='searchable'){
             result.data.forEach(a => {
@@ -59,11 +60,14 @@ const MYinputs = ({ item,refreshinput }) => {
               } else {
                 if (a.name){
                   mapped_data.push(a)
+                  mapped_data2.push({'name':a.name,'id':a.name,'data':a})
                   setLinkedDoctypeData(mapped_data)
-                  item?.options.push({'name':a.name,'id':a.name,'data':a})
+                  // item?.options.push({'name':a.name,'id':a.name,'data':a})
                 }
               }
             })
+            item.options=mapped_data2
+
           }
         }
   
