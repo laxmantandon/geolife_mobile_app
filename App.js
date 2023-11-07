@@ -70,9 +70,10 @@ import FarmerMeetingListScreen from './src/screens/My Former/FarmerMeetingListSc
 import FarmerMeetingAttendanceScreen from './src/screens/My Former/FarmerMeetingAttendanceScreen';
 import LocationPermission from './src/services/LocationPermission';
 import DeaalerTreeViewScreen from './src/DeaalerTreeViewScreen';
+import StoragePermission from './src/services/StoragePermission';
 // SplashScreen.hide();
 CameraPermission()
-
+StoragePermission()
 LocationPermission()
 
 
@@ -203,7 +204,7 @@ function HomeScreen({ navigation }) {
         let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
         if (duration){
           setsessionTime(duration.asHours())
-        if(duration.hours() >=23){
+        if(duration.hours() >=24){
           navigation.navigate('SessionScreen')
         }
       }else{

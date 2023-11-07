@@ -5,11 +5,9 @@ import { useState } from 'react';
 import {ApiContants} from '../contants';
 // import userdata from './userdata';
 
-const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api2'
-// const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
+const base_url ='https://crop.erpgeolife.com/api/method/geolife_agritech.v1.geolife_api'
 const base_url2 ='https://crop.erpgeolife.com/api/resource'
 const base_url3 ='https://crop.erpgeolife.com/api/method'
-// const base_url ='https://8fab-49-43-42-59.in.ngrok.io/api/method/geolife_agritech.v1.geolife_api'
 
 // const [user, setuser] = useState([])
 
@@ -102,6 +100,21 @@ const sendOTP = async user => {
     console.log(error.response);
     return {status: false, message: error, url:`${base_url}.generate_otp?mobile_no=${user?.username}`
 };
+  }
+};
+
+
+const sendOTP2 = async req => {
+  
+  try {
+    let loginResponse = await AuthRequest.get(
+      `${base_url}.generate_otp?mobile_no=${req}&hashcode=${'1111'}`
+      
+    );
+    return loginResponse?.data.message;
+  } catch (error) {
+    console.log(error.response);
+    return {status: false, message: error};
   }
 };
 
@@ -571,7 +584,7 @@ const create_activity = async req => {
     //   'Oops! Something went wrong check internet connection',
     //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50
     // );
-    return {status: false, message: error.response.data};
+    return {status: false, message: error.response.data, error:error};
   }
 };
 
@@ -1156,5 +1169,5 @@ export default {login, sendOTP, searchfarmerData, crop_seminar, create_crop_semi
   searchdealerPaymentData,CompleteOrder, searchgeomitraData, uploadImage, farmer_meeting,
   checkoutPaymentUpdate,activity_for,dayplan_list,Add_payment_cash_entry, search_pravakta_farmer,Checkuser,GetDoctypeData,
   get_villages,GetAllDoctypeData,GetFarmerMeeting,update_farmer_meeting,dayplan_post_list,GetDoctypefilterData,
-  update_expenses,GetTreeData,searchotherData,searchretailerData
+  update_expenses,GetTreeData,searchotherData,searchretailerData,sendOTP2
 };

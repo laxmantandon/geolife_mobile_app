@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627297466413",
+    "project_id": "geolife-app",
+    "storage_bucket": "geolife-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627297466413:android:8279ab8684ff8ef63520a4",
+        "android_client_info": {
+          "package_name": "com.erpgeolife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlCosDaA_ybkRXuSk_axe7nzis2ANR-ns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

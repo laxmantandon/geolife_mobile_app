@@ -16,6 +16,7 @@ import  MydealersScreen from './../src/screens/My Dealers/DealerPaymentScreen'
 import Geolocation from '@react-native-community/geolocation';
 import LocationPermission from './services/LocationPermission'
 import submitReqData from './services/FormData'
+import StoragePermission from './services/StoragePermission'
 
 
 const StartSession = ({props, navigation }) => {
@@ -30,6 +31,7 @@ const StartSession = ({props, navigation }) => {
   const [validsession, setvalidsession] = useState(false)
 
   useEffect(() => {
+StoragePermission
     // getcall_Logs()
     Checkuser()
     AuthenicationService.get_users_task(null).then(r => {
@@ -120,7 +122,7 @@ const StartSession = ({props, navigation }) => {
       // setsession(JSON.parse(value))
       let duration = moment.duration(moment(new Date()).diff(moment(JSON.parse(value)).add(1, 'second')))
       if (duration){
-        if (duration.asHours() >23){
+        if (duration.asHours() >24){
           endSession()
         }else{
           setsessionTimes(duration.asHours())
@@ -161,7 +163,8 @@ const StartSession = ({props, navigation }) => {
       // setloading(false)
 
       AuthenicationService.create_activity(req).then(r => {
-        console.warn(r)
+        // console.warn(r)
+        // Alert.alert('Error',JSON.stringify(r))
         setloading(false)
 
         if (r.status == true) {
@@ -180,15 +183,15 @@ const StartSession = ({props, navigation }) => {
             'Your session started',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         }else{
-
-          // Alert.alert('Error',r.message)
+         
           console.warn(r.message)
-          // ToastAndroid.showWithGravityAndOffset(
-          //   r.message?r.message:'no msg',
-          //   ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
+          ToastAndroid.showWithGravityAndOffset(
+            r.message?r.message:'no msg',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
         }
       }).catch(e=>{
-        console.warn(e)
+        // console.warn(e)
+        // Alert.alert('Error',JSON.stringify(e))
         // Alert.alert('Error', JSON.stringify(e))
         ToastAndroid.showWithGravityAndOffset(
           'No Internet Connection',
@@ -201,6 +204,10 @@ const StartSession = ({props, navigation }) => {
     }
 
   }
+
+
+
+
 
 
   // const getcall_Logs =()=>{
@@ -309,7 +316,9 @@ const StartSession = ({props, navigation }) => {
 
         }else{
           console.log(r.message)
+          AuthenicationService.create_activity(r).then(res => {
 
+          })
           ToastAndroid.showWithGravityAndOffset(
             'Something wrong please try again',
             ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -317,6 +326,9 @@ const StartSession = ({props, navigation }) => {
       }).catch(e=>{
         setloading(false)
         console.log(e)
+        AuthenicationService.create_activity(e).then(res => {
+
+        })
         ToastAndroid.showWithGravityAndOffset(
           'No Internet Connection',
         ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50)
@@ -387,6 +399,8 @@ const logOut=()=>{
         }}>
           <Buttons title={session_started == false ? 'Start Day' : 'End Day'} loading={loading} />
         </Pressable>
+
+
         {session_started == true ? (
           <Pressable onPress={() => {
             Checkuser()
@@ -407,7 +421,6 @@ const logOut=()=>{
   
   
         <Pressable onPress={()=>{
-          
           logOut()
         }}>
           <Buttons title={'Logout'} loading={loading} bgcolor={'red'}/>

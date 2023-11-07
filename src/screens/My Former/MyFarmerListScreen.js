@@ -352,7 +352,7 @@ const scrollViewRef = useRef()
                                     color: "black"
                                   },
                                   value: Pincode,
-
+                                  
                                   onTextChange: text => {
                                     setPincode(text)
                                     if (text.length == 6) {
@@ -379,6 +379,7 @@ const scrollViewRef = useRef()
                                     fetch(`https://api.postalpincode.in/pincode/${item.pincode}`, requestOptions)
                                       .then(response => response.text())
                                       .then(result => {
+                                        console.log('working',result)
                                         let m = JSON.parse(result)
                                         console.log(m[0].Status)
 

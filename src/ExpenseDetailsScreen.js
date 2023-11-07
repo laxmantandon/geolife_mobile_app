@@ -289,7 +289,7 @@ const ExpenseDetailsScreen = ({ navigation,
 
 
   return (
-    <View style={[mstyle.container, { paddingBottom: 5 }]}>
+    <ScrollView style={[mstyle.container, { paddingBottom: 5 }]}>
       <Text style={{
         fontSize: 20, color: 'black',
         fontWeight: 'bold', textAlign: "center", paddingBottom: 10
@@ -494,9 +494,7 @@ const ExpenseDetailsScreen = ({ navigation,
         </View>
       )}
 
-
-
-    </View>
+    </ScrollView>
   )
 }
 

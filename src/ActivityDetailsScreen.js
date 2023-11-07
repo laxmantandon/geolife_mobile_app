@@ -19,7 +19,7 @@ const ActivityDetailsScreen = ({ navigation, props,
 
   const [activity_type, setactivity_type] = useState([])
   const [formdata, setformdata] = useState([
-    { label: 'Please Select Type', key: 'type', options: ["Farmer","Dealer","Retailer","Other"], type: 'select', },
+    { label: 'Please Select Type', key: 'type', options: ["Farmer","Dealer","Other"], type: 'select', },
     { label: 'Please Select Activity Type', key: 'activity_type', value: '', options: activity_type, type: 'searchable',multi_select:true },
     { label: 'Name', placeholder: 'Enter Name', key: 'party', link_doctype: 'My Farmer' },
     { label: 'Notes', placeholder: 'Enter Notes', key: 'notes', value: '', type: 'textarea' },
@@ -129,12 +129,7 @@ console.log(req)
       return
     }
 
-    if (req.party == '' || req.party == null) {
-      setisLoading(false);
-      validform=false
-      Alert.alert('Please Enter Party Name')
-      return
-    }
+    
 
     if (req.type == '' || req.type == null) {
       setisLoading(false);
@@ -154,6 +149,14 @@ console.log(req)
       validform=false
       Alert.alert('Please Capture Activity Image')
       return
+    }
+    if(req.type !="Other"){
+      if (req.party == '' || req.party == null) {
+        setisLoading(false);
+        validform=false
+        Alert.alert('Please Enter Party Name')
+        return
+      }
     }
     // console.log(req.latitude)
     
@@ -329,97 +332,99 @@ if (validform==true){
             <View style={{ flex: 1 }}>
               <View>
               {item.key == 'party'?(
-                <View  style={[mstyle.inputContainer1, {
-                  backgroundColor: 'white', marginTop: 8,
-                }]}>
+               <View>
+                {formdata[0].value == 'Other'?(''):(
 
-                  <Text style={{ fontSize: 14, color: 'black', paddingBottom: 1, paddingHorizontal: 5, fontWeight: '400' }}>
-                    {`Select ${formdata[0].value}`} </Text>
-
-
-                  
-
-                  <View style={mstyle.inputSubContainer}>
-                    {item.value ? (
-                      <View style={{
-                        padding: 8, marginTop: 2, flexDirection: 'row',
-                        backgroundColor: 'white', borderColor: 'silver',
-                        borderWidth: 1, borderRadius: 5, width: '100%'
-                      }}>
- 
-                        <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {item.value_name}</Text>
-                        <Icon onPress={() => {
-                          item.value = ''
-                          refreshField()
-                        }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
-
-                      </View>
-                    ) : (
-                      <SearchableDropDown zindex="999"
-                        onItemSelect={(kitem) => {
-                          // const items = selectedCrops;
-                          // items.push(item)
-                          // setselectedFarmer(kitem)
-                          item.value = kitem.id
-                          item.value_name = kitem.name
-                          // refreshForm()
-                          refreshField()
-
-                          setisLoading(true)
-                          setTimeout(() => {
-                            setisLoading(false)
-                          }, 1000);
-
-                          // console.log(selectedFarmer)
-                        }}
-                        containerStyle={{ padding: 1, width: '100%' }}
-                        modalContainer
-                        onRemoveItem={(kitem, index) => {
-                          // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
-                          // setselectedCrops(items)
-                        }}
-                        itemStyle={{
-                          padding: 10,
-                          marginTop: 2,
-                          backgroundColor: 'white',
-                          borderColor: 'silver',
-                          borderWidth: 1,
-                          borderRadius: 5,
-                        }}
-                        itemTextStyle={{ color: '#222' }}
-                        itemsContainerStyle={{ maxHeight: 140 }}
-                        items={formdata[0].value=='Farmer'?farmers:formdata[0].value=='Dealer'?dealers:formdata[0].value=='Retailer'?retailers:others}
-                        // defaultIndex={2}
-                        resetValue={false}
-                        textInputProps={
-                          {
-                            placeholder: `Search ${formdata[0].value}`,
-                            underlineColorAndroid: "transparent",
-                            style: {padding: 8, borderWidth: 1,borderColor: '#ccc', borderRadius: 5, color: "black"},
-                            onTextChange: text => {
-                              if (formdata[0].value == 'Farmer') {
-                                searchFilterFunctionFarmer(text)
-                              } else if (formdata[0].value == 'Dealer'){
-                                searchFilterFunctionDealer(text)
-                              }else if (formdata[0].value == 'Retailer'){
-                                searchFilterFunctionRetailer(text)
-                              }else if (formdata[0].value == 'Other'){
-                                searchFilterFunctionOther(text)
+                   <View  style={[mstyle.inputContainer1, {
+                    backgroundColor: 'white', marginTop: 8,
+                  }]}>
+  
+                    <Text style={{ fontSize: 14, color: 'black', paddingBottom: 1, paddingHorizontal: 5, fontWeight: '400' }}>
+                      {`Select ${formdata[0].value}`} </Text>
+  
+                    <View style={mstyle.inputSubContainer}>
+                      {item.value ? (
+                        <View style={{
+                          padding: 8, marginTop: 2, flexDirection: 'row',
+                          backgroundColor: 'white', borderColor: 'silver',
+                          borderWidth: 1, borderRadius: 5, width: '100%'
+                        }}>
+   
+                          <Text style={{ color: 'black', width: '90%', fontSize: 15, fontWeight: 'bold' }}> {item.value_name}</Text>
+                          <Icon onPress={() => {
+                            item.value = ''
+                            refreshField()
+                          }} name='close-circle-outline' size={25} style={{ color: 'red' }}></Icon>
+  
+                        </View>
+                      ) : (
+                        <SearchableDropDown zindex="999"
+                          onItemSelect={(kitem) => {
+                            // const items = selectedCrops;
+                            // items.push(item)
+                            // setselectedFarmer(kitem)
+                            item.value = kitem.id
+                            item.value_name = kitem.name
+                            // refreshForm()
+                            refreshField()
+  
+                            setisLoading(true)
+                            setTimeout(() => {
+                              setisLoading(false)
+                            }, 1000);
+  
+                            // console.log(selectedFarmer)
+                          }}
+                          containerStyle={{ padding: 1, width: '100%' }}
+                          modalContainer
+                          onRemoveItem={(kitem, index) => {
+                            // const items = selectedCrops.filter((sitem) => sitem.name !== item.name);
+                            // setselectedCrops(items)
+                          }}
+                          itemStyle={{
+                            padding: 10,
+                            marginTop: 2,
+                            backgroundColor: 'white',
+                            borderColor: 'silver',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                          }}
+                          itemTextStyle={{ color: '#222' }}
+                          itemsContainerStyle={{ maxHeight: 140 }}
+                          items={formdata[0].value=='Farmer'?farmers:formdata[0].value=='Dealer'?dealers:formdata[0].value=='Retailer'?retailers:others}
+                          // defaultIndex={2}
+                          resetValue={false}
+                          textInputProps={
+                            {
+                              placeholder: `Search ${formdata[0].value}`,
+                              underlineColorAndroid: "transparent",
+                              style: {padding: 8, borderWidth: 1,borderColor: '#ccc', borderRadius: 5, color: "black"},
+                              onTextChange: text => {
+                                if (formdata[0].value == 'Farmer') {
+                                  searchFilterFunctionFarmer(text)
+                                } else if (formdata[0].value == 'Dealer'){
+                                  searchFilterFunctionDealer(text)
+                                }else if (formdata[0].value == 'Retailer'){
+                                  searchFilterFunctionRetailer(text)
+                                }else if (formdata[0].value == 'Other'){
+                                  searchFilterFunctionOther(text)
+                                }
                               }
                             }
                           }
-                        }
-                        listProps={
-                          {
-                            nestedScrollEnabled: true,
+                          listProps={
+                            {
+                              nestedScrollEnabled: true,
+                            }
                           }
-                        }
-                      />
-                    )}
-
-
+                        />
+                      )}
+  
+  
+                    </View>
+  
                   </View>
-
+                )}
                 </View>
               ) : (
                 <View>
